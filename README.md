@@ -7,3 +7,8 @@
 
 4. Next make sure to download mysql db diver https://dev.mysql.com/downloads/connector/j/
 
+# Database Scripts 
+--------------------------
+1. Make sure to replace database name with yours 
+
+2. Make sure you run the command while using Towson's VPN 
