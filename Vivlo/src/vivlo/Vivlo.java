@@ -26,21 +26,6 @@ import java.awt.GridLayout;
 public class Vivlo {
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Vivlo window = new Vivlo();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the choice.
 	 */
 	public Vivlo() {
