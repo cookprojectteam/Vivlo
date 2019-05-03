@@ -165,7 +165,7 @@ public class Query {
         PreparedStatement ps = null;
         try{
             ps = connection.prepareStatement("SELECT ISBN, COPY, TITLE, AF, AM, AL from BOOK Join AUTHOR ON ISBN = isbn AND COPY = copy where TITLE = ?");
-            ps.setString(1, TITLE);
+            ps.setString(1, Title);
             result = ps.executeQuery();
         } catch(Exception ex){
             ex.printStackTrace();
