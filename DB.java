@@ -3,8 +3,8 @@ import java.sql.Connection;
 
 //Class is responsible for connecting to MYSQL database
 public class DB {
-	static final String userName = "******";
-	static final String password = "******";
+	static final String userName = "ballen15";
+	static final String password = "Cosc*b5bc";
 
 	 public static Connection getConnection() { 
 		 System.out.println("Connecting to database....");
