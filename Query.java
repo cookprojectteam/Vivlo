@@ -98,7 +98,7 @@ public class Query {
     }
 
     //select all books
-    public ResultSet selectBooks(boolean nothold, boolean not_checked_out){
+    public ResultSet selectBooks(boolean nothold, boolean not_checked_out) {
         ResultSet result = null;
         PreparedStatement ps;
         try {
@@ -133,7 +133,7 @@ public class Query {
     }
     
     //generate a list of books by author
-    public ResultSet listByAuthor(String AuthorName){
+    public ResultSet listByAuthor(String AuthorName) {
         ResultSet result = null;
         PreparedStatement ps = null;
         try{
