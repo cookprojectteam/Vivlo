@@ -22,7 +22,7 @@ public class Vivlo {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    createChoiceFrame();
+                    createSearchFrame();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -303,5 +303,17 @@ public class Vivlo {
         frame.add(JL_dept);
         frame.add(JCB_dept);
         frame.setVisible(true);
+    }
+
+    public void createCheckoutFrame() {
+        JFrame frame = new JFrame();
+        frame.setBounds(100, 100, 891, 350);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().setLayout(null);
+
+        JLabel lblCheckOutPage = new JLabel("Check Out Page");
+        lblCheckOutPage.setFont(new Font("Tahoma", Font.BOLD, 20));
+        lblCheckOutPage.setBounds(346, 13, 188, 31);
+        frame.getContentPane().add(lblCheckOutPage);
     }
 }
