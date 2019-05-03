@@ -19,7 +19,7 @@ public class Query {
         ResultSet result = null;
         PreparedStatement ps;
         try {
-            ps = connection.prepareStatement("SELECT `TUAffliate` FROM `TU_TEST` WHERE `TUAffliate` = ?;");
+            ps = connection.prepareStatement("SELECT TUAffliate FROM TU_TEST WHERE TUAffliate = ?;");
             ps.setString(1, idNum);
             result = ps.executeQuery();
         } catch (SQLException e) {
@@ -32,11 +32,11 @@ public class Query {
      * Returns the query result for a book by ISBN number
      * @param ISBN The book's ISBN number
      */
-    public ResultSet findBook(String ISBN) {
+    public ResultSet findBookByISBN(String ISBN) {
         ResultSet result = null;
         PreparedStatement ps = null;
         try{
-            ps = connection.prepareStatement("select * from users where isbn = ?");
+            ps = connection.prepareStatement("select ISBN, COPY, TITLE, AF, AM, AL from BOOK Join AUTHOR ON ISBN = isbn AND COPY = copy where ISBN = ?;");
             ps.setString(1, ISBN);
             result = ps.executeQuery();
         } catch(Exception ex){
@@ -50,12 +50,12 @@ public class Query {
         ResultSet result = null;
         PreparedStatement ps;
         try {
-            ps = connection.prepareStatement(" SELECT `ISBN, COPY, TITLE, AF, AM, AL," +
-                                                        " \"Checked Out\" = 'no', \"On Hold\" = 'no'`" + 
-                                                        " FROM `(BOOK JOIN REF_BOOK" +
+            ps = connection.prepareStatement(" SELECT ISBN, COPY, TITLE, AF, AM, AL," +
+                                                        " \"Checked Out\" = 'no', \"On Hold\" = 'no'" + 
+                                                        " FROM (BOOK JOIN REF_BOOK" +
                                                                 " ON ISBN = REF_ISBN AND COPY = REF_COPY)" +
                                                                 " JOIN AUTHOR" +
-                                                                " ON ISBN = isbn AND COPY = copy`;");
+                                                                " ON ISBN = isbn AND COPY = copy;");
             result = ps.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -68,22 +68,22 @@ public class Query {
         PreparedStatement ps;
         try {
             //select non-refernece books not on hold
-            if (nothold && not_checked_out) {ps = connection.prepareStatement(" SELECT `ISBN, COPY, TITLE, AF, AM, AL, \"On Hold\" = 'no', \"Checked Out\" = 'no'`" + 
-                                                                " FROM `(BOOK JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY)" +
-                                                                    " JOIN  AUTHOR ON ISBN = isbn AND COPY on copy`" + 
-                                                                " WHERE `HOLD IS NULL AND CO_TUID IS NULL` ;");}
+            if (nothold && not_checked_out) {ps = connection.prepareStatement(" SELECT ISBN, COPY, TITLE, AF, AM, AL, \"On Hold\" = 'no', \"Checked Out\" = 'no'" + 
+                                                                " FROM (BOOK JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY)" +
+                                                                    " JOIN  AUTHOR ON ISBN = isbn AND COPY on copy" + 
+                                                                " WHERE HOLD IS NULL AND CO_TUID IS NULL ;");}
             //select non-refernece all books
-            else if (nothold && !not_checked_out){ps = connection.prepareStatement(" SELECT `ISBN, COPY, TITLE, AF, AM, AL, \"On Hold\" = 'no', \"Checked Out\" = 'yes'`" +
-                                                        " FROM `(BOOK JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY)" +
-                                                                " JOIN  AUTHOR ON ISBN = isbn AND COPY on copy`" +
-                                                        " WHERE `HOLD IS NULL AND CO_TUID IS NOT NULL`;");}
+            else if (nothold && !not_checked_out){ps = connection.prepareStatement(" SELECT ISBN, COPY, TITLE, AF, AM, AL, \"On Hold\" = 'no', \"Checked Out\" = 'yes'" +
+                                                        " FROM (BOOK JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY)" +
+                                                                " JOIN  AUTHOR ON ISBN = isbn AND COPY on copy" +
+                                                        " WHERE HOLD IS NULL AND CO_TUID IS NOT NULL;");}
             //select non-refernece books not on hold
-            else if (!nothold && not_checked_out) {ps = connection.prepareStatement(" SELECT `ISBN, COPY, TITLE, AF, AM, AL, \"On Hold\" = 'yes', \"Checked Out\" = 'no'`" + 
-                                                                " FROM `(BOOK JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY)" +
-                                                                    " JOIN  AUTHOR ON ISBN = isbn AND COPY on copy`" + 
-                                                                " WHERE `HOLD IS NOT NULL AND CO_TUID IS NULL`;");}
+            else if (!nothold && not_checked_out) {ps = connection.prepareStatement(" SELECT ISBN, COPY, TITLE, AF, AM, AL, \"On Hold\" = 'yes', \"Checked Out\" = 'no'" + 
+                                                                " FROM (BOOK JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY)" +
+                                                                    " JOIN  AUTHOR ON ISBN = isbn AND COPY on copy" + 
+                                                                " WHERE HOLD IS NOT NULL AND CO_TUID IS NULL;");}
             //select non-refernece all books
-            else {ps = connection.prepareStatement(" SELECT `ISBN, COPY, TITLE, AF, AM, AL," +
+            else {ps = connection.prepareStatement(" SELECT ISBN, COPY, TITLE, AF, AM, AL," +
                                                                     " \"Checked Out\" = (CASE" +
                                                                         " WHEN CO_TUID IS NOT NULL" +
                                                                         " THEN 'yes'" +
@@ -91,9 +91,9 @@ public class Query {
                                                                     " \"On Hold\" = (CASE" +
                                                                         " WHEN HOLD IS NOT NULL" +
                                                                         " THEN 'yes'" +
-                                                                        " ELSE 'no' END)`" +
-                                                        " FROM `(BOOK JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY)" +
-                                                                " JOIN  AUTHOR ON ISBN = isbn AND COPY on copy`;");}
+                                                                        " ELSE 'no' END)" +
+                                                        " FROM (BOOK JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY)" +
+                                                                " JOIN  AUTHOR ON ISBN = isbn AND COPY on copy;");}
             result = ps.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -107,25 +107,25 @@ public class Query {
         PreparedStatement ps;
         try {
             //select books not on hold
-            if (nothold && not_checked_out) {ps = connection.prepareStatement(" SELECT `ISBN, COPY, TITLE, AF, AM, AL, \"On Hold\" = 'no', \"Checked Out\" = 'no'`" + 
-                                                                " FROM `((BOOK LEFT JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY)" +
+            if (nothold && not_checked_out) {ps = connection.prepareStatement(" SELECT ISBN, COPY, TITLE, AF, AM, AL, \"On Hold\" = 'no', \"Checked Out\" = 'no'" + 
+                                                                " FROM ((BOOK LEFT JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY)" +
                                                                         " LEFT JOIN REF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY)" +
-                                                                            " JOIN  AUTHOR ON ISBN = isbn AND COPY = copy`" +
-                                                                " WHERE `HOLD IS NULL AND CO_TUID IS NULL`;");}
+                                                                            " JOIN  AUTHOR ON ISBN = isbn AND COPY = copy" +
+                                                                " WHERE HOLD IS NULL AND CO_TUID IS NULL;");}
             //select all books
-            else if (nothold && !not_checked_out){ps = connection.prepareStatement(" SELECT `ISBN, COPY, TITLE, AF, AM, AL, \"On Hold\" = 'no', \"Checked Out\" = 'yes'`" +
-                                                        " FROM `((BOOK LEFT JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY)" +
+            else if (nothold && !not_checked_out){ps = connection.prepareStatement(" SELECT ISBN, COPY, TITLE, AF, AM, AL, \"On Hold\" = 'no', \"Checked Out\" = 'yes'" +
+                                                        " FROM ((BOOK LEFT JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY)" +
                                                                         " LEFT JOIN REF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY)" +
-                                                                            " JOIN  AUTHOR ON ISBN = isbn AND COPY = copy`" +
-                                                        " WHERE `HOLD IS NULL AND CO_TUID IS NOT NULL`;");}
+                                                                            " JOIN  AUTHOR ON ISBN = isbn AND COPY = copy" +
+                                                        " WHERE HOLD IS NULL AND CO_TUID IS NOT NULL;");}
             //select books not on hold
-            else if (!nothold && not_checked_out) {ps = connection.prepareStatement(" SELECT `ISBN, COPY, TITLE, AF, AM, AL, \"On Hold\" = 'yes', \"Checked Out\" = 'no'`" + 
-                                                                " FROM `((BOOK LEFT JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY)" +
+            else if (!nothold && not_checked_out) {ps = connection.prepareStatement(" SELECT ISBN, COPY, TITLE, AF, AM, AL, \"On Hold\" = 'yes', \"Checked Out\" = 'no'" + 
+                                                                " FROM ((BOOK LEFT JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY)" +
                                                                         " LEFT JOIN REF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY)" +
-                                                                            " JOIN  AUTHOR ON ISBN = isbn AND COPY = copy`" +
-                                                                " WHERE `HOLD IS NOT NULL AND CO_TUID IS NULL`;");}
+                                                                            " JOIN  AUTHOR ON ISBN = isbn AND COPY = copy" +
+                                                                " WHERE HOLD IS NOT NULL AND CO_TUID IS NULL;");}
             //select all books
-            else {ps = connection.prepareStatement(" SELECT `ISBN, COPY, TITLE, AF, AM, AL," +
+            else {ps = connection.prepareStatement(" SELECT ISBN, COPY, TITLE, AF, AM, AL," +
                                                                     " \"Checked Out\" = (CASE" +
                                                                         " WHEN CO_TUID IS NOT NULL" +
                                                                         " THEN 'yes'" +
@@ -133,10 +133,10 @@ public class Query {
                                                                     " \"On Hold\" = (CASE" +
                                                                         " WHEN HOLD IS NOT NULL" +
                                                                         " THEN 'yes'" +
-                                                                        " ELSE 'no' END)`" +
-                                                    " FROM `((BOOK LEFT JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY)" +
+                                                                        " ELSE 'no' END)" +
+                                                    " FROM ((BOOK LEFT JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY)" +
                                                                     " LEFT JOIN REF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY)" +
-                                                                        " JOIN  AUTHOR ON ISBN = isbn AND COPY = copy`;");}
+                                                                        " JOIN  AUTHOR ON ISBN = isbn AND COPY = copy;");}
             result = ps.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -152,6 +152,20 @@ public class Query {
             ps = connection.prepareStatement("select ISBN, COPY, TITLE, AF, AM, AL from BOOK Join AUTHOR ON ISBN = isbn AND COPY = copy  where  AF = ? AND AL = ?;");
             ps.setString(1, Fname);
             ps.setString(2, Lname);
+            result = ps.executeQuery();
+        } catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return result;
+    }
+    
+    //search books by title
+    public ResultSet findBookByTitle(String Title) {
+        ResultSet result = null;
+        PreparedStatement ps = null;
+        try{
+            ps = connection.prepareStatement("SELECT ISBN, COPY, TITLE, AF, AM, AL from BOOK Join AUTHOR ON ISBN = isbn AND COPY = copy where TITLE = ?;");
+            ps.setString(1, Title);
             result = ps.executeQuery();
         } catch(Exception ex){
             ex.printStackTrace();
