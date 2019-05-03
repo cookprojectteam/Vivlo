@@ -39,21 +39,34 @@ public class Vivlo {
                 JFrame choice = new JFrame();
                 choice.setTitle("Vivlo - Choice");
                 choice.setBounds(100, 100, 400, 200);
-                choice.setBackground(new Color(247, 247, 247));
                 choice.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                choice.getContentPane().setLayout(new GridLayout(0, 1, 0, 0));
+
+                GridBagConstraints gbc = new GridBagConstraints();
+                JPanel panel = new JPanel();
+                panel.setLayout(new GridBagLayout());
+                panel.setBackground(tuYellow);
 
                 JButton btnBooks = new JButton("Books");
-                choice.getContentPane().add(btnBooks);
+                btnBooks.setPreferredSize(new Dimension(170, 40));
+                btnBooks.setMargin(new Insets(10, 10, 10, 10));
+                btnBooks.setBackground(Color.BLACK);
+                btnBooks.setForeground(Color.WHITE);
 
                 JButton btnManagement = new JButton("Management");
+                btnManagement.setPreferredSize(new Dimension(170, 40));
+                btnManagement.setMargin(new Insets(10, 10, 10, 10));
+                btnManagement.setBackground(Color.BLACK);
+                btnManagement.setForeground(Color.WHITE);
                 btnManagement.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         createManagementFrame();
                         choice.dispose();
                     }
                 });
-                choice.getContentPane().add(btnManagement);
+
+                panel.add(btnBooks, gbc);
+                panel.add(btnManagement, gbc);
+                choice.add(panel);
                 choice.setVisible(true);
             }
         });
@@ -118,6 +131,8 @@ public class Vivlo {
         tuID.setColumns(10);
 
         JButton btnSignIn = new JButton("Sign In");
+        btnSignIn.setBackground(Color.BLACK);
+        btnSignIn.setForeground(Color.WHITE);
         btnSignIn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String idNum = tuID.getText();
