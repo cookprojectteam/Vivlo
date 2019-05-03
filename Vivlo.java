@@ -2,6 +2,10 @@
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.sql.Connection;
@@ -234,19 +238,28 @@ public class Vivlo {
         frame.setVisible(true);
     }
 
+    /**
+     * Creates the search frame
+     */
     public void createSearchFrame() {
         JFrame frame = new JFrame("Vivlo - Search");
-        frame.setBackground(tuYellow);
-        JLabel JL_fname,JL_lname,JL_title,JL_isbn, JL_dept;
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(null);
+        frame.setSize(450,300);
+
+        JLabel JL_fname,JL_lname,JL_title,JL_isbn;
         JTextField JT_fname,JT_lname,JT_title,JT_isbn;
-        JComboBox JCB_dept;
         JButton btn_search;
+
         JL_isbn = new JLabel("Enter ISBN:");
         JL_isbn.setBounds(20, 20, 200, 20);
         JT_isbn = new JTextField(20);
         JT_isbn.setBounds(130, 20, 150, 20);
+
         btn_search = new JButton("Search");
         btn_search.setBounds(300, 20, 80, 20);
+        btn_search.setBackground(Color.BLACK);
+        btn_search.setForeground(Color.WHITE);
         btn_search.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String isbnNum = JT_isbn.getText();
@@ -267,10 +280,21 @@ public class Vivlo {
 //				String towsonID = tuID.getText();
             }
         });
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null);
-        frame.setSize(450,200);
+
+        JCheckBox Reference = new JCheckBox("Reference Book");
+        Reference.setBackground(tuYellow);
+        Reference.setBounds(30, 130, 120, 40);
+        frame.add(Reference);
+
+        JCheckBox Non_reference = new JCheckBox("Non-Reference Book");
+        Non_reference.setBackground(tuYellow);
+        Non_reference.setBounds(170, 130, 145, 40);
+        frame.add(Non_reference);
+
+        JCheckBox Holds = new JCheckBox("Not Held");
+        Holds.setBackground(tuYellow);
+        Holds.setBounds(30, 170, 100, 40);
+        frame.add(Holds);
 
         JL_fname = new JLabel("Author First Name: ");
         JL_fname.setBounds(20, 50, 100, 20);
@@ -284,13 +308,7 @@ public class Vivlo {
         JL_title.setBounds(20, 110, 100, 20);
         JT_title = new JTextField(20);
         JT_title.setBounds(130, 110, 150, 20);
-        JL_dept = new JLabel("Department: ");
-        JL_dept.setBounds(20,140, 100, 20);
-        String dept[] = {"Administration", "Access and Outreach Services", "Content Management", "Research Instruction"};
-        JCB_dept = new JComboBox(dept);
-        JCB_dept.setBounds(130, 140, 150, 20);
 
-        frame.setLayout(null);
         frame.add(btn_search);
         frame.add(JL_fname);
         frame.add(JT_fname);
@@ -300,11 +318,13 @@ public class Vivlo {
         frame.add(JT_title);
         frame.add(JL_isbn);
         frame.add(JT_isbn);
-        frame.add(JL_dept);
-        frame.add(JCB_dept);
+        frame.getContentPane().setBackground(tuYellow);
         frame.setVisible(true);
     }
 
+    /**
+     * Create the book checkout frame
+     */
     public void createCheckoutFrame() {
         JFrame frame = new JFrame();
         frame.setBounds(100, 100, 891, 350);
@@ -315,5 +335,67 @@ public class Vivlo {
         lblCheckOutPage.setFont(new Font("Tahoma", Font.BOLD, 20));
         lblCheckOutPage.setBounds(346, 13, 188, 31);
         frame.getContentPane().add(lblCheckOutPage);
+    }
+
+    /**
+     * Creates the query book results frame
+     */
+    public void createBookResultsFrame() {
+        JFrame frame = new JFrame();
+        frame.setBounds(100, 100, 970, 619);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().setLayout(null);
+
+        JLabel lblBookResults = new JLabel("Book results");
+        lblBookResults.setFont(new Font("Tahoma", Font.BOLD, 18));
+        lblBookResults.setBounds(415, 13, 131, 43);
+        frame.getContentPane().add(lblBookResults);
+
+        String[] columnNames = {"ISBN#", "CopyNo","Title", "Author First", "Author Last", "Checked Out", "On Hold"};
+        String [][] bookData = {columnNames, {"112222333", "1","The Alchemist", "Bart", "Allen", "yes", "No"},
+                {"7865435354", "2","The Alchemist", "Maggie", "Zuelsdorf", "yes", "No"},
+                {"354354616", "1","CODE", "Joey", "Case", "yes", "No"},
+                {"453132354", "1","Boku No Hero Academia", "Emily", "Vogel", "yes", "No"}};
+
+
+        TableModel model;
+        model = new DefaultTableModel(bookData, columnNames);
+
+        JScrollPane sp = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        frame.setSize(1570, 684);
+        JTable table = new JTable(model);
+        resizeColumnWidth(table);
+        table.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        table.setRowHeight(30);
+        frame.getContentPane().add(table);
+        table.setBounds(33, 63, 1403, 493);
+        frame.getContentPane().add(sp);
+
+        JButton btnNewSearchQuery = new JButton("New Search Query");
+        btnNewSearchQuery.setBounds(590, 13, 170, 36);
+        frame.getContentPane().add(btnNewSearchQuery);
+
+        JButton btnCheckout = new JButton("Checkout Book");
+        btnCheckout.setBounds(804, 13, 195, 36);
+        frame.getContentPane().add(btnCheckout);
+    }
+
+    /**
+     * Resizes the table column
+     * @param table JTable to resize
+     */
+    public void resizeColumnWidth(JTable table) {
+        final TableColumnModel columnModel = table.getColumnModel();
+        for (int column = 0; column < table.getColumnCount(); column++) {
+            int width = 15; // Min width
+            for (int row = 0; row < table.getRowCount(); row++) {
+                TableCellRenderer renderer = table.getCellRenderer(row, column);
+                Component comp = table.prepareRenderer(renderer, row, column);
+                width = Math.max(comp.getPreferredSize().width +1 , width);
+            }
+            if(width > 300)
+                width=300;
+            columnModel.getColumn(column).setPreferredWidth(width);
+        }
     }
 }
