@@ -28,25 +28,14 @@ public class Query {
         }
         return result;
     }
-	public selectReference(nothold) {
+	public selectReference() {
 		try {
-			//reference books not on hold
-			if (nothold) {result = connection.prepareStatement("SELECT `ISBN, COPY, AF, AM, AL, "no", "no"` 
-															FROM `(BOOK JOIN REF_BOOK
-																	ON ISBN = REF_ISBN AND COPY = REF_COPY
-																	) JOIN AUTHOR
-																	ON ISBN = isbn AND COPY = copy` 
-															WHERE `HOLD IS NULL`
-															");
-						}
-			//referencebooks
-            else {result = connection.prepareStatement("SELECT `ISBN, COPY, AF, AM, AL, "no", "no"` 
+            result = connection.prepareStatement("SELECT `ISBN, COPY, AF, AM, AL, "no", "no"` 
 														FROM `(BOOK JOIN REF_BOOK
 																ON ISBN = REF_ISBN AND COPY = REF_COPY
 																) JOIN AUTHOR
 																ON ISBN = isbn AND COPY = copy`
 														");
-				}
         } catch (SQLException e) {
             e.printStackTrace();
         }
