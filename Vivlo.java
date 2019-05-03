@@ -82,7 +82,7 @@ public class Vivlo {
                 Font normal = new Font("Tahoma", Font.PLAIN, 18);
                 JFrame management = new JFrame();
                 management.setTitle("Vivlo - Management");
-                management.setBounds(100, 100, 500, 395);
+                management.setBounds(100, 100, 500, 540);
                 management.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
                 JPanel panel = new JPanel();
@@ -90,7 +90,7 @@ public class Vivlo {
                 panel.setBackground(tuYellow);
 
                 JLabel managementLbl = new JLabel("Management");
-                managementLbl.setBounds(0, 0, 250, 50);
+                managementLbl.setBounds(130, 0, 250, 50);
                 managementLbl.setFont(new Font("Tahoma", Font.PLAIN, 36));
                 panel.add(managementLbl);
 
@@ -114,14 +114,27 @@ public class Vivlo {
                 quietLbl.setFont(new Font("Tahoma", Font.PLAIN, 20));
                 panel.add(quietLbl);
 
+                JPanel quietPanel = new JPanel();
+                JScrollPane quietScroll = new JScrollPane(quietPanel);
+                quietScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+                quietScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+                quietScroll.setBounds(40, 170, 400, 100);
+                panel.add(quietScroll);
+
                 JLabel roomLbl = new JLabel("Study Rooms Available");
-                roomLbl.setBounds(10, 160, 250, 50);
+                roomLbl.setBounds(10, 270, 250, 50);
                 roomLbl.setFont(new Font("Tahoma", Font.PLAIN, 20));
                 panel.add(roomLbl);
 
+                JPanel roomPanel = new JPanel();
+                JScrollPane roomScroll = new JScrollPane(roomPanel);
+                roomScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+                roomScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+                roomScroll.setBounds(40, 320, 400, 100);
+                panel.add(roomScroll);
 
                 JButton btnBack = new JButton("Back");
-                btnBack.setBounds(10, 300, 70, 40);
+                btnBack.setBounds(10, 440, 70, 40);
                 btnBack.setBackground(Color.BLACK);
                 btnBack.setForeground(Color.WHITE);
                 btnBack.addActionListener(new ActionListener() {
@@ -202,6 +215,7 @@ public class Vivlo {
 
     public void createSearchFrame() {
         JFrame frame = new JFrame("Vivlo - Search");
+        frame.setBackground(tuYellow);
         JLabel JL_fname,JL_lname,JL_title,JL_isbn, JL_dept;
         JTextField JT_fname,JT_lname,JT_title,JT_isbn;
         JComboBox JCB_dept;
