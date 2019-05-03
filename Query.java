@@ -28,5 +28,22 @@ public class Query {
         }
         return result;
     }
-
+	public selectReference(hold) {
+		try {
+			if (hold) {result = connection.prepareStatement("SELECT `*` FROM `REF_BOOK` WHERE `HOLD IS NOT NULL`");}
+            else {result = connection.prepareStatement("SELECT `*` FROM `REF_BOOK`")}
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+	}
+	public selectNon_Reference(hold) {
+		try {
+			if (hold) {result = connection.prepareStatement("SELECT `*` FROM `NREF_BOOK` WHERE `HOLD IS NOT NULL`");}
+            else {result = connection.prepareStatement("SELECT `*` FROM `NREF_BOOK`")}
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+	}
 }
