@@ -28,27 +28,73 @@ public class Query {
         }
         return result;
     }
-	public selectReference(hold) {
+	public selectReference(nothold) {
 		try {
-			if (hold) {result = connection.prepareStatement("SELECT `*` FROM `BOOK JOIN REF_BOOK ON ISBN = REF_ISBN AND COPY = REF_COPY` WHERE `HOLD IS NOT NULL`");}
-            else {result = connection.prepareStatement("SELECT `*` FROM `BOOK JOIN REF_BOOK ON ISBN = REF_ISBN AND COPY = REF_COPY`")}
+			//reference books not on hold
+			if (nothold) {result = connection.prepareStatement("SELECT `ISBN, COPY, AF, AM, AL, "no", "no"` 
+															FROM `(BOOK JOIN REF_BOOK
+																	ON ISBN = REF_ISBN AND COPY = REF_COPY
+																	) JOIN AUTHOR
+																	ON ISBN = isbn AND COPY = copy` 
+															WHERE `HOLD IS NULL`
+															");
+						}
+			//referencebooks
+            else {result = connection.prepareStatement("SELECT `ISBN, COPY, AF, AM, AL, "no", "no"` 
+														FROM `(BOOK JOIN REF_BOOK
+																ON ISBN = REF_ISBN AND COPY = REF_COPY
+																) JOIN AUTHOR
+																ON ISBN = isbn AND COPY = copy`
+														");
+				}
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return result;
 	}
-	public selectNon_Reference(hold) {
+	public selectNon_Reference(nothold) {
 		try {
-			if (hold) {result = connection.prepareStatement("SELECT `*` FROM `BOOK JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY ` WHERE `HOLD IS NOT NULL`");}
-            else {result = connection.prepareStatement("SELECT `*` FROM `BOOK JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY`")}
+			if (nothold) {result = connection.prepareStatement("SELECT `ISBN, COPY, AF, AM, AL,
+																	(CASE
+																		WHEN CO_TUID IS NOT NULL
+																		THEN "yes"
+																		ELSE "no"), "no"`
+																FROM `BOOK JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY `
+																WHERE `HOLD IS NULL`");
+						}
+            else {result = connection.prepareStatement("SELECT `ISBN, COPY, AF, AM, AL,
+																	(CASE
+																		WHEN CO_TUID IS NOT NULL
+																		THEN "yes"
+																		ELSE "no"),
+																	(CASE
+																		WHEN HOLD IS NOT NULL
+																		THEN "yes"
+																		ELSE "no"` 
+														FROM `BOOK JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY`")}
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return result;
 	}
 	public selectBooks(hold)try {
-			if (hold) {result = connection.prepareStatement("SELECT `*` FROM `BOOK LEFT JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY` WHERE `HOLD IS NOT NULL`");}
-            else {result = connection.prepareStatement("SELECT `*` FROM `BOOK LEFT JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY` WHERE `HOLD IS NOT NULL`")}
+			if (nothold) {result = connection.prepareStatement("SELECT `ISBN, COPY, AF, AM, AL,
+																	(CASE
+																		WHEN CO_TUID IS NOT NULL
+																		THEN "yes"
+																		ELSE "no"), "no"` 
+																FROM `BOOK LEFT JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY` 
+																WHERE `HOLD IS NULL`");}
+            else {result = connection.prepareStatement("SELECT `ISBN, COPY, AF, AM, AL,
+																	(CASE
+																		WHEN CO_TUID IS NOT NULL
+																		THEN "yes"
+																		ELSE "no"),
+																	(CASE
+																		WHEN HOLD IS NOT NULL
+																		THEN "yes"
+																		ELSE "no"`
+														FROM `BOOK LEFT JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY`")}
         } catch (SQLException e) {
             e.printStackTrace();
         }
