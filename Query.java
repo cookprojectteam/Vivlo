@@ -97,17 +97,17 @@ public class Query {
         ResultSet result = null;
         PreparedStatement ps;
         try {
-            //select non-refernece books not on hold
+            //select non-refernece books not on hold and not checked out
             if (nothold && not_checked_out) {ps = connection.prepareStatement(" SELECT ISBN, COPY, TITLE, AF, AM, AL, \"On Hold\" = 'no', \"Checked Out\" = 'no'" + 
                                                                 " FROM (BOOK JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY)" +
                                                                     " JOIN  AUTHOR ON ISBN = isbn AND COPY on copy" + 
                                                                 " WHERE HOLD IS NULL AND CO_TUID IS NULL ;");}
-            //select non-refernece all books
+            //select non-refernece all books not on hold
             else if (nothold && !not_checked_out){ps = connection.prepareStatement(" SELECT ISBN, COPY, TITLE, AF, AM, AL, \"On Hold\" = 'no', \"Checked Out\" = 'yes'" +
                                                         " FROM (BOOK JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY)" +
                                                                 " JOIN  AUTHOR ON ISBN = isbn AND COPY on copy" +
                                                         " WHERE HOLD IS NULL AND CO_TUID IS NOT NULL;");}
-            //select non-refernece books not on hold
+            //select non-refernece books not checked out
             else if (!nothold && not_checked_out) {ps = connection.prepareStatement(" SELECT ISBN, COPY, TITLE, AF, AM, AL, \"On Hold\" = 'yes', \"Checked Out\" = 'no'" + 
                                                                 " FROM (BOOK JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY)" +
                                                                     " JOIN  AUTHOR ON ISBN = isbn AND COPY on copy" + 
@@ -136,19 +136,19 @@ public class Query {
         ResultSet result = null;
         PreparedStatement ps;
         try {
-            //select books not on hold
+            //select books not on hold and checked out 
             if (nothold && not_checked_out) {ps = connection.prepareStatement(" SELECT ISBN, COPY, TITLE, AF, AM, AL, \"On Hold\" = 'no', \"Checked Out\" = 'no'" + 
                                                                 " FROM ((BOOK LEFT JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY)" +
                                                                         " LEFT JOIN REF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY)" +
                                                                             " JOIN  AUTHOR ON ISBN = isbn AND COPY = copy" +
                                                                 " WHERE HOLD IS NULL AND CO_TUID IS NULL;");}
-            //select all books
+            //select all books not on hold
             else if (nothold && !not_checked_out){ps = connection.prepareStatement(" SELECT ISBN, COPY, TITLE, AF, AM, AL, \"On Hold\" = 'no', \"Checked Out\" = 'yes'" +
                                                         " FROM ((BOOK LEFT JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY)" +
                                                                         " LEFT JOIN REF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY)" +
                                                                             " JOIN  AUTHOR ON ISBN = isbn AND COPY = copy" +
                                                         " WHERE HOLD IS NULL AND CO_TUID IS NOT NULL;");}
-            //select books not on hold
+            //select books not checked out
             else if (!nothold && not_checked_out) {ps = connection.prepareStatement(" SELECT ISBN, COPY, TITLE, AF, AM, AL, \"On Hold\" = 'yes', \"Checked Out\" = 'no'" + 
                                                                 " FROM ((BOOK LEFT JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY)" +
                                                                         " LEFT JOIN REF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY)" +
@@ -201,5 +201,19 @@ public class Query {
             ex.printStackTrace();
         }
         return result;
+    }
+    
+    //count books on hold
+    public ResultSet countBooksOnHold(){
+        ResultSet result = null;
+        PreparedStatement ps = null;
+        try{
+            ps = connection.prepareStatement("select COUNT(HOLD) from NREF_BOOK where HOLD IS NOT NULL;");
+            result = ps.executeQuery();
+        } catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return result;
+        
     }
 }
