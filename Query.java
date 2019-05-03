@@ -28,9 +28,9 @@ public class Query {
         }
         return result;
     }
+    //select refernece books
     public selectReference() {
         try {
-            //select refernece books
             result = connection.prepareStatement("SELECT `ISBN, COPY, AF, AM, AL,
                                                         "Checked Out" = 'no', "On Hold" = 'no'` 
                                                         FROM `(BOOK JOIN REF_BOOK
@@ -45,7 +45,7 @@ public class Query {
     }
     public selectNon_Reference(nothold) {
         try {
-            //select non refernce books not on hold
+            //select non-refernce books not on hold
             if (nothold) {result = connection.prepareStatement("SELECT `ISBN, COPY, AF, AM, AL,
                                                                     "Checked Out" = (CASE
                                                                         WHEN CO_TUID IS NOT NULL
@@ -54,6 +54,7 @@ public class Query {
                                                                 FROM `BOOK JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY `
                                                                 WHERE `HOLD IS NULL`");
                         }
+            //select all non-refernce books
             else {result = connection.prepareStatement("SELECT `ISBN, COPY, AF, AM, AL,
                                                                     "Checked Out" = (CASE
                                                                         WHEN CO_TUID IS NOT NULL
@@ -69,7 +70,9 @@ public class Query {
         }
         return result;
     }
-    public selectBooks(hold)try {
+    //select all books
+    public selectBooks(nothold)try {
+            //select books not on hold
             if (nothold) {result = connection.prepareStatement("SELECT `ISBN, COPY, AF, AM, AL,
                                                                     "Checked Out" = (CASE
                                                                         WHEN CO_TUID IS NOT NULL
@@ -77,6 +80,7 @@ public class Query {
                                                                         ELSE 'no'), "On Hold" = 'no'` 
                                                                 FROM `BOOK LEFT JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY` 
                                                                 WHERE `HOLD IS NULL`");}
+            //select all books
             else {result = connection.prepareStatement("SELECT `ISBN, COPY, AF, AM, AL,
                                                                     "Checked Out" = (CASE
                                                                         WHEN CO_TUID IS NOT NULL
