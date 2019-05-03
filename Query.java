@@ -8,8 +8,7 @@ public class Query {
 
     Connection connection;
 
-    public Query() {
-        connection = DB.getConnection();
+    public Query() { connection = DB.getConnection();
     }
 
     /**
@@ -56,15 +55,15 @@ public class Query {
                                                         " FROM `(BOOK JOIN REF_BOOK" +
                                                                 " ON ISBN = REF_ISBN AND COPY = REF_COPY)" +
                                                                 " JOIN AUTHOR" +
-                                                                " ON ISBN = isbn AND COPY = copy`;");}
-        result = ps.executeQuery()
+                                                                " ON ISBN = isbn AND COPY = copy`;");
+            result = ps.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return result;
     }
 
-    public ResultSet selectNon_Reference(nothold, not_checked_out) {
+    public ResultSet selectNon_Reference(boolean nothold, boolean not_checked_out) {
         ResultSet result = null;
         PreparedStatement ps;
         try {
@@ -91,7 +90,7 @@ public class Query {
                                                                         " THEN 'yes'" +
                                                                         " ELSE 'no' END)`" +
                                                         " FROM `BOOK NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY`;");}
-        result = ps.executeQuery()
+            result = ps.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -99,9 +98,11 @@ public class Query {
     }
 
     //select all books
-    public ResultSet selectBooks(nothold, not_checked_out)try {
+    public ResultSet selectBooks(boolean nothold, boolean not_checked_out) {
         ResultSet result = null;
         PreparedStatement ps;
+
+        try {
             //select books not on hold
             if (nothold && not_checked_out) {ps = connection.prepareStatement(" SELECT `ISBN, COPY, AF, AM, AL, \"On Hold\" = 'no', \"Checked Out\" = 'no'`" + 
                                                                 " FROM `(BOOK LEFT JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY) LEFT JOIN REF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY`" + 
@@ -125,7 +126,7 @@ public class Query {
                                                                         " THEN 'yes'" +
                                                                         " ELSE 'no' END)`" +
                                                         " FROM `(BOOK LEFT JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY) LEFT JOIN REF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY`;");}
-            result = ps.executeQuery()
+            result = ps.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
         }
