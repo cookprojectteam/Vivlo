@@ -172,4 +172,18 @@ public class Query {
         }
         return result;
     }
+    
+    //count books on hold
+    public ResultSet countBooksOnHold(){
+        ResultSet result = null;
+        PreparedStatement ps = null;
+        try{
+            ps = connection.prepareStatement("select COUNT(HOLD) from NREF_BOOK where HOLD IS NOT NULL;");
+            result = ps.executeQuery();
+        } catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return result;
+        
+    }
 }
