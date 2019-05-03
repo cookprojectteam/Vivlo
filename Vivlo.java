@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class Vivlo {
 
     static final Color tuYellow = new Color(255, 187, 0);
-    private Query query;
+    private static Query query;
 
     /**
      * Create the choice.
@@ -89,32 +89,53 @@ public class Vivlo {
                 panel.setLayout(null);
                 panel.setBackground(tuYellow);
 
+                // Sets frame title
                 JLabel managementLbl = new JLabel("Management");
                 managementLbl.setBounds(130, 0, 250, 50);
                 managementLbl.setFont(new Font("Tahoma", Font.PLAIN, 36));
                 panel.add(managementLbl);
 
+                // Sets number of available computers
+                try {
+                    ResultSet result = query.getAvailableComps();
+                    while (result.next()) {
+                        
+                    }
+                } catch (SQLException error) {
+                    error.printStackTrace();
+                }
                 JLabel compLbl = new JLabel("Computers Available: " + "18");
                 compLbl.setBounds(10, 50, 250, 50);
                 compLbl.setFont(normal);
                 panel.add(compLbl);
 
+                // Sets number of books on hold
                 JLabel booksLbl = new JLabel("Books on Hold: " + "83");
                 booksLbl.setBounds(10, 80, 250, 50);
                 booksLbl.setFont(normal);
                 panel.add(booksLbl);
 
+                // Sets number of student workers
                 JLabel stuLbl = new JLabel("Student Workers: " + "18");
                 stuLbl.setBounds(260, 50, 250, 50);
                 stuLbl.setFont(normal);
                 panel.add(stuLbl);
 
+                // Sets number of quiet floors
                 JLabel quietLbl = new JLabel("Quiet Floors");
                 quietLbl.setBounds(10, 120, 250, 50);
                 quietLbl.setFont(new Font("Tahoma", Font.PLAIN, 20));
                 panel.add(quietLbl);
 
                 JPanel quietPanel = new JPanel();
+                try {
+                    ResultSet result = query.findQuietFloors();
+                    while(result.next()) {
+
+                    }
+                } catch (SQLException error) {
+                    error.printStackTrace();
+                }
                 JScrollPane quietScroll = new JScrollPane(quietPanel);
                 quietScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
                 quietScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
@@ -230,7 +251,7 @@ public class Vivlo {
             public void actionPerformed(ActionEvent e) {
                 String isbnNum = JT_isbn.getText();
                 try {
-                    ResultSet result = query.findBook(isbnNum);
+                    ResultSet result = query.findBookByISBN(isbnNum);
                     if(result.next()) {
                         JOptionPane.showMessageDialog(null, "ISBN found",
                                 "ISBN found", JOptionPane.INFORMATION_MESSAGE);

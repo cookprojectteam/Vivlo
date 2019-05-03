@@ -45,6 +45,36 @@ public class Query {
         return result;
     }
 
+    /**
+     * Finds the quiet floors in the library
+     */
+    public ResultSet findQuietFloors() {
+        ResultSet result = null;
+        PreparedStatement ps = null;
+        try {
+            ps = connection.prepareStatement("select * from FLOOR where F_RULE=1");
+            result = ps.executeQuery();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    /**
+     * Finds the available computers
+     */
+    public ResultSet getAvailableComps() {
+        ResultSet result = null;
+        PreparedStatement ps = null;
+        try {
+            ps = connection.prepareStatement("select count(*) from NONE_BOOK_RESOURCE where R_TYPE='Computer'" +
+                    " and R_DATE is null and R_TIME is null;");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     //select refernece books
     public ResultSet selectReference() {
         ResultSet result = null;
