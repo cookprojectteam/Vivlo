@@ -26,7 +26,7 @@ public class Vivlo {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    createSearchFrame();
+                    createCheckoutFrame();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -327,14 +327,39 @@ public class Vivlo {
      */
     public void createCheckoutFrame() {
         JFrame frame = new JFrame();
-        frame.setBounds(100, 100, 891, 350);
+        frame.setBounds(100, 100, 400, 260);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.getContentPane().setLayout(null);
+        frame.setLayout(null);
 
         JLabel lblCheckOutPage = new JLabel("Check Out Page");
-        lblCheckOutPage.setFont(new Font("Tahoma", Font.BOLD, 20));
-        lblCheckOutPage.setBounds(346, 13, 188, 31);
-        frame.getContentPane().add(lblCheckOutPage);
+        lblCheckOutPage.setFont(new Font("Tahoma", Font.PLAIN, 36));
+        lblCheckOutPage.setBounds(60, 15, 300, 45);
+        frame.add(lblCheckOutPage);
+
+        JLabel isbnLbl = new JLabel("ISBN Number");
+        isbnLbl.setBounds(30, 80, 150, 30);
+        frame.add(isbnLbl);
+
+        JTextField isbnText = new JTextField();
+        isbnText.setBounds(30, 110, 150, 30);
+        frame.add(isbnText);
+
+        JLabel copyLbl = new JLabel("Copy Number");
+        copyLbl.setBounds(200, 80, 150, 30);
+        frame.add(copyLbl);
+
+        JTextField copyText = new JTextField();
+        copyText.setBounds(200, 110, 150, 30);
+        frame.add(copyText);
+
+        JButton checkoutBtn = new JButton("Checkout");
+        checkoutBtn.setBackground(Color.BLACK);
+        checkoutBtn.setForeground(Color.WHITE);
+        checkoutBtn.setBounds(140, 160, 100, 40);
+        frame.add(checkoutBtn);
+
+        frame.getContentPane().setBackground(tuYellow);
+        frame.setVisible(true);
     }
 
     /**
@@ -342,7 +367,7 @@ public class Vivlo {
      */
     public void createBookResultsFrame() {
         JFrame frame = new JFrame();
-        frame.setBounds(100, 100, 970, 619);
+        frame.setBounds(100, 100, 970, 620);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(null);
 
