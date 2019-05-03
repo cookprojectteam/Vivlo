@@ -2,6 +2,7 @@ import java.awt.EventQueue;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.*;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -62,16 +63,31 @@ public class Login {
 		JButton btnSignIn = new JButton("Sign In");
 		btnSignIn.addActionListener(new ActionListener() { 
 			public void actionPerformed(ActionEvent e) { 
-				
-				String towsonID = tuID.getText();
-				
-				if(towsonID.contains("90088996677")) { 
+				String id = tuID.getText();
+				int idNum = Integer.parseInt(id);
+				Connection conn;
+				PreparedStatement ps;
+				conn = DB.getConnection();
+				try {
+					
+					
+					ps = conn.prepareStatement("SELECT `TUAffliate` FROM `TU_TEST` WHERE `TUAffliate` = ?");
+					ps.setInt(1, idNum);
+					ResultSet result = ps.executeQuery();
+					if(result.next()) { 
 					JOptionPane.showMessageDialog(null, "Successfull Login!", "Login Successful!", JOptionPane.INFORMATION_MESSAGE);
 				}
 				else { 
 					JOptionPane.showMessageDialog(null, "Not a valid TU ID#", "Login Error", JOptionPane.ERROR_MESSAGE);
 					tuID.setText(null);
 				}
+				} catch (SQLException e1) {
+					
+					e1.printStackTrace();
+				}
+//				String towsonID = tuID.getText();
+				
+				
 			}
 		});
 		btnSignIn.setBounds(670, 343, 97, 25);
