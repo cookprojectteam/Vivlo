@@ -36,7 +36,7 @@ public class Query {
         ResultSet result = null;
         PreparedStatement ps = null;
         try{
-            ps = connection.prepareStatement("select ISBN, COPY, TITLE, AF, AM, AL from BOOK Join AUTHOR ON ISBN = isbn AND COPY = copy where ISBN = ?");
+            ps = connection.prepareStatement("select ISBN, COPY, TITLE, AF, AM, AL from BOOK Join AUTHOR ON ISBN = isbn AND COPY = copy where ISBN = ?;");
             ps.setString(1, ISBN);
             result = ps.executeQuery();
         } catch(Exception ex){
@@ -164,7 +164,7 @@ public class Query {
         ResultSet result = null;
         PreparedStatement ps = null;
         try{
-            ps = connection.prepareStatement("SELECT ISBN, COPY, TITLE, AF, AM, AL from BOOK Join AUTHOR ON ISBN = isbn AND COPY = copy where TITLE = ?");
+            ps = connection.prepareStatement("SELECT ISBN, COPY, TITLE, AF, AM, AL from BOOK Join AUTHOR ON ISBN = isbn AND COPY = copy where TITLE = ?;");
             ps.setString(1, Title);
             result = ps.executeQuery();
         } catch(Exception ex){
