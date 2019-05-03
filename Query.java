@@ -131,18 +131,5 @@ public class Query {
         }
         return result;
     }
-    
-    //generate a list of books by author
-    public ResultSet listByAuthor(String AuthorName) {
-        ResultSet result = null;
-        PreparedStatement ps = null;
-        try{
-            ps = connection.prepareStatement("select * from  where isbn = ?;");
-            ps.setString(1, ISBN);
-            result = ps.executeQuery();
-        } catch(Exception ex){
-            ex.printStackTrace();
-        }
-        return result;
-    }
+
 }

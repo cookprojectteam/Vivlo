@@ -79,44 +79,49 @@ public class Vivlo {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
+                Font normal = new Font("Tahoma", Font.PLAIN, 18);
                 JFrame management = new JFrame();
                 management.setTitle("Vivlo - Management");
-                management.setBounds(100, 100, 400, 400);
+                management.setBounds(100, 100, 500, 395);
                 management.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
                 JPanel panel = new JPanel();
-                GridBagLayout layout = new GridBagLayout();
-                panel.setLayout(layout);
+                panel.setLayout(null);
                 panel.setBackground(tuYellow);
-                GridBagConstraints gbc = new GridBagConstraints();
 
-                // Put constraints on different buttons
-                gbc.fill = GridBagConstraints.HORIZONTAL;
-                gbc.gridx = 0;
-                gbc.gridy = 0;
-                gbc.gridwidth = 3;
-                gbc.gridheight = 3;
-                panel.add(new JLabel("Computers Available: " + "18"), gbc);
+                JLabel managementLbl = new JLabel("Management");
+                managementLbl.setBounds(0, 0, 250, 50);
+                managementLbl.setFont(new Font("Tahoma", Font.PLAIN, 36));
+                panel.add(managementLbl);
 
-                gbc.gridx = 5;
-                gbc.gridy = 0;
-                panel.add(new JLabel("Student Workers: " + "18"), gbc);
+                JLabel compLbl = new JLabel("Computers Available: " + "18");
+                compLbl.setBounds(10, 50, 250, 50);
+                compLbl.setFont(normal);
+                panel.add(compLbl);
 
-                gbc.gridx = 0;
-                gbc.gridy = 5;
-                panel.add(new JLabel("Books on Hold: " + "83"), gbc);
+                JLabel booksLbl = new JLabel("Books on Hold: " + "83");
+                booksLbl.setBounds(10, 80, 250, 50);
+                booksLbl.setFont(normal);
+                panel.add(booksLbl);
 
-                gbc.gridx = 0;
-                gbc.gridy = 10;
-                panel.add(new JLabel("Quiet Floors"), gbc);
+                JLabel stuLbl = new JLabel("Student Workers: " + "18");
+                stuLbl.setBounds(260, 50, 250, 50);
+                stuLbl.setFont(normal);
+                panel.add(stuLbl);
 
-                gbc.gridx = 0;
-                gbc.gridy = 15;
-                panel.add(new JLabel("Study Rooms Available"), gbc);
+                JLabel quietLbl = new JLabel("Quiet Floors");
+                quietLbl.setBounds(10, 120, 250, 50);
+                quietLbl.setFont(new Font("Tahoma", Font.PLAIN, 20));
+                panel.add(quietLbl);
 
-                gbc.gridx = 0;
-                gbc.gridy = 20;
+                JLabel roomLbl = new JLabel("Study Rooms Available");
+                roomLbl.setBounds(10, 160, 250, 50);
+                roomLbl.setFont(new Font("Tahoma", Font.PLAIN, 20));
+                panel.add(roomLbl);
+
+
                 JButton btnBack = new JButton("Back");
+                btnBack.setBounds(10, 300, 70, 40);
                 btnBack.setBackground(Color.BLACK);
                 btnBack.setForeground(Color.WHITE);
                 btnBack.addActionListener(new ActionListener() {
@@ -125,7 +130,7 @@ public class Vivlo {
                         management.dispose();
                     }
                 });
-                panel.add(btnBack, gbc);
+                panel.add(btnBack);
 
                 management.add(panel);
                 management.setVisible(true);
