@@ -30,8 +30,8 @@ public class Query {
     }
 	public selectReference(hold) {
 		try {
-			if (hold) {result = connection.prepareStatement("SELECT `*` FROM `REF_BOOK` WHERE `HOLD IS NOT NULL`");}
-            else {result = connection.prepareStatement("SELECT `*` FROM `REF_BOOK`")}
+			if (hold) {result = connection.prepareStatement("SELECT `*` FROM `BOOK JOIN REF_BOOK ON ISBN = REF_ISBN AND COPY = REF_COPY` WHERE `HOLD IS NOT NULL`");}
+            else {result = connection.prepareStatement("SELECT `*` FROM `BOOK JOIN REF_BOOK ON ISBN = REF_ISBN AND COPY = REF_COPY`")}
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -39,8 +39,16 @@ public class Query {
 	}
 	public selectNon_Reference(hold) {
 		try {
-			if (hold) {result = connection.prepareStatement("SELECT `*` FROM `NREF_BOOK` WHERE `HOLD IS NOT NULL`");}
-            else {result = connection.prepareStatement("SELECT `*` FROM `NREF_BOOK`")}
+			if (hold) {result = connection.prepareStatement("SELECT `*` FROM `BOOK JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY ` WHERE `HOLD IS NOT NULL`");}
+            else {result = connection.prepareStatement("SELECT `*` FROM `BOOK JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY`")}
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+	}
+	public selectBooks(hold)try {
+			if (hold) {result = connection.prepareStatement("SELECT `*` FROM `BOOK LEFT JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY` WHERE `HOLD IS NOT NULL`");}
+            else {result = connection.prepareStatement("SELECT `*` FROM `BOOK LEFT JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY` WHERE `HOLD IS NOT NULL`")}
         } catch (SQLException e) {
             e.printStackTrace();
         }
