@@ -2,6 +2,7 @@ use jcase4db;
 CREATE TABLE BOOK (
 ISBN char(13) not null,
 COPY int not null,
+TITLE varchar(45),
 GENRE varchar(45),
 PDATE date,
 PUBLISHER varchar(45),
@@ -88,6 +89,7 @@ FOREIGN KEY (RFL_TUID) REFERENCES LIBRARIAN (L_TUID)
 CREATE TABLE NREF_BOOK (
 NREF_ISBN char(13) not null,
 NREF_COPY int not null,
+HOLD char(7),
 CI_TUID char(7),
 CI_DATE date,
 CO_TUID char(7),
