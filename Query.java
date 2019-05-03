@@ -20,7 +20,7 @@ public class Query {
         ResultSet result = null;
         PreparedStatement ps;
         try {
-            ps = connection.prepareStatement("SELECT `TUAffliate` FROM `TU_TEST` WHERE `TUAffliate` = ?");
+            ps = connection.prepareStatement("SELECT `TUAffliate` FROM `TU_TEST` WHERE `TUAffliate` = ?;");
             ps.setString(1, idNum);
             result = ps.executeQuery();
         } catch (SQLException e) {
@@ -121,7 +121,7 @@ public class Query {
         ResultSet result = null;
         PreparedStatement ps = null;
         try{
-            ps = connection.prepareStatement("select * from users where isbn = ?");
+            ps = connection.prepareStatement("select * from users where isbn = ?;");
             ps.setString(1, ISBN);
             result = ps.executeQuery();
         } catch(Exception ex){
