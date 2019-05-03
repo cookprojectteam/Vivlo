@@ -12,11 +12,13 @@ import java.sql.SQLException;
 public class Vivlo {
 
     static final Color tuYellow = new Color(255, 187, 0);
+    private Query query;
 
     /**
      * Create the choice.
      */
     public Vivlo() {
+        query = new Query();
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
@@ -99,7 +101,6 @@ public class Vivlo {
      * Creates the login frame
      */
     private void createLoginFrame() {
-        System.out.println("Login");
         JFrame frame = new JFrame();
         frame.getContentPane().setBackground(tuYellow);
         frame.getContentPane().setLayout(null);
@@ -119,15 +120,9 @@ public class Vivlo {
         JButton btnSignIn = new JButton("Sign In");
         btnSignIn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String id = tuID.getText();
-                int idNum = Integer.parseInt(id);
-                Connection conn;
-                PreparedStatement ps;
-                conn = DB.getConnection();
+                String idNum = tuID.getText();
                 try {
-                    ps = conn.prepareStatement("SELECT `TUAffliate` FROM `TU_TEST` WHERE `TUAffliate` = ?");
-                    ps.setInt(1, idNum);
-                    ResultSet result = ps.executeQuery();
+                    ResultSet result = query.login(idNum);
                     if(result.next()) {
                         JOptionPane.showMessageDialog(null, "Successfull Login!",
                                 "Login Successful!", JOptionPane.INFORMATION_MESSAGE);
@@ -140,12 +135,9 @@ public class Vivlo {
                         tuID.setText(null);
                     }
                 } catch (SQLException e1) {
-
                     e1.printStackTrace();
                 }
 //				String towsonID = tuID.getText();
-
-
             }
         });
         btnSignIn.setBounds(670, 343, 97, 25);
