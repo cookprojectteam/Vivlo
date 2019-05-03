@@ -73,25 +73,25 @@ public class Query {
 			if (nothold) {result = connection.prepareStatement("SELECT `ISBN, COPY, AF, AM, AL,
 																	"Checked Out" = (CASE
 																		WHEN CO_TUID IS NOT NULL
-																		THEN 'yes'
-																		ELSE 'no'), "On Hold" = 'no'` 
-																FROM `BOOK LEFT JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY` 
-																WHERE `HOLD IS NULL`");}
+													                    THEN 'yes'
+                                                                        ELSE 'no'), "On Hold" = 'no'` 
+                                                                FROM `BOOK LEFT JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY` 
+                                                                WHERE `HOLD IS NULL`");}
             else {result = connection.prepareStatement("SELECT `ISBN, COPY, AF, AM, AL,
-																	"Checked Out" = (CASE
-																		WHEN CO_TUID IS NOT NULL
-																		THEN 'yes'
-																		ELSE 'no' END),
-																	"On Hold" = (CASE
-																		WHEN HOLD IS NOT NULL
-																		THEN 'yes'
-																		ELSE 'no' END)`
-														FROM `BOOK LEFT JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY`")}
+                                                                    "Checked Out" = (CASE
+                                                                        WHEN CO_TUID IS NOT NULL
+                                                                        THEN 'yes'
+                                                                        ELSE 'no' END),
+                                                                    "On Hold" = (CASE
+                                                                        WHEN HOLD IS NOT NULL
+                                                                        THEN 'yes'
+                                                                        ELSE 'no' END)`
+                                                        FROM `BOOK LEFT JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY`")}
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return result;
-	}
+    }
     /**
      * Returns the query result for a book by ISBN number
      * @param ISBN The book's ISBN number
