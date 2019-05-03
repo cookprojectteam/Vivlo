@@ -126,7 +126,7 @@ public class Vivlo {
                     if(result.next()) {
                         JOptionPane.showMessageDialog(null, "Successfull Login!",
                                 "Login Successful!", JOptionPane.INFORMATION_MESSAGE);
-                        createLoginFrame();
+                        createChoiceFrame();
                         frame.dispose();
                     }
                     else {
