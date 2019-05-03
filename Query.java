@@ -29,4 +29,21 @@ public class Query {
         return result;
     }
 
+    /**
+     * Returns the query result for a book by ISBN number
+     * @param ISBN The book's ISBN number
+     */
+    public ResultSet findBook(String ISBN) {
+        ResultSet result = null;
+        PreparedStatement ps = null;
+        try{
+            ps = connection.prepareStatement("select * from users where isbn = ?");
+            ps.setString(1, ISBN);
+            result = ps.executeQuery();
+        } catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return result;
+    }
+
 }
