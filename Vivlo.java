@@ -22,7 +22,7 @@ public class Vivlo {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    createLoginFrame();
+                    createChoiceFrame();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -36,7 +36,7 @@ public class Vivlo {
     private static void createChoiceFrame() {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
-                JFrame choice = new JFrame();
+                JFrame choice = new JFrame("Vivlo - Choice");
                 choice.setTitle("Vivlo - Choice");
                 choice.setBounds(100, 100, 400, 200);
                 choice.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -79,32 +79,55 @@ public class Vivlo {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                System.out.println("Something");
                 JFrame management = new JFrame();
                 management.setTitle("Vivlo - Management");
                 management.setBounds(100, 100, 400, 400);
-                management.setBackground(new Color(247, 247, 247));
                 management.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                management.getContentPane().setLayout(new GridLayout(6, 2, 10, 10));
+
+                JPanel panel = new JPanel();
+                GridBagLayout layout = new GridBagLayout();
+                panel.setLayout(layout);
+                panel.setBackground(tuYellow);
+                GridBagConstraints gbc = new GridBagConstraints();
+
+                // Put constraints on different buttons
+                gbc.fill = GridBagConstraints.HORIZONTAL;
+                gbc.gridx = 0;
+                gbc.gridy = 0;
+                gbc.gridwidth = 3;
+                gbc.gridheight = 3;
+                panel.add(new JLabel("Computers Available: " + "18"), gbc);
+
+                gbc.gridx = 5;
+                gbc.gridy = 0;
+                panel.add(new JLabel("Student Workers: " + "18"), gbc);
+
+                gbc.gridx = 0;
+                gbc.gridy = 5;
+                panel.add(new JLabel("Books on Hold: " + "83"), gbc);
+
+                gbc.gridx = 0;
+                gbc.gridy = 10;
+                panel.add(new JLabel("Quiet Floors"), gbc);
+
+                gbc.gridx = 0;
+                gbc.gridy = 15;
+                panel.add(new JLabel("Study Rooms Available"), gbc);
+
+                gbc.gridx = 0;
+                gbc.gridy = 20;
                 JButton btnBack = new JButton("Back");
-                management.add((btnBack));
-                management.add(new JLabel());
-                management.add((new JLabel("Total Free Computers: ")));
-                management.add((new JLabel("30")));                             // Change this value with database
-                management.add((new JLabel("Quiet Floors: ")));
-                management.add((new JLabel("29")));                             // Change this value with database
-                management.add((new JLabel("Number of Book Holds: ")));
-                management.add((new JLabel("28")));                             // Change this value with database
-                management.add((new JLabel("Number of Open Study Rooms: ")));
-                management.add((new JLabel("27")));                             // Change this value with database
-                management.add((new JLabel("Number of Student Workers: ")));
-                management.add((new JLabel("26")));                             // Change this value with database
+                btnBack.setBackground(Color.BLACK);
+                btnBack.setForeground(Color.WHITE);
                 btnBack.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         createChoiceFrame();
                         management.dispose();
                     }
                 });
+                panel.add(btnBack, gbc);
+
+                management.add(panel);
                 management.setVisible(true);
             }
         });
@@ -114,7 +137,7 @@ public class Vivlo {
      * Creates the login frame
      */
     private void createLoginFrame() {
-        JFrame frame = new JFrame();
+        JFrame frame = new JFrame("Vivlo - Login");
         frame.getContentPane().setBackground(tuYellow);
         frame.getContentPane().setLayout(null);
 
