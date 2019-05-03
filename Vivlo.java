@@ -1,20 +1,31 @@
-package Vivlo.src.vivlo;
 
-import java.awt.EventQueue;
-import java.awt.Color;
+import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.GridLayout;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Vivlo {
+
+    static final Color tuYellow = new Color(255, 187, 0);
 
     /**
      * Create the choice.
      */
     public Vivlo() {
-        createChoiceFrame();
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    createLoginFrame();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -82,5 +93,75 @@ public class Vivlo {
                 management.setVisible(true);
             }
         });
+    }
+
+    /**
+     * Creates the login frame
+     */
+    private void createLoginFrame() {
+        System.out.println("Login");
+        JFrame frame = new JFrame();
+        frame.getContentPane().setBackground(tuYellow);
+        frame.getContentPane().setLayout(null);
+
+        JLabel TU_logo = new JLabel("");
+        TU_logo.setBounds(0, 0, 545, 492);
+        Image img = new ImageIcon(this.getClass().getResource("towsonu-logo.png")).getImage();
+        TU_logo.setIcon(new ImageIcon(img));
+        frame.getContentPane().add(TU_logo);
+
+        JTextField tuID = new JTextField();
+        tuID.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        tuID.setBounds(599, 265, 252, 38);
+        frame.getContentPane().add(tuID);
+        tuID.setColumns(10);
+
+        JButton btnSignIn = new JButton("Sign In");
+        btnSignIn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String id = tuID.getText();
+                int idNum = Integer.parseInt(id);
+                Connection conn;
+                PreparedStatement ps;
+                conn = DB.getConnection();
+                try {
+                    ps = conn.prepareStatement("SELECT `TUAffliate` FROM `TU_TEST` WHERE `TUAffliate` = ?");
+                    ps.setInt(1, idNum);
+                    ResultSet result = ps.executeQuery();
+                    if(result.next()) {
+                        JOptionPane.showMessageDialog(null, "Successfull Login!",
+                                "Login Successful!", JOptionPane.INFORMATION_MESSAGE);
+                        createLoginFrame();
+                        frame.dispose();
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(null, "Not a valid TU ID#",
+                                "Login Error", JOptionPane.ERROR_MESSAGE);
+                        tuID.setText(null);
+                    }
+                } catch (SQLException e1) {
+
+                    e1.printStackTrace();
+                }
+//				String towsonID = tuID.getText();
+
+
+            }
+        });
+        btnSignIn.setBounds(670, 343, 97, 25);
+        frame.getContentPane().add(btnSignIn);
+
+        JLabel lblWelcomeToVivlo = new JLabel("Welcome To Vivlo!");
+        lblWelcomeToVivlo.setFont(new Font("Tahoma", Font.BOLD, 18));
+        lblWelcomeToVivlo.setBounds(636, 48, 190, 25);
+        frame.getContentPane().add(lblWelcomeToVivlo);
+
+        JLabel lblLoginWithTu = new JLabel("Login with TU ID#");
+        lblLoginWithTu.setFont(new Font("Tahoma", Font.BOLD, 17));
+        lblLoginWithTu.setBounds(636, 222, 179, 25);
+        frame.getContentPane().add(lblLoginWithTu);
+        frame.setBounds(100, 100, 915, 534);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
     }
 }

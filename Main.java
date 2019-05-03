@@ -1,4 +1,3 @@
-package Vivlo.src.vivlo;
 
 import java.awt.EventQueue;
 
