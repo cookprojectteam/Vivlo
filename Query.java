@@ -136,7 +136,7 @@ public class Query {
                                                                         " ELSE 'no' END)`" +
                                                     " FROM `((BOOK LEFT JOIN NREF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY)" +
                                                                     " LEFT JOIN REF_BOOK ON ISBN = NREF_ISBN AND COPY = NREF_COPY)" +
-                                                                        " JOIN  AUTHOR ON ISBN = isbn AND COPY = copy`";);}
+                                                                        " JOIN  AUTHOR ON ISBN = isbn AND COPY = copy`;");}
             result = ps.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
