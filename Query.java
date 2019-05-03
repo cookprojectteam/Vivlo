@@ -28,7 +28,7 @@ public class Query {
         }
         return result;
     }
-
+    
     /**
      * Returns the query result for a book by ISBN number
      * @param ISBN The book's ISBN number
