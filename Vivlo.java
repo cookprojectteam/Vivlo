@@ -26,7 +26,7 @@ public class Vivlo {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    createCheckoutFrame();
+                    createBookResultsFrame();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -103,7 +103,7 @@ public class Vivlo {
                 try {
                     ResultSet result = query.getAvailableComps();
                     while (result.next()) {
-                        
+
                     }
                 } catch (SQLException error) {
                     error.printStackTrace();
@@ -356,6 +356,12 @@ public class Vivlo {
         checkoutBtn.setBackground(Color.BLACK);
         checkoutBtn.setForeground(Color.WHITE);
         checkoutBtn.setBounds(140, 160, 100, 40);
+        checkoutBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
         frame.add(checkoutBtn);
 
         frame.getContentPane().setBackground(tuYellow);
@@ -368,12 +374,13 @@ public class Vivlo {
     public void createBookResultsFrame() {
         JFrame frame = new JFrame();
         frame.setBounds(100, 100, 970, 620);
+        frame.getContentPane().setBackground(tuYellow);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(null);
 
-        JLabel lblBookResults = new JLabel("Book results");
-        lblBookResults.setFont(new Font("Tahoma", Font.BOLD, 18));
-        lblBookResults.setBounds(415, 13, 131, 43);
+        JLabel lblBookResults = new JLabel("Book Results");
+        lblBookResults.setFont(new Font("Tahoma", Font.PLAIN, 36));
+        lblBookResults.setBounds(30, 10, 250, 50);
         frame.getContentPane().add(lblBookResults);
 
         String[] columnNames = {"ISBN#", "CopyNo","Title", "Author First", "Author Last", "Checked Out", "On Hold"};
@@ -387,7 +394,7 @@ public class Vivlo {
         model = new DefaultTableModel(bookData, columnNames);
 
         JScrollPane sp = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        frame.setSize(1570, 684);
+        frame.setSize(1490, 640);
         JTable table = new JTable(model);
         resizeColumnWidth(table);
         table.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -397,12 +404,17 @@ public class Vivlo {
         frame.getContentPane().add(sp);
 
         JButton btnNewSearchQuery = new JButton("New Search Query");
-        btnNewSearchQuery.setBounds(590, 13, 170, 36);
+        btnNewSearchQuery.setBackground(Color.BLACK);
+        btnNewSearchQuery.setForeground(Color.WHITE);
+        btnNewSearchQuery.setBounds(1030, 15, 195, 40);
         frame.getContentPane().add(btnNewSearchQuery);
 
         JButton btnCheckout = new JButton("Checkout Book");
-        btnCheckout.setBounds(804, 13, 195, 36);
+        btnCheckout.setBackground(Color.BLACK);
+        btnCheckout.setForeground(Color.WHITE);
+        btnCheckout.setBounds(1240, 15, 195, 40);
         frame.getContentPane().add(btnCheckout);
+        frame.setVisible(true);
     }
 
     /**
