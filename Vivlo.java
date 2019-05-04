@@ -245,6 +245,7 @@ public class Vivlo {
         JFrame frame = new JFrame("Vivlo - Search");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
+        frame.setBounds(100, 100, 450, 300);
         frame.setSize(450,300);
 
         JLabel JL_fname,JL_lname,JL_title,JL_isbn;
@@ -407,12 +408,27 @@ public class Vivlo {
         btnNewSearchQuery.setBackground(Color.BLACK);
         btnNewSearchQuery.setForeground(Color.WHITE);
         btnNewSearchQuery.setBounds(1030, 15, 195, 40);
+        btnNewSearchQuery.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createSearchFrame();
+                frame.dispose();
+            }
+        });
         frame.getContentPane().add(btnNewSearchQuery);
 
         JButton btnCheckout = new JButton("Checkout Book");
         btnCheckout.setBackground(Color.BLACK);
         btnCheckout.setForeground(Color.WHITE);
+        btnCheckout.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createCheckoutFrame();
+                frame.dispose();
+            }
+        });
         btnCheckout.setBounds(1240, 15, 195, 40);
+
         frame.getContentPane().add(btnCheckout);
         frame.setVisible(true);
     }
