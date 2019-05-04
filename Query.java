@@ -240,6 +240,21 @@ public class Query {
         return result;
         
     }
+    //count student workers
+    public ResultSet countStudentWorkers() {
+    	ResultSet result = null;
+    	PreparedStatement ps = null;
+    	try {
+    		ps = connection.prepareStatement("SELECT COUNT(*) FROM STUDENT_WORKER;");
+    		result = ps.executeQuery();
+    	}
+    	catch (SQLException e) {
+    		System.out.println("Something went wrong in countStudentWorkers query");
+    		e.printStackTrace();
+       	}
+    	return result;
+    	
+    }
     
     //Produce list of departments
     public ResultSet listOfDepartments(){

@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Vivlo {
+	public static final int joey=9;
 
     static final Color tuYellow = new Color(255, 187, 0);
     private Query query;
@@ -138,10 +139,20 @@ public class Vivlo {
                 }
 
                 // Sets number of student workers
-                JLabel stuLbl = new JLabel("Student Workers: " + "18");
-                stuLbl.setBounds(610, 50, 250, 50);
-                stuLbl.setFont(normal);
-                panel.add(stuLbl);
+                try {
+                	ResultSet result = query.countStudentWorkers();
+                	while(result.next()) {
+                		JLabel studw = new JLabel("Student Workers: "+ result.getString(1));
+                		studw.setBounds(610,50,250,50);
+                		studw.setFont(normal);
+                		panel.add(studw);
+                	}
+                	
+                }
+                catch (SQLException e) {
+                	e.printStackTrace();
+                }
+                
 
                 // Sets number of quiet floors
                 JLabel quietLbl = new JLabel("Quiet Floors");
