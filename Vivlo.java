@@ -43,7 +43,7 @@ public class Vivlo {
             public void run() {
                 JFrame choice = new JFrame("Vivlo - Choice");
                 choice.setTitle("Vivlo - Choice");
-                choice.setBounds(100, 100, 400, 200);
+                choice.setBounds(100, 100, 600, 200);
                 choice.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
                 GridBagConstraints gbc = new GridBagConstraints();
@@ -51,7 +51,7 @@ public class Vivlo {
                 panel.setLayout(new GridBagLayout());
                 panel.setBackground(tuYellow);
 
-                JButton btnBooks = new JButton("Books");
+                JButton btnBooks = new JButton("Insert Book");
                 btnBooks.setPreferredSize(new Dimension(170, 40));
                 btnBooks.setMargin(new Insets(10, 10, 10, 10));
                 btnBooks.setBackground(Color.BLACK);
@@ -60,6 +60,19 @@ public class Vivlo {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         createSearchFrame();
+                        choice.dispose();
+                    }
+                });
+
+                JButton btnBookAdd = new JButton("Add Book");
+                btnBookAdd.setPreferredSize(new Dimension(170, 40));
+                btnBookAdd.setMargin(new Insets(10, 10, 10, 10));
+                btnBookAdd.setBackground(Color.BLACK);
+                btnBookAdd.setForeground(Color.WHITE);
+                btnBookAdd.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        createInsertBookFrame();
                         choice.dispose();
                     }
                 });
@@ -78,6 +91,7 @@ public class Vivlo {
 
                 panel.add(btnBooks, gbc);
                 panel.add(btnManagement, gbc);
+                panel.add(btnBookAdd, gbc);
                 choice.add(panel);
                 choice.setVisible(true);
             }
@@ -554,6 +568,9 @@ public class Vivlo {
         frame.setVisible(true);
     }
 
+    /**
+     * Create the book return frame
+     */
     public void createReturnFrame() {
         JFrame frame = new JFrame("Vivlo - Return");
         frame.setBounds(100, 100, 400, 260);
@@ -608,6 +625,122 @@ public class Vivlo {
         frame.add(returnBtn);
 
         frame.getContentPane().setBackground(tuYellow);
+        frame.setVisible(true);
+    }
+
+    /**
+     * Creates the book insert frame
+     */
+    public void createInsertBookFrame() {
+        Font normal = new Font("Tahoma", Font.PLAIN, 20);
+        JFrame frame = new JFrame("Vivlo - Insert");
+        frame.setBounds(100, 100, 440, 500);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(null);
+        frame.getContentPane().setBackground(tuYellow);
+
+        JLabel title = new JLabel("Insert Book");
+        title.setBounds(120, 30, 300, 30);
+        title.setFont(new Font("Tahoma", Font.PLAIN, 36));
+        frame.add(title);
+
+        JLabel isbnLbl = new JLabel("ISBN");
+        isbnLbl.setBounds(10, 80, 200, 30);
+        isbnLbl.setFont(normal);
+        frame.add(isbnLbl);
+
+        JTextField isbnTxt = new JTextField();
+        isbnTxt.setBounds(210, 80, 200, 30);
+        frame.add(isbnTxt);
+
+        JLabel copyLbl = new JLabel("Copy");
+        copyLbl.setBounds(10, 120, 200, 30);
+        copyLbl.setFont(normal);
+        frame.add(copyLbl);
+
+        JTextField copyTxt = new JTextField();
+        copyTxt.setBounds(210, 120, 200, 30);
+        frame.add(copyTxt);
+
+        JLabel titleLbl = new JLabel("Title");
+        titleLbl.setBounds(10, 160, 200, 30);
+        titleLbl.setFont(normal);
+        frame.add(titleLbl);
+
+        JTextField titleTxt = new JTextField();
+        titleTxt.setBounds(210, 160, 200, 30);
+        frame.add(titleTxt);
+
+        JLabel genreLbl = new JLabel("Genre");
+        genreLbl.setBounds(10, 200, 200, 30);
+        genreLbl.setFont(normal);
+        frame.add(genreLbl);
+
+        JTextField genreTxt = new JTextField();
+        genreTxt.setBounds(210, 200, 200, 30);
+        frame.add(genreTxt);
+
+        JLabel pubDateLbl = new JLabel("Publish Date");
+        pubDateLbl.setBounds(10, 240, 200, 30);
+        pubDateLbl.setFont(normal);
+        frame.add(pubDateLbl);
+
+        JTextField pubDateTxt = new JTextField();
+        pubDateTxt.setBounds(210, 240, 200, 30);
+        frame.add(pubDateTxt);
+
+        JLabel pubLbl = new JLabel("Publisher");
+        pubLbl.setBounds(10, 280, 200, 30);
+        pubLbl.setFont(normal);
+        frame.add(pubLbl);
+
+        JTextField pubTxt = new JTextField();
+        pubTxt.setBounds(210, 280, 200, 30);
+        frame.add(pubTxt);
+
+        JLabel sizeLbl = new JLabel("Size");
+        sizeLbl.setBounds(10, 320, 200, 30);
+        sizeLbl.setFont(normal);
+        frame.add(sizeLbl);
+
+        JTextField sizeTxt = new JTextField();
+        sizeTxt.setBounds(210, 320, 200, 30);
+        frame.add(sizeTxt);
+
+        JLabel authorLbl = new JLabel("Author");
+        authorLbl.setBounds(10, 360, 200, 30);
+        authorLbl.setFont(normal);
+        frame.add(authorLbl);
+
+        JTextField authorTxt = new JTextField();
+        authorTxt.setBounds(210, 360, 200, 30);
+        frame.add(authorTxt);
+
+        JButton backBtn = new JButton("Back");
+        backBtn.setBackground(Color.BLACK);
+        backBtn.setForeground(Color.WHITE);
+        backBtn.setBounds(10, 400, 160, 45);
+        backBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createChoiceFrame();
+                frame.dispose();
+            }
+        });
+        frame.add(backBtn);
+
+        JButton insertBtn = new JButton("Insert");
+        insertBtn.setBackground(Color.BLACK);
+        insertBtn.setForeground(Color.WHITE);
+        insertBtn.setBounds(250, 400, 160, 45);
+        insertBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        frame.add(insertBtn);
+
         frame.setVisible(true);
     }
 
