@@ -283,5 +283,15 @@ public class Query {
     }
     
     //View over due books
-    
+     public ResultSet viewOverDue(){
+        ResultSet result = null;
+        PreparedStatement ps = null;
+        try{
+            ps = connection.prepareStatement("SELECT NREF_ISBN, NREF_COPY, dateadd(dd,20,getdate()) AS 'was due', CO_TUID AS 'Checked Out to' From NREF_BOOK WHERE CO_DATE > dateadd(dd,20,getdate()) ;");
+            result = ps.executeQuery();
+        } catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return result;
+    }
 }
