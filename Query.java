@@ -284,35 +284,31 @@ public class Query {
     }
     
     //checkout book
-    public ResultSet checkout(String ISBN, String COPY){
-        ResultSet result = null;
+    public void checkout(String ISBN, String COPY){        
         PreparedStatement ps = null;
         try{
-            ps = connection.prepareStatement("UPDATE NREF_BOOK SET CO_DATE = GETDATE(), CO_TUID = ? WHERE NREF_ISBN = ? AND NREF_COPY = ? ;");
-            result = ps.executeQuery();
+            ps = connection.prepareStatement("UPDATE NREF_BOOK SET CO_DATE = (SELECT CURDATE()), CO_TUID = ? WHERE NREF_ISBN = ? AND NREF_COPY = ? ;");            
             ps.setString(1, current_tuid);
             ps.setString(2, ISBN);
             ps.setString(3, COPY);
+            ps.executeUpdate();
         } catch(Exception ex){
             ex.printStackTrace();
         }
-        return result;
     }
     
-    //checkin book
-    public ResultSet checkin(String ISBN, String COPY){
-        ResultSet result = null;
+    //check in book
+    public void checkin(String ISBN, String COPY){        
         PreparedStatement ps = null;
         try{
-            ps = connection.prepareStatement("UPDATE NREF_BOOK SET CO_DATE = NULL , CO_TUID = NULL , CI_TUID = ? , CI_DATE = GETDATE() WHERE NREF_ISBN = ? AND NREF_COPY = ? ;");
-            result = ps.executeQuery();
+            ps = connection.prepareStatement("UPDATE NREF_BOOK SET CO_DATE = NULL , CO_TUID = NULL , CI_TUID = ? , CI_DATE = (SELECT CURDATE()) WHERE NREF_ISBN = ? AND NREF_COPY = ? ;");            
             ps.setString(1, current_tuid);
             ps.setString(2, ISBN);
             ps.setString(3, COPY);
+            ps.executeUpdate();
         } catch(Exception ex){
             ex.printStackTrace();
-        }
-        return result;
+        }       
     }
     
     //View over due books

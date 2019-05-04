@@ -554,65 +554,7 @@ public class Vivlo {
         frame.setVisible(true);
     }
 
-    /**
-     * Create the book checkout frame
-     */
-    public void createCheckoutFrame() {
-        JFrame frame = new JFrame("Vivlo - Checkout");
-        frame.setBounds(100, 100, 400, 260);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(null);
-
-        JLabel lblCheckOutPage = new JLabel("Check Out Page");
-        lblCheckOutPage.setFont(new Font("Tahoma", Font.PLAIN, 36));
-        lblCheckOutPage.setBounds(60, 15, 300, 45);
-        frame.add(lblCheckOutPage);
-
-        JLabel isbnLbl = new JLabel("ISBN Number");
-        isbnLbl.setBounds(30, 80, 150, 30);
-        frame.add(isbnLbl);
-
-        JTextField isbnText = new JTextField();
-        isbnText.setBounds(30, 110, 150, 30);
-        frame.add(isbnText);
-
-        JLabel copyLbl = new JLabel("Copy Number");
-        copyLbl.setBounds(200, 80, 150, 30);
-        frame.add(copyLbl);
-
-        JTextField copyText = new JTextField();
-        copyText.setBounds(200, 110, 150, 30);
-        frame.add(copyText);
-
-        JButton checkoutBtn = new JButton("Checkout");
-        checkoutBtn.setBackground(Color.BLACK);
-        checkoutBtn.setForeground(Color.WHITE);
-        checkoutBtn.setBounds(250, 160, 100, 40);
-
-        JButton backBtn = new JButton("Back");
-        backBtn.setForeground(Color.WHITE);
-        backBtn.setBackground(Color.BLACK);
-        backBtn.setBounds(30, 160, 100, 40);
-        backBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                createBookResultsFrame();
-                frame.dispose();
-            }
-        });
-        frame.add(backBtn);
-
-        checkoutBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-        frame.add(checkoutBtn);
-
-        frame.getContentPane().setBackground(tuYellow);
-        frame.setVisible(true);
-    }
+    
 
     /**
      * Creates the query book results frame
@@ -766,6 +708,74 @@ public class Vivlo {
         frame.getContentPane().add(btnCheckout);
         frame.setVisible(true);
     }
+    /**
+     * Create the book checkout frame
+     */
+    public void createCheckoutFrame() {
+        JFrame frame = new JFrame("Vivlo - Checkout");
+        frame.setBounds(100, 100, 400, 260);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(null);
+
+        JLabel lblCheckOutPage = new JLabel("Check Out Page");
+        lblCheckOutPage.setFont(new Font("Tahoma", Font.PLAIN, 36));
+        lblCheckOutPage.setBounds(60, 15, 300, 45);
+        frame.add(lblCheckOutPage);
+
+        JLabel isbnLbl = new JLabel("ISBN Number");
+        isbnLbl.setBounds(30, 80, 150, 30);
+        frame.add(isbnLbl);
+
+        JTextField isbnText = new JTextField();
+        isbnText.setBounds(30, 110, 150, 30);
+        frame.add(isbnText);
+
+        JLabel copyLbl = new JLabel("Copy Number");
+        copyLbl.setBounds(200, 80, 150, 30);
+        frame.add(copyLbl);
+
+        JTextField copyText = new JTextField();
+        copyText.setBounds(200, 110, 150, 30);
+        frame.add(copyText);
+
+        JButton checkoutBtn = new JButton("Checkout");
+        checkoutBtn.setBackground(Color.BLACK);
+        checkoutBtn.setForeground(Color.WHITE);
+        checkoutBtn.setBounds(250, 160, 100, 40);
+
+        JButton backBtn = new JButton("Back");
+        backBtn.setForeground(Color.WHITE);
+        backBtn.setBackground(Color.BLACK);
+        backBtn.setBounds(30, 160, 100, 40);
+        backBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createBookResultsFrame();
+                frame.dispose();
+            }
+        });
+        frame.add(backBtn);
+
+        checkoutBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	String isbn = isbnText.getText();
+            	String copy = copyText.getText();
+            	try {
+            		query.checkout(isbn,copy);           		
+            		
+            	}
+            	catch (Exception er) {
+            		er.printStackTrace();
+            	}
+
+            }
+        });
+        frame.add(checkoutBtn);
+
+        frame.getContentPane().setBackground(tuYellow);
+        frame.setVisible(true);
+    }
 
 
     /**
@@ -819,6 +829,14 @@ public class Vivlo {
         returnBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	String isbn = isbnText.getText();
+            	String copy = copyText.getText();
+            	try {
+            		query.checkin(isbn, copy);
+            	}
+            	catch (Exception er) {
+            		er.printStackTrace();
+            	}
 
             }
         });
