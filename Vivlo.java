@@ -51,7 +51,7 @@ public class Vivlo {
                 panel.setLayout(new GridBagLayout());
                 panel.setBackground(tuYellow);
 
-                JButton btnBooks = new JButton("Insert Book");
+                JButton btnBooks = new JButton("Search Book");
                 btnBooks.setPreferredSize(new Dimension(170, 40));
                 btnBooks.setMargin(new Insets(10, 10, 10, 10));
                 btnBooks.setBackground(Color.BLACK);
@@ -59,7 +59,7 @@ public class Vivlo {
                 btnBooks.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        createSearchFrame();
+                        createSearchFrameManagement();
                         choice.dispose();
                     }
                 });
@@ -405,7 +405,7 @@ public class Vivlo {
         Holds.setBounds(30, 170, 100, 40);
         frame.add(Holds);
 
-        JButton backBtn = new JButton("Back");
+        JButton backBtn = new JButton("Results");
         backBtn.setBackground(Color.BLACK);
         backBtn.setForeground(Color.WHITE);
         backBtn.setBounds(10, 215, 100, 30);
@@ -418,6 +418,129 @@ public class Vivlo {
         });
         frame.add(backBtn);
 
+        frame.add(btn_search);
+        frame.add(JL_fname);
+        frame.add(JT_fname);
+        frame.add(JL_lname);
+        frame.add(JT_lname);
+        frame.add(JL_title);
+        frame.add(JT_title);
+        frame.add(JL_isbn);
+        frame.add(JT_isbn);
+        frame.getContentPane().setBackground(tuYellow);
+        frame.setVisible(true);
+    }
+    /*
+     * Create the search frame for management
+     */
+    public void createSearchFrameManagement() {
+        JFrame frame = new JFrame("Vivlo - Search");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(null);
+        frame.setBounds(100, 100, 390, 300);
+
+        JLabel JL_fname,JL_lname,JL_title,JL_isbn;
+        JTextField JT_fname,JT_lname,JT_title,JT_isbn;
+        JButton btn_search;
+
+        JL_isbn = new JLabel("Enter ISBN:");
+        JL_isbn.setBounds(20, 20, 220, 20);
+        JT_isbn = new JTextField(20);
+        JT_isbn.setBounds(170, 20, 190, 20);
+
+        JL_fname = new JLabel("Author First Name: ");
+        JL_fname.setBounds(20, 50, 220, 20);
+        JT_fname = new JTextField(20);
+        JT_fname.setBounds(170, 50, 190, 20);
+        JL_lname = new JLabel("Author Last Name: ");
+        JL_lname.setBounds(20, 80, 220, 20);
+        JT_lname = new JTextField(20);
+        JT_lname.setBounds(170, 80, 190, 20);
+        
+        JL_title = new JLabel("Title: ");
+        JL_title.setBounds(20, 110, 220, 20);
+        JT_title = new JTextField(20);
+        JT_title.setBounds(170, 110, 190, 20);
+
+        btn_search = new JButton("Search");
+        btn_search.setBounds(260, 215, 100, 30);
+        btn_search.setBackground(Color.BLACK);
+        btn_search.setForeground(Color.WHITE);
+        btn_search.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String isbnNum = JT_isbn.getText();
+                String Fname = JT_fname.getText();
+                String Lname =  JT_lname.getText();
+                String title = JT_title.getText();
+                try {
+                    ResultSet result = query.findBookByISBN(isbnNum);
+                    ResultSet author = query.listByAuthor(Fname, Lname);
+                    ResultSet bookTitle = query.findBookByTitle(title);
+                    if(result.next()) {
+                    	result.getString(1);
+                        JOptionPane.showMessageDialog(null, "ISBN found",
+                                "ISBN found", JOptionPane.INFORMATION_MESSAGE);
+                    }else if(author.next()){ 
+                    	author.getString(1);
+                        JOptionPane.showMessageDialog(null, "Book Author Name found",
+                                "Author Name Found", JOptionPane.INFORMATION_MESSAGE);
+                    }else if(bookTitle.next()){
+                    	bookTitle.getString(1);
+                        JOptionPane.showMessageDialog(null, "Book title found",
+                                "Book Title Found", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(null, "Not a valid ISBN#, book title or Author name",
+                                "ISBN error", JOptionPane.ERROR_MESSAGE);
+                        JT_isbn.setText(null);
+                    }
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+//				String towsonID = tuID.getText();
+            }
+        });
+
+        JCheckBox Reference = new JCheckBox("Reference Book");
+        Reference.setBackground(tuYellow);
+        Reference.setBounds(30, 130, 120, 40);
+        frame.add(Reference);
+
+        JCheckBox Non_reference = new JCheckBox("Non-Reference Book");
+        Non_reference.setBackground(tuYellow);
+        Non_reference.setBounds(170, 130, 145, 40);
+        frame.add(Non_reference);
+
+        JCheckBox Holds = new JCheckBox("Not Held");
+        Holds.setBackground(tuYellow);
+        Holds.setBounds(30, 170, 100, 40);
+        frame.add(Holds);
+
+        JButton ResultBtn = new JButton("Results");
+        ResultBtn.setBackground(Color.BLACK);
+        ResultBtn.setForeground(Color.WHITE);
+        ResultBtn.setBounds(10, 215, 100, 30);
+        ResultBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createBookResultsFrameManagement();
+                frame.dispose();
+            }
+        });
+        
+        JButton backBtn = new JButton("Back");
+        backBtn.setBackground(Color.BLACK);
+        backBtn.setForeground(Color.WHITE);
+        backBtn.setBounds(135, 215, 100, 30);
+        backBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createChoiceFrame();
+                frame.dispose();
+            }
+        });
+        frame.add(backBtn);
+        frame.add(ResultBtn);
         frame.add(btn_search);
         frame.add(JL_fname);
         frame.add(JT_fname);
@@ -526,7 +649,7 @@ public class Vivlo {
         table.setBounds(33, 63, 1403, 493);
         frame.getContentPane().add(sp);
 
-        JButton btnNewSearchQuery = new JButton("New Search Query");
+        JButton btnNewSearchQuery = new JButton("Back to Search");
         btnNewSearchQuery.setBackground(Color.BLACK);
         btnNewSearchQuery.setForeground(Color.WHITE);
         btnNewSearchQuery.setBounds(820, 15, 195, 40);
@@ -539,7 +662,7 @@ public class Vivlo {
         });
         frame.getContentPane().add(btnNewSearchQuery);
 
-        JButton btnCheckin = new JButton("Return a Book");
+        JButton btnCheckin = new JButton("Return Book");
         btnCheckin.setBackground(Color.BLACK);
         btnCheckin.setForeground(Color.WHITE);
         btnCheckin.setBounds(1030, 15, 195, 40);
@@ -567,6 +690,83 @@ public class Vivlo {
         frame.getContentPane().add(btnCheckout);
         frame.setVisible(true);
     }
+    /*
+     * Create the query book results frame for management
+     */
+    public void createBookResultsFrameManagement() {
+        JFrame frame = new JFrame("Vivlo - Books");
+        frame.setBounds(100, 100, 970, 620);
+        frame.getContentPane().setBackground(tuYellow);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().setLayout(null);
+
+        JLabel lblBookResults = new JLabel("Book Results");
+        lblBookResults.setFont(new Font("Tahoma", Font.PLAIN, 36));
+        lblBookResults.setBounds(30, 10, 250, 50);
+        frame.getContentPane().add(lblBookResults);
+
+        String[] columnNames = {"ISBN#", "CopyNo","Title", "Author First", "Author Last", "Checked Out", "On Hold"};
+        String [][] bookData = {columnNames, {"112222333", "1","The Alchemist", "Bart", "Allen", "yes", "No"},
+                {"7865435354", "2","The Alchemist", "Maggie", "Zuelsdorf", "yes", "No"},
+                {"354354616", "1","CODE", "Joey", "Case", "yes", "No"},
+                {"453132354", "1","Boku No Hero Academia", "Emily", "Vogel", "yes", "No"}};
+
+
+        TableModel model;
+        model = new DefaultTableModel(bookData, columnNames);
+
+        JScrollPane sp = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        frame.setSize(1490, 640);
+        JTable table = new JTable(model);
+        resizeColumnWidth(table);
+        table.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        table.setRowHeight(30);
+        frame.getContentPane().add(table);
+        table.setBounds(33, 63, 1403, 493);
+        frame.getContentPane().add(sp);
+
+        JButton btnNewSearchQuery = new JButton("Back to Search");
+        btnNewSearchQuery.setBackground(Color.BLACK);
+        btnNewSearchQuery.setForeground(Color.WHITE);
+        btnNewSearchQuery.setBounds(820, 15, 195, 40);
+        btnNewSearchQuery.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createSearchFrameManagement();
+                frame.dispose();
+            }
+        });
+        frame.getContentPane().add(btnNewSearchQuery);
+
+        JButton btnCheckin = new JButton("Return Book");
+        btnCheckin.setBackground(Color.BLACK);
+        btnCheckin.setForeground(Color.WHITE);
+        btnCheckin.setBounds(1030, 15, 195, 40);
+        btnCheckin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createReturnFrame();
+                frame.dispose();
+            }
+        });
+        frame.getContentPane().add(btnCheckin);
+
+        JButton btnCheckout = new JButton("Checkout Book");
+        btnCheckout.setBackground(Color.BLACK);
+        btnCheckout.setForeground(Color.WHITE);
+        btnCheckout.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createCheckoutFrame();
+                frame.dispose();
+            }
+        });
+        btnCheckout.setBounds(1240, 15, 195, 40);
+
+        frame.getContentPane().add(btnCheckout);
+        frame.setVisible(true);
+    }
+
 
     /**
      * Create the book return frame
