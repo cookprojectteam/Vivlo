@@ -299,7 +299,6 @@ public class Query {
     
     //request a book
      public void requestBook(String ISBN, String COPY){
-        ResultSet result = null;
         PreparedStatement ps = null;
         try{
             ps = connection.prepareStatement("INSERT INTO REQUEST VALUES ? , ? , ?");
