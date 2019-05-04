@@ -26,7 +26,7 @@ public class Vivlo {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    createSearchFrame();
+                    createCheckoutFrame();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -339,7 +339,7 @@ public class Vivlo {
      * Create the book checkout frame
      */
     public void createCheckoutFrame() {
-        JFrame frame = new JFrame();
+        JFrame frame = new JFrame("Vivlo - Checkout");
         frame.setBounds(100, 100, 400, 260);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
@@ -368,7 +368,21 @@ public class Vivlo {
         JButton checkoutBtn = new JButton("Checkout");
         checkoutBtn.setBackground(Color.BLACK);
         checkoutBtn.setForeground(Color.WHITE);
-        checkoutBtn.setBounds(140, 160, 100, 40);
+        checkoutBtn.setBounds(250, 160, 100, 40);
+
+        JButton backBtn = new JButton("Back");
+        backBtn.setForeground(Color.WHITE);
+        backBtn.setBackground(Color.BLACK);
+        backBtn.setBounds(30, 160, 100, 40);
+        backBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createBookResultsFrame();
+                frame.dispose();
+            }
+        });
+        frame.add(backBtn);
+
         checkoutBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -385,7 +399,7 @@ public class Vivlo {
      * Creates the query book results frame
      */
     public void createBookResultsFrame() {
-        JFrame frame = new JFrame();
+        JFrame frame = new JFrame("Vivlo - Books");
         frame.setBounds(100, 100, 970, 620);
         frame.getContentPane().setBackground(tuYellow);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
