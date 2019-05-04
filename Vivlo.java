@@ -26,7 +26,7 @@ public class Vivlo {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    createLoginFrame();
+                    createChoiceFrame();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -42,7 +42,7 @@ public class Vivlo {
             public void run() {
                 JFrame choice = new JFrame("Vivlo - Choice");
                 choice.setTitle("Vivlo - Choice");
-                choice.setBounds(100, 100, 400, 200);
+                choice.setBounds(100, 100, 600, 200);
                 choice.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
                 GridBagConstraints gbc = new GridBagConstraints();
@@ -63,6 +63,18 @@ public class Vivlo {
                     }
                 });
 
+                JButton btnBookAdd = new JButton("Add Book");
+                btnBookAdd.setPreferredSize(new Dimension(170, 40));
+                btnBookAdd.setMargin(new Insets(10, 10, 10, 10));
+                btnBookAdd.setBackground(Color.BLACK);
+                btnBookAdd.setForeground(Color.WHITE);
+                btnBookAdd.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        choice.dispose();
+                    }
+                });
+
                 JButton btnManagement = new JButton("Management");
                 btnManagement.setPreferredSize(new Dimension(170, 40));
                 btnManagement.setMargin(new Insets(10, 10, 10, 10));
@@ -77,6 +89,7 @@ public class Vivlo {
 
                 panel.add(btnBooks, gbc);
                 panel.add(btnManagement, gbc);
+                panel.add(btnBookAdd, gbc);
                 choice.add(panel);
                 choice.setVisible(true);
             }
