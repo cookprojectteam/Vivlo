@@ -26,7 +26,7 @@ public class Vivlo {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    createLoginFrame();
+                    createBookResultsFrame();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -458,7 +458,7 @@ public class Vivlo {
         JButton btnNewSearchQuery = new JButton("New Search Query");
         btnNewSearchQuery.setBackground(Color.BLACK);
         btnNewSearchQuery.setForeground(Color.WHITE);
-        btnNewSearchQuery.setBounds(1030, 15, 195, 40);
+        btnNewSearchQuery.setBounds(820, 15, 195, 40);
         btnNewSearchQuery.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -467,6 +467,19 @@ public class Vivlo {
             }
         });
         frame.getContentPane().add(btnNewSearchQuery);
+
+        JButton btnCheckin = new JButton("Return a Book");
+        btnCheckin.setBackground(Color.BLACK);
+        btnCheckin.setForeground(Color.WHITE);
+        btnCheckin.setBounds(1030, 15, 195, 40);
+        btnCheckin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createSearchFrame();
+                frame.dispose();
+            }
+        });
+        frame.getContentPane().add(btnCheckin);
 
         JButton btnCheckout = new JButton("Checkout Book");
         btnCheckout.setBackground(Color.BLACK);

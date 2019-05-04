@@ -268,7 +268,7 @@ public class Query {
     }
     
     //checkin book
-    public ResultSet checkout(String ISBN, String COPY){
+    public ResultSet checkin(String ISBN, String COPY){
         ResultSet result = null;
         PreparedStatement ps = null;
         try{
