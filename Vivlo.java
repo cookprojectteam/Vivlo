@@ -26,7 +26,7 @@ public class Vivlo {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    createBookResultsFrame();
+                    createSearchFrame();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -245,20 +245,19 @@ public class Vivlo {
         JFrame frame = new JFrame("Vivlo - Search");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
-        frame.setBounds(100, 100, 450, 300);
-        frame.setSize(450,300);
+        frame.setBounds(100, 100, 390, 300);
 
         JLabel JL_fname,JL_lname,JL_title,JL_isbn;
         JTextField JT_fname,JT_lname,JT_title,JT_isbn;
         JButton btn_search;
 
         JL_isbn = new JLabel("Enter ISBN:");
-        JL_isbn.setBounds(20, 20, 200, 20);
+        JL_isbn.setBounds(20, 20, 220, 20);
         JT_isbn = new JTextField(20);
-        JT_isbn.setBounds(130, 20, 150, 20);
+        JT_isbn.setBounds(170, 20, 190, 20);
 
         btn_search = new JButton("Search");
-        btn_search.setBounds(300, 20, 80, 20);
+        btn_search.setBounds(260, 215, 100, 30);
         btn_search.setBackground(Color.BLACK);
         btn_search.setForeground(Color.WHITE);
         btn_search.addActionListener(new ActionListener() {
@@ -297,18 +296,31 @@ public class Vivlo {
         Holds.setBounds(30, 170, 100, 40);
         frame.add(Holds);
 
+        JButton backBtn = new JButton("Back");
+        backBtn.setBackground(Color.BLACK);
+        backBtn.setForeground(Color.WHITE);
+        backBtn.setBounds(10, 215, 100, 30);
+        backBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createBookResultsFrame();
+                frame.dispose();
+            }
+        });
+        frame.add(backBtn);
+
         JL_fname = new JLabel("Author First Name: ");
-        JL_fname.setBounds(20, 50, 100, 20);
+        JL_fname.setBounds(20, 50, 220, 20);
         JT_fname = new JTextField(20);
-        JT_fname.setBounds(130, 50, 150, 20);
+        JT_fname.setBounds(170, 50, 190, 20);
         JL_lname = new JLabel("Author Last Name: ");
-        JL_lname.setBounds(20, 80, 100, 20);
+        JL_lname.setBounds(20, 80, 220, 20);
         JT_lname = new JTextField(20);
-        JT_lname.setBounds(130, 80, 150, 20);
+        JT_lname.setBounds(170, 80, 190, 20);
         JL_title = new JLabel("Title: ");
-        JL_title.setBounds(20, 110, 100, 20);
+        JL_title.setBounds(20, 110, 220, 20);
         JT_title = new JTextField(20);
-        JT_title.setBounds(130, 110, 150, 20);
+        JT_title.setBounds(170, 110, 190, 20);
 
         frame.add(btn_search);
         frame.add(JL_fname);
