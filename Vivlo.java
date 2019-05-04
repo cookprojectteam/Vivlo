@@ -475,7 +475,7 @@ public class Vivlo {
         btnCheckin.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                createSearchFrame();
+                createReturnFrame();
                 frame.dispose();
             }
         });
@@ -494,6 +494,63 @@ public class Vivlo {
         btnCheckout.setBounds(1240, 15, 195, 40);
 
         frame.getContentPane().add(btnCheckout);
+        frame.setVisible(true);
+    }
+
+    public void createReturnFrame() {
+        JFrame frame = new JFrame("Vivlo - Return");
+        frame.setBounds(100, 100, 400, 260);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(null);
+
+        JLabel titleLbl = new JLabel("Return Page");
+        titleLbl.setFont(new Font("Tahoma", Font.PLAIN, 36));
+        titleLbl.setBounds(90, 15, 300, 45);
+        frame.add(titleLbl);
+
+        JLabel isbnLbl = new JLabel("ISBN Number");
+        isbnLbl.setBounds(30, 80, 150, 30);
+        frame.add(isbnLbl);
+
+        JTextField isbnText = new JTextField();
+        isbnText.setBounds(30, 110, 150, 30);
+        frame.add(isbnText);
+
+        JLabel copyLbl = new JLabel("Copy Number");
+        copyLbl.setBounds(200, 80, 150, 30);
+        frame.add(copyLbl);
+
+        JTextField copyText = new JTextField();
+        copyText.setBounds(200, 110, 150, 30);
+        frame.add(copyText);
+
+        JButton returnBtn = new JButton("Return");
+        returnBtn.setBackground(Color.BLACK);
+        returnBtn.setForeground(Color.WHITE);
+        returnBtn.setBounds(250, 160, 100, 40);
+
+        JButton backBtn = new JButton("Back");
+        backBtn.setForeground(Color.WHITE);
+        backBtn.setBackground(Color.BLACK);
+        backBtn.setBounds(30, 160, 100, 40);
+        backBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createBookResultsFrame();
+                frame.dispose();
+            }
+        });
+        frame.add(backBtn);
+
+        returnBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        frame.add(returnBtn);
+
+        frame.getContentPane().setBackground(tuYellow);
         frame.setVisible(true);
     }
 
