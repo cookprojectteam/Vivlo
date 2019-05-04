@@ -69,7 +69,7 @@ public class Query {
         ResultSet result = null;
         PreparedStatement ps = null;
         try {
-            ps = connection.prepareStatement("select count(*) from NONE_BOOK_RESOURCE where R_TYPE='Computer'" +
+            ps = connection.prepareStatement("select count(*) from NON_BOOK_RESOURCE where R_TYPE='Computer'" +
                     " and R_DATE is null and R_TIME is null;");
         } catch (Exception e) {
             e.printStackTrace();
@@ -199,7 +199,7 @@ public class Query {
         ResultSet result = null;
         PreparedStatement ps = null;
         try{
-            ps = connection.prepareStatement("BOOK.SELECT BOOK.ISBN, BOOK.COPY, BOOK.TITLE, AUTHOR.AF, AUTHOR.AM, AUTHOR.AL" +
+            ps = connection.prepareStatement("SELECT BOOK.ISBN, BOOK.COPY, BOOK.TITLE, AUTHOR.AF, AUTHOR.AM, AUTHOR.AL" +
             " from BOOK Join AUTHOR ON BOOK.ISBN = AUTHOR.isbn AND BOOK.COPY = AUTHOR.copy" + "where BOOK.TITLE = ?;");
             ps.setString(1, Title);
             result = ps.executeQuery();
@@ -243,7 +243,7 @@ public class Query {
         ResultSet result = null;
         PreparedStatement ps = null;
         try{
-            ps = connection.prepareStatement("BOOK.ISBN, BOOK.COPY, BOOK.TITLE, AUTHOR.AF, AUTHOR.AM, AUTHOR.AL , BOOK.ADATE" + 
+            ps = connection.prepareStatement("Select BOOK.ISBN, BOOK.COPY, BOOK.TITLE, AUTHOR.AF, AUTHOR.AM, AUTHOR.AL , BOOK.ADATE" + 
             " from BOOK Join AUTHOR ON BOOK.ISBN = AUTHOR.isbn AND BOOK.COPY = AUTHOR.copy OREDER BY BOOK.ADATE DESC;");
             result = ps.executeQuery();
         } catch(Exception ex){
@@ -252,5 +252,47 @@ public class Query {
         return result;
     }
     
+    //checkout book
+    public ResultSet checkout(String ISBN, String COPY){
+        ResultSet result = null;
+        PreparedStatement ps = null;
+        try{
+            ps = connection.prepareStatement("UPDATE NREF_BOOK SET CO_DATE = GETDATE(), CO_TUID = ? WHERE NREF_ISBN = ? AND NREF_COPY = ? ;");
+            result = ps.executeQuery();
+            ps.setString(1, current_tuid);
+            ps.setString(2, ISBN);
+            ps.setString(3, COPY);
+        } catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return result;
+    }
     
+    //checkin book
+    public ResultSet checkout(String ISBN, String COPY){
+        ResultSet result = null;
+        PreparedStatement ps = null;
+        try{
+            ps = connection.prepareStatement("UPDATE NREF_BOOK SET CO_DATE = NULL , CO_TUID = NULL WHERE NREF_ISBN = ? AND NREF_COPY = ? ;");
+            result = ps.executeQuery();
+            ps.setString(1, ISBN);
+            ps.setString(2, COPY);
+        } catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return result;
+    }
+    
+    //View over due books
+     public ResultSet viewOverDue(){
+        ResultSet result = null;
+        PreparedStatement ps = null;
+        try{
+            ps = connection.prepareStatement("SELECT NREF_ISBN, NREF_COPY, dateadd(dd,20,getdate()) AS 'was due', CO_TUID AS 'Checked Out to' From NREF_BOOK WHERE CO_DATE > dateadd(dd,20,getdate()) ;");
+            result = ps.executeQuery();
+        } catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return result;
+    }
 }
