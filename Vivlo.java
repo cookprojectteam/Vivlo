@@ -26,7 +26,7 @@ public class Vivlo {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    createBookResultsFrame();
+                    createLoginFrame();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -85,6 +85,7 @@ public class Vivlo {
             public void run() {
                 Font normal = new Font("Tahoma", Font.PLAIN, 18);
                 JFrame management = new JFrame();
+                management.getContentPane().setBackground(Color.YELLOW);
                 management.setTitle("Vivlo - Management");
                 management.setBounds(100, 100, 930, 540);
                 management.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -99,25 +100,35 @@ public class Vivlo {
                 managementLbl.setFont(new Font("Tahoma", Font.PLAIN, 36));
                 panel.add(managementLbl);
 
-                // Sets number of available computers
+             // Sets number of available computers
                 try {
                     ResultSet result = query.getAvailableComps();
+                    
                     while (result.next()) {
-
+                    	  JLabel compLbl = new JLabel("Computers Available: " + result.getString(1));
+                          compLbl.setBounds(10, 50, 250, 50);
+                          compLbl.setFont(normal);
+                          panel.add(compLbl);
                     }
                 } catch (SQLException error) {
                     error.printStackTrace();
                 }
-                JLabel compLbl = new JLabel("Computers Available: " + "18");
-                compLbl.setBounds(110, 50, 250, 50);
-                compLbl.setFont(normal);
-                panel.add(compLbl);
+              
 
                 // Sets number of books on hold
-                JLabel booksLbl = new JLabel("Books on Hold: " + "83");
-                booksLbl.setBounds(380, 50, 250, 50);
-                booksLbl.setFont(normal);
-                panel.add(booksLbl);
+               
+                try {
+                    ResultSet result1 = query.countBooksOnHold();
+                    
+                    while (result1.next()) {
+                    	 JLabel booksLbl = new JLabel("Books on Hold: " + result1.getString(1));
+                         booksLbl.setBounds(380, 50, 250, 50);
+                         booksLbl.setFont(normal);
+                         panel.add(booksLbl);
+                    }
+                } catch (SQLException error) {
+                    error.printStackTrace();
+                }
 
                 // Sets number of student workers
                 JLabel stuLbl = new JLabel("Student Workers: " + "18");

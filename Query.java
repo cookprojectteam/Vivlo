@@ -20,7 +20,7 @@ public class Query {
         ResultSet result = null;
         PreparedStatement ps;
         try {
-            ps = connection.prepareStatement("SELECT TUAffliate FROM TU_TEST WHERE TUAffliate = ?;");
+            ps = connection.prepareStatement("SELECT TUID FROM TU_AFFILIATE WHERE TUID = ?;");
             ps.setString(1, idNum);
             result = ps.executeQuery();
         } catch (SQLException e) {
@@ -71,6 +71,7 @@ public class Query {
         try {
             ps = connection.prepareStatement("select count(*) from NON_BOOK_RESOURCE where R_TYPE='Computer'" +
                     " and R_DATE is null and R_TIME is null;");
+            result = ps.executeQuery();
         } catch (Exception e) {
             e.printStackTrace();
         }
