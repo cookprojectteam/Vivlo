@@ -26,7 +26,7 @@ public class Vivlo {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    createLoginFrame();
+                    createBookResultsFrame();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -138,6 +138,7 @@ public class Vivlo {
 
                 // Sets number of quiet floors
                 JLabel quietLbl = new JLabel("Quiet Floors");
+               
                 quietLbl.setBounds(10, 120, 250, 50);
                 quietLbl.setFont(new Font("Tahoma", Font.PLAIN, 20));
                 panel.add(quietLbl);
@@ -146,7 +147,9 @@ public class Vivlo {
                 try {
                     ResultSet result = query.findQuietFloors();
                     while(result.next()) {
-
+                    	 JLabel count = new JLabel("Floor Num: " + result.getString("F_NUM") + " ");
+                    	 count.setFont(new Font("Tahoma", Font.PLAIN, 20));
+                    	 quietPanel.add(count);
                     }
                 } catch (SQLException error) {
                     error.printStackTrace();
@@ -292,6 +295,20 @@ public class Vivlo {
         JT_isbn = new JTextField(20);
         JT_isbn.setBounds(170, 20, 190, 20);
 
+        JL_fname = new JLabel("Author First Name: ");
+        JL_fname.setBounds(20, 50, 220, 20);
+        JT_fname = new JTextField(20);
+        JT_fname.setBounds(170, 50, 190, 20);
+        JL_lname = new JLabel("Author Last Name: ");
+        JL_lname.setBounds(20, 80, 220, 20);
+        JT_lname = new JTextField(20);
+        JT_lname.setBounds(170, 80, 190, 20);
+        
+        JL_title = new JLabel("Title: ");
+        JL_title.setBounds(20, 110, 220, 20);
+        JT_title = new JTextField(20);
+        JT_title.setBounds(170, 110, 190, 20);
+
         btn_search = new JButton("Search");
         btn_search.setBounds(260, 215, 100, 30);
         btn_search.setBackground(Color.BLACK);
@@ -299,14 +316,28 @@ public class Vivlo {
         btn_search.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String isbnNum = JT_isbn.getText();
+                String Fname = JT_fname.getText();
+                String Lname =  JT_lname.getText();
+                String title = JT_title.getText();
                 try {
                     ResultSet result = query.findBookByISBN(isbnNum);
+                    ResultSet author = query.listByAuthor(Fname, Lname);
+                    ResultSet bookTitle = query.findBookByTitle(title);
                     if(result.next()) {
+                    	result.getString(1);
                         JOptionPane.showMessageDialog(null, "ISBN found",
                                 "ISBN found", JOptionPane.INFORMATION_MESSAGE);
+                    }else if(author.next()){ 
+                    	author.getString(1);
+                        JOptionPane.showMessageDialog(null, "Book Author Name found",
+                                "Author Name Found", JOptionPane.INFORMATION_MESSAGE);
+                    }else if(bookTitle.next()){
+                    	bookTitle.getString(1);
+                        JOptionPane.showMessageDialog(null, "Book title found",
+                                "Book Title Found", JOptionPane.INFORMATION_MESSAGE);
                     }
                     else {
-                        JOptionPane.showMessageDialog(null, "Not a valid ISBN#",
+                        JOptionPane.showMessageDialog(null, "Not a valid ISBN#, book title or Author name",
                                 "ISBN error", JOptionPane.ERROR_MESSAGE);
                         JT_isbn.setText(null);
                     }
@@ -344,19 +375,6 @@ public class Vivlo {
             }
         });
         frame.add(backBtn);
-
-        JL_fname = new JLabel("Author First Name: ");
-        JL_fname.setBounds(20, 50, 220, 20);
-        JT_fname = new JTextField(20);
-        JT_fname.setBounds(170, 50, 190, 20);
-        JL_lname = new JLabel("Author Last Name: ");
-        JL_lname.setBounds(20, 80, 220, 20);
-        JT_lname = new JTextField(20);
-        JT_lname.setBounds(170, 80, 190, 20);
-        JL_title = new JLabel("Title: ");
-        JL_title.setBounds(20, 110, 220, 20);
-        JT_title = new JTextField(20);
-        JT_title.setBounds(170, 110, 190, 20);
 
         frame.add(btn_search);
         frame.add(JL_fname);

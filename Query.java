@@ -201,7 +201,7 @@ public class Query {
         PreparedStatement ps = null;
         try{
             ps = connection.prepareStatement("SELECT BOOK.ISBN, BOOK.COPY, BOOK.TITLE, AUTHOR.AF, AUTHOR.AM, AUTHOR.AL" +
-            " from BOOK Join AUTHOR ON BOOK.ISBN = AUTHOR.isbn AND BOOK.COPY = AUTHOR.copy" + "where BOOK.TITLE = ?;");
+            " from BOOK Join AUTHOR ON BOOK.ISBN = AUTHOR.isbn AND BOOK.COPY = AUTHOR.copy" + " where BOOK.TITLE = ?;");
             ps.setString(1, Title);
             result = ps.executeQuery();
         } catch(Exception ex){
