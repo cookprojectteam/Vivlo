@@ -272,10 +272,11 @@ public class Query {
         ResultSet result = null;
         PreparedStatement ps = null;
         try{
-            ps = connection.prepareStatement("UPDATE NREF_BOOK SET CO_DATE = NULL , CO_TUID = NULL WHERE NREF_ISBN = ? AND NREF_COPY = ? ;");
+            ps = connection.prepareStatement("UPDATE NREF_BOOK SET CO_DATE = NULL , CO_TUID = NULL , CI_TUID = ? , CI_DATE = GETDATE() WHERE NREF_ISBN = ? AND NREF_COPY = ? ;");
             result = ps.executeQuery();
-            ps.setString(1, ISBN);
-            ps.setString(2, COPY);
+            ps.setString(1, current_tuid);
+            ps.setString(2, ISBN);
+            ps.setString(3, COPY);
         } catch(Exception ex){
             ex.printStackTrace();
         }
