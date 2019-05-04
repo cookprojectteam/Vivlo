@@ -324,7 +324,4 @@ public class Query {
         }
         return result;
     }
-    
-    //ADD BOOK
-    
 }
