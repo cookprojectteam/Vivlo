@@ -251,16 +251,37 @@ public class Query {
         return result;
     }
     
-    //current_tuid
+    //checkout book
     public ResultSet checkout(String ISBN, String COPY){
         ResultSet result = null;
         PreparedStatement ps = null;
         try{
-            ps = connection.prepareStatement();
+            ps = connection.prepareStatement("UPDATE NREF_BOOK SET CO_DATE = GETDATE(), CO_TUID = ? WHERE NREF_ISBN = ? AND NREF_COPY = ? ;");
             result = ps.executeQuery();
+            ps.setString(1, current_tuid);
+            ps.setString(2, ISBN);
+            ps.setString(3, COPY);
         } catch(Exception ex){
             ex.printStackTrace();
         }
         return result;
     }
+    
+    //checkin book
+    public ResultSet checkout(String ISBN, String COPY){
+        ResultSet result = null;
+        PreparedStatement ps = null;
+        try{
+            ps = connection.prepareStatement("UPDATE NREF_BOOK SET CO_DATE = NULL , CO_TUID = NULL WHERE NREF_ISBN = ? AND NREF_COPY = ? ;");
+            result = ps.executeQuery();
+            ps.setString(1, ISBN);
+            ps.setString(2, COPY);
+        } catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return result;
+    }
+    
+    //View over due books
+    
 }
