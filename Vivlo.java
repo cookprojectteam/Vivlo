@@ -26,7 +26,7 @@ public class Vivlo {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    createBookResultsFrame();
+                    createLoginFrame();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -250,11 +250,21 @@ public class Vivlo {
                 try {
                     ResultSet result = query.login(idNum);
                     if(result.next()) {
-                        Query.current_tuid = idNum;
-                        JOptionPane.showMessageDialog(null, "Successfull Login!",
+                    	ResultSet resultFilter = query.loginFilter(idNum);
+                    	if(resultFilter.next()) {
+                    		Query.current_tuid = idNum;
+                        	JOptionPane.showMessageDialog(null, "Successfull Login For Library Staff!",
                                 "Login Successful!", JOptionPane.INFORMATION_MESSAGE);
-                        createChoiceFrame();
-                        frame.dispose();
+                        	createChoiceFrame();
+                        	frame.dispose();
+                    	}
+                    	else {
+                    		Query.current_tuid = idNum;
+                    		JOptionPane.showMessageDialog(null, "Successfull Login For Non Library Staff!",
+                    				"Login Successful!", JOptionPane.INFORMATION_MESSAGE);
+                    		createSearchFrame();
+                    		frame.dispose();
+                    	}
                     }
                     else {
                         JOptionPane.showMessageDialog(null, "Not a valid TU ID#",

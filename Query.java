@@ -28,7 +28,23 @@ public class Query {
         }
         return result;
     }
-
+    /**
+     * Sends library staff members to management page, and sends non library staff members to search page
+     */
+    public ResultSet loginFilter(String idNum) {
+    	ResultSet result = null;
+    	PreparedStatement ps;
+    	try {
+    		ps = connection.prepareStatement("SELECT LS_TUID FROM LIB_STAFF WHERE LS_TUID = ?;");
+    		ps.setString(1, idNum);
+    		result = ps.executeQuery();
+    	}
+    	catch (SQLException e) {
+    		System.out.println("Something went wrong in loginFilter");
+    		e.printStackTrace();
+    	}
+    	return result;
+    }
     /**
      * Returns the query result for a book by ISBN number
      * @param ISBN The book's ISBN number
