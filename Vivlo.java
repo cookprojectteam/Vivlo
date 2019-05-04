@@ -103,7 +103,7 @@ public class Vivlo {
                 try {
                     ResultSet result = query.getAvailableComps();
                     while (result.next()) {
-                        
+
                     }
                 } catch (SQLException error) {
                     error.printStackTrace();
@@ -245,19 +245,19 @@ public class Vivlo {
         JFrame frame = new JFrame("Vivlo - Search");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
-        frame.setSize(450,300);
+        frame.setBounds(100, 100, 390, 300);
 
         JLabel JL_fname,JL_lname,JL_title,JL_isbn;
         JTextField JT_fname,JT_lname,JT_title,JT_isbn;
         JButton btn_search;
 
         JL_isbn = new JLabel("Enter ISBN:");
-        JL_isbn.setBounds(20, 20, 200, 20);
+        JL_isbn.setBounds(20, 20, 220, 20);
         JT_isbn = new JTextField(20);
-        JT_isbn.setBounds(130, 20, 150, 20);
+        JT_isbn.setBounds(170, 20, 190, 20);
 
         btn_search = new JButton("Search");
-        btn_search.setBounds(300, 20, 80, 20);
+        btn_search.setBounds(260, 215, 100, 30);
         btn_search.setBackground(Color.BLACK);
         btn_search.setForeground(Color.WHITE);
         btn_search.addActionListener(new ActionListener() {
@@ -296,18 +296,31 @@ public class Vivlo {
         Holds.setBounds(30, 170, 100, 40);
         frame.add(Holds);
 
+        JButton backBtn = new JButton("Back");
+        backBtn.setBackground(Color.BLACK);
+        backBtn.setForeground(Color.WHITE);
+        backBtn.setBounds(10, 215, 100, 30);
+        backBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createBookResultsFrame();
+                frame.dispose();
+            }
+        });
+        frame.add(backBtn);
+
         JL_fname = new JLabel("Author First Name: ");
-        JL_fname.setBounds(20, 50, 100, 20);
+        JL_fname.setBounds(20, 50, 220, 20);
         JT_fname = new JTextField(20);
-        JT_fname.setBounds(130, 50, 150, 20);
+        JT_fname.setBounds(170, 50, 190, 20);
         JL_lname = new JLabel("Author Last Name: ");
-        JL_lname.setBounds(20, 80, 100, 20);
+        JL_lname.setBounds(20, 80, 220, 20);
         JT_lname = new JTextField(20);
-        JT_lname.setBounds(130, 80, 150, 20);
+        JT_lname.setBounds(170, 80, 190, 20);
         JL_title = new JLabel("Title: ");
-        JL_title.setBounds(20, 110, 100, 20);
+        JL_title.setBounds(20, 110, 220, 20);
         JT_title = new JTextField(20);
-        JT_title.setBounds(130, 110, 150, 20);
+        JT_title.setBounds(170, 110, 190, 20);
 
         frame.add(btn_search);
         frame.add(JL_fname);
@@ -326,7 +339,7 @@ public class Vivlo {
      * Create the book checkout frame
      */
     public void createCheckoutFrame() {
-        JFrame frame = new JFrame();
+        JFrame frame = new JFrame("Vivlo - Checkout");
         frame.setBounds(100, 100, 400, 260);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
@@ -355,7 +368,27 @@ public class Vivlo {
         JButton checkoutBtn = new JButton("Checkout");
         checkoutBtn.setBackground(Color.BLACK);
         checkoutBtn.setForeground(Color.WHITE);
-        checkoutBtn.setBounds(140, 160, 100, 40);
+        checkoutBtn.setBounds(250, 160, 100, 40);
+
+        JButton backBtn = new JButton("Back");
+        backBtn.setForeground(Color.WHITE);
+        backBtn.setBackground(Color.BLACK);
+        backBtn.setBounds(30, 160, 100, 40);
+        backBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createBookResultsFrame();
+                frame.dispose();
+            }
+        });
+        frame.add(backBtn);
+
+        checkoutBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
         frame.add(checkoutBtn);
 
         frame.getContentPane().setBackground(tuYellow);
@@ -366,14 +399,15 @@ public class Vivlo {
      * Creates the query book results frame
      */
     public void createBookResultsFrame() {
-        JFrame frame = new JFrame();
+        JFrame frame = new JFrame("Vivlo - Books");
         frame.setBounds(100, 100, 970, 620);
+        frame.getContentPane().setBackground(tuYellow);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(null);
 
-        JLabel lblBookResults = new JLabel("Book results");
-        lblBookResults.setFont(new Font("Tahoma", Font.BOLD, 18));
-        lblBookResults.setBounds(415, 13, 131, 43);
+        JLabel lblBookResults = new JLabel("Book Results");
+        lblBookResults.setFont(new Font("Tahoma", Font.PLAIN, 36));
+        lblBookResults.setBounds(30, 10, 250, 50);
         frame.getContentPane().add(lblBookResults);
 
         String[] columnNames = {"ISBN#", "CopyNo","Title", "Author First", "Author Last", "Checked Out", "On Hold"};
@@ -387,7 +421,7 @@ public class Vivlo {
         model = new DefaultTableModel(bookData, columnNames);
 
         JScrollPane sp = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        frame.setSize(1570, 684);
+        frame.setSize(1490, 640);
         JTable table = new JTable(model);
         resizeColumnWidth(table);
         table.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -397,12 +431,32 @@ public class Vivlo {
         frame.getContentPane().add(sp);
 
         JButton btnNewSearchQuery = new JButton("New Search Query");
-        btnNewSearchQuery.setBounds(590, 13, 170, 36);
+        btnNewSearchQuery.setBackground(Color.BLACK);
+        btnNewSearchQuery.setForeground(Color.WHITE);
+        btnNewSearchQuery.setBounds(1030, 15, 195, 40);
+        btnNewSearchQuery.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createSearchFrame();
+                frame.dispose();
+            }
+        });
         frame.getContentPane().add(btnNewSearchQuery);
 
         JButton btnCheckout = new JButton("Checkout Book");
-        btnCheckout.setBounds(804, 13, 195, 36);
+        btnCheckout.setBackground(Color.BLACK);
+        btnCheckout.setForeground(Color.WHITE);
+        btnCheckout.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createCheckoutFrame();
+                frame.dispose();
+            }
+        });
+        btnCheckout.setBounds(1240, 15, 195, 40);
+
         frame.getContentPane().add(btnCheckout);
+        frame.setVisible(true);
     }
 
     /**
