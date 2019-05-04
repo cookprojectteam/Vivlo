@@ -16,7 +16,7 @@ import java.sql.SQLException;
 public class Vivlo {
 
     static final Color tuYellow = new Color(255, 187, 0);
-    private static Query query;
+    private Query query;
 
     /**
      * Create the choice.
@@ -37,7 +37,7 @@ public class Vivlo {
     /**
      * Initialize the contents of the create choice frame.
      */
-    private static void createChoiceFrame() {
+    private void createChoiceFrame() {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 JFrame choice = new JFrame("Vivlo - Choice");
@@ -55,6 +55,13 @@ public class Vivlo {
                 btnBooks.setMargin(new Insets(10, 10, 10, 10));
                 btnBooks.setBackground(Color.BLACK);
                 btnBooks.setForeground(Color.WHITE);
+                btnBooks.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        createSearchFrame();
+                        choice.dispose();
+                    }
+                });
 
                 JButton btnManagement = new JButton("Management");
                 btnManagement.setPreferredSize(new Dimension(170, 40));
@@ -79,7 +86,7 @@ public class Vivlo {
     /**
      * Initialize the contents of the create management frame.
      */
-    private static void createManagementFrame() {
+    private void createManagementFrame() {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
