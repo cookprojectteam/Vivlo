@@ -296,4 +296,35 @@ public class Query {
         }
         return result;
     }
+    
+    //request a book
+     public void requestBook(String ISBN, String COPY){
+        ResultSet result = null;
+        PreparedStatement ps = null;
+        try{
+            ps = connection.prepareStatement("INSERT INTO REQUEST VALUES ? , ? , ?");
+            ps.setString(1, current_tuid);
+            ps.setString(2, ISBN);
+            ps.setString(3, COPY);
+            ps.executeQuery();
+        } catch(Exception ex){
+            ex.printStackTrace();
+        }
+    }
+    
+    //view book request
+     public ResultSet viewRequest(){
+        ResultSet result = null;
+        PreparedStatement ps = null;
+        try{
+            ps = connection.prepareStatement("SELECT * FROM REQUEST;");
+            result = ps.executeQuery();
+        } catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return result;
+    }
+    
+    //ADD BOOK
+    
 }
