@@ -26,7 +26,7 @@ public class Vivlo {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    createManagementFrame();
+                    createLoginFrame();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -100,14 +100,14 @@ public class Vivlo {
                 panel.add(managementLbl);
 
                 // Sets number of available computers
-//                try {
-//                    ResultSet result = query.getAvailableComps();
-//                    while (result.next()) {
-//
-//                    }
-//                } catch (SQLException error) {
-//                    error.printStackTrace();
-//                }
+                try {
+                    ResultSet result = query.getAvailableComps();
+                    while (result.next()) {
+
+                    }
+                } catch (SQLException error) {
+                    error.printStackTrace();
+                }
                 JLabel compLbl = new JLabel("Computers Available: " + "18");
                 compLbl.setBounds(110, 50, 250, 50);
                 compLbl.setFont(normal);
@@ -132,14 +132,14 @@ public class Vivlo {
                 panel.add(quietLbl);
 
                 JPanel quietPanel = new JPanel();
-//                try {
-//                    ResultSet result = query.findQuietFloors();
-//                    while(result.next()) {
-//
-//                    }
-//                } catch (SQLException error) {
-//                    error.printStackTrace();
-//                }
+                try {
+                    ResultSet result = query.findQuietFloors();
+                    while(result.next()) {
+
+                    }
+                } catch (SQLException error) {
+                    error.printStackTrace();
+                }
                 JScrollPane quietScroll = new JScrollPane(quietPanel);
                 quietScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
                 quietScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
