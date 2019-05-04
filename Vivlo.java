@@ -26,7 +26,7 @@ public class Vivlo {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    createCheckoutFrame();
+                    createManagementFrame();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -86,7 +86,7 @@ public class Vivlo {
                 Font normal = new Font("Tahoma", Font.PLAIN, 18);
                 JFrame management = new JFrame();
                 management.setTitle("Vivlo - Management");
-                management.setBounds(100, 100, 500, 540);
+                management.setBounds(100, 100, 930, 540);
                 management.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
                 JPanel panel = new JPanel();
@@ -95,33 +95,33 @@ public class Vivlo {
 
                 // Sets frame title
                 JLabel managementLbl = new JLabel("Management");
-                managementLbl.setBounds(130, 0, 250, 50);
+                managementLbl.setBounds(360, 0, 250, 50);
                 managementLbl.setFont(new Font("Tahoma", Font.PLAIN, 36));
                 panel.add(managementLbl);
 
                 // Sets number of available computers
-                try {
-                    ResultSet result = query.getAvailableComps();
-                    while (result.next()) {
-
-                    }
-                } catch (SQLException error) {
-                    error.printStackTrace();
-                }
+//                try {
+//                    ResultSet result = query.getAvailableComps();
+//                    while (result.next()) {
+//
+//                    }
+//                } catch (SQLException error) {
+//                    error.printStackTrace();
+//                }
                 JLabel compLbl = new JLabel("Computers Available: " + "18");
-                compLbl.setBounds(10, 50, 250, 50);
+                compLbl.setBounds(110, 50, 250, 50);
                 compLbl.setFont(normal);
                 panel.add(compLbl);
 
                 // Sets number of books on hold
                 JLabel booksLbl = new JLabel("Books on Hold: " + "83");
-                booksLbl.setBounds(10, 80, 250, 50);
+                booksLbl.setBounds(380, 50, 250, 50);
                 booksLbl.setFont(normal);
                 panel.add(booksLbl);
 
                 // Sets number of student workers
                 JLabel stuLbl = new JLabel("Student Workers: " + "18");
-                stuLbl.setBounds(260, 50, 250, 50);
+                stuLbl.setBounds(610, 50, 250, 50);
                 stuLbl.setFont(normal);
                 panel.add(stuLbl);
 
@@ -132,14 +132,14 @@ public class Vivlo {
                 panel.add(quietLbl);
 
                 JPanel quietPanel = new JPanel();
-                try {
-                    ResultSet result = query.findQuietFloors();
-                    while(result.next()) {
-
-                    }
-                } catch (SQLException error) {
-                    error.printStackTrace();
-                }
+//                try {
+//                    ResultSet result = query.findQuietFloors();
+//                    while(result.next()) {
+//
+//                    }
+//                } catch (SQLException error) {
+//                    error.printStackTrace();
+//                }
                 JScrollPane quietScroll = new JScrollPane(quietPanel);
                 quietScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
                 quietScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
@@ -157,6 +157,30 @@ public class Vivlo {
                 roomScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
                 roomScroll.setBounds(40, 320, 400, 100);
                 panel.add(roomScroll);
+
+                JLabel overLbl = new JLabel("Overdue Books");
+                overLbl.setBounds(460, 120, 250, 50);
+                overLbl.setFont(new Font("Tahoma", Font.PLAIN, 20));
+                panel.add(overLbl);
+
+                JPanel overPanel = new JPanel();
+                JScrollPane overScroll = new JScrollPane(overPanel);
+                overScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+                overScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+                overScroll.setBounds(490, 170, 400, 100);
+                panel.add(overScroll);
+
+                JLabel deptLbl = new JLabel("Departments");
+                deptLbl.setBounds(460, 270, 250, 50);
+                deptLbl.setFont(new Font("Tahoma", Font.PLAIN, 20));
+                panel.add(deptLbl);
+
+                JPanel deptPanel = new JPanel();
+                JScrollPane deptScroll = new JScrollPane(deptPanel);
+                deptScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+                deptScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+                deptScroll.setBounds(490, 320, 400, 100);
+                panel.add(deptScroll);
 
                 JButton btnBack = new JButton("Back");
                 btnBack.setBounds(10, 440, 70, 40);
@@ -205,6 +229,7 @@ public class Vivlo {
                 try {
                     ResultSet result = query.login(idNum);
                     if(result.next()) {
+                        Query.current_tuid = idNum;
                         JOptionPane.showMessageDialog(null, "Successfull Login!",
                                 "Login Successful!", JOptionPane.INFORMATION_MESSAGE);
                         createChoiceFrame();

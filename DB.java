@@ -9,7 +9,7 @@ public class DB {
 	 public static Connection getConnection() { 
 		 System.out.println("Connecting to database....");
 		 Connection conn = null;
-		 try { 
+		 try {
 			 Class.forName("com.mysql.cj.jdbc.Driver");
 			 conn = DriverManager.getConnection("jdbc:mysql://triton.towson.edu:3360/ballen15db?serverTimezone=EST", userName, password);
 			 System.out.println("Database Connected!");

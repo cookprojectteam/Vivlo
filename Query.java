@@ -7,6 +7,7 @@ import java.sql.SQLException;
 public class Query {
 
     Connection connection;
+    static String current_tuid;
 
     public Query() { connection = DB.getConnection();
     }
