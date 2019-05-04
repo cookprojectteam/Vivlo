@@ -68,7 +68,7 @@ public class Query {
         ResultSet result = null;
         PreparedStatement ps = null;
         try {
-            ps = connection.prepareStatement("select count(*) from NONE_BOOK_RESOURCE where R_TYPE='Computer'" +
+            ps = connection.prepareStatement("select count(*) from NON_BOOK_RESOURCE where R_TYPE='Computer'" +
                     " and R_DATE is null and R_TIME is null;");
         } catch (Exception e) {
             e.printStackTrace();
