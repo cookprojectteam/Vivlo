@@ -238,13 +238,12 @@ public class Query {
     }
     
     //Descending list of books by date
-    //needs data reordering to be inmplemented
-    public ResultSet booksOrderedByDate(){
+    public ResultSet booksPublishingDate(){
         ResultSet result = null;
         PreparedStatement ps = null;
         try{
-            ps = connection.prepareStatement("Select BOOK.ISBN, BOOK.COPY, BOOK.TITLE, AUTHOR.AF, AUTHOR.AM, AUTHOR.AL , BOOK.ADATE" + 
-            " from BOOK Join AUTHOR ON BOOK.ISBN = AUTHOR.isbn AND BOOK.COPY = AUTHOR.copy OREDER BY BOOK.ADATE DESC;");
+            ps = connection.prepareStatement("Select BOOK.ISBN, BOOK.COPY, BOOK.TITLE, AUTHOR.AF, AUTHOR.AM, AUTHOR.AL , BOOK.PDATE" + 
+            " from BOOK Join AUTHOR ON BOOK.ISBN = AUTHOR.isbn AND BOOK.COPY = AUTHOR.copy OREDER BY BOOK.PDATE DESC;");
             result = ps.executeQuery();
         } catch(Exception ex){
             ex.printStackTrace();
