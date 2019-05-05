@@ -287,7 +287,7 @@ public class Query {
     public void checkout(String ISBN, String COPY){        
         PreparedStatement ps = null;
         try{
-            ps = connection.prepareStatement("UPDATE NREF_BOOK SET CO_DATE = (SELECT CURDATE()), CO_TUID = ? WHERE NREF_ISBN = ? AND NREF_COPY = ? ;");            
+            ps = connection.prepareStatement("UPDATE NREF_BOOK SET CI_DATE = NULL, CI_TUID = NULL, CO_DATE = (SELECT CURDATE()), CO_TUID = ? WHERE NREF_ISBN = ? AND NREF_COPY = ? ;");            
             ps.setString(1, current_tuid);
             ps.setString(2, ISBN);
             ps.setString(3, COPY);
@@ -316,7 +316,7 @@ public class Query {
         ResultSet result = null;
         PreparedStatement ps = null;
         try{
-            ps = connection.prepareStatement("SELECT NREF_ISBN, NREF_COPY, dateadd(dd,20,getdate()) AS 'was due', CO_TUID AS 'Checked Out to' From NREF_BOOK WHERE CO_DATE > dateadd(dd,20,getdate()) ;");
+            ps = connection.prepareStatement("SELECT NREF_ISBN, NREF_COPY, adddate(curdate(),-20) AS 'was due', CO_TUID AS 'Checked Out to' From NREF_BOOK WHERE CO_DATE > adddate(curdate(),-20) ;");
             result = ps.executeQuery();
         } catch(Exception ex){
             ex.printStackTrace();

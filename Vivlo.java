@@ -169,19 +169,25 @@ public class Vivlo {
                 
 
                 // Sets number of quiet floors
-                JLabel quietLbl = new JLabel("Quiet Floors");
-               
+                JLabel quietLbl = new JLabel("Quiet Floors");               
                 quietLbl.setBounds(10, 120, 250, 50);
                 quietLbl.setFont(new Font("Tahoma", Font.PLAIN, 20));
                 panel.add(quietLbl);
 
                 JPanel quietPanel = new JPanel();
-                try {
+                try {                	
                     ResultSet result = query.findQuietFloors();
-                    while(result.next()) {
-                    	 JLabel count = new JLabel("Floor Num: " + result.getString("F_NUM") + " ");
-                    	 count.setFont(new Font("Tahoma", Font.PLAIN, 20));
-                    	 quietPanel.add(count);
+                    ResultSet resultsize = query.findQuietFloors();
+                    int size=0;
+                    while(resultsize.next()) {
+                    	size++;
+                    }
+                    GridLayout layout = new GridLayout(size,1);
+                    quietPanel.setLayout(layout);                    
+                    while(result.next()) {                        	
+                    	JLabel count = new JLabel("Floor Num: " + result.getString("F_NUM") );
+                    	count.setFont(new Font("Tahoma", Font.PLAIN, 20));                    	
+                    	quietPanel.add(count);
                     }
                 } catch (SQLException error) {
                     error.printStackTrace();
@@ -210,6 +216,17 @@ public class Vivlo {
                 panel.add(overLbl);
 
                 JPanel overPanel = new JPanel();
+                try {
+                	ResultSet result = query.viewOverDue();
+                	while(result.next()) {
+                	 JLabel count = new JLabel("Book ISBN: " + result.getString("NREF_ISBN") + " ");
+                   	 count.setFont(new Font("Tahoma", Font.PLAIN, 20));
+                   	 overPanel.add(count);
+                	}
+                }
+                catch (SQLException e) {
+                	e.printStackTrace();
+                }
                 JScrollPane overScroll = new JScrollPane(overPanel);
                 overScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
                 overScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
