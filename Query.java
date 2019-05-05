@@ -364,4 +364,16 @@ public class Query {
         }
         return result;
     }
+     
+     public ResultSet allBooks() { 
+    	 ResultSet result = null;
+    	 PreparedStatement ps = null;
+    	 try { 
+    		 ps = connection.prepareStatement("SELECT ISBN, COPY, TITLE, GENRE, PUBLISHER, SIZE FROM BOOK;");
+    		 result = ps.executeQuery();
+    	 } catch(Exception ex) {
+    		 ex.printStackTrace();
+    	 }
+    	 return result;
+     }
 }

@@ -27,7 +27,7 @@ public class Vivlo {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    createLoginFrame();
+                    createResults();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1007,6 +1007,65 @@ public class Vivlo {
 
         frame.setVisible(true);
     }
+    
+    
+public void createResults() {
+
+		JFrame frame = new JFrame();
+		frame.setBounds(100, 100, 1901, 967);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		
+		JLabel lblDataResults = new JLabel("Data Results");
+		lblDataResults.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		lblDataResults.setBounds(661, 25, 197, 50);
+		frame.getContentPane().add(lblDataResults);
+		
+		JButton btnPopulate = new JButton("Populate");
+		btnPopulate.setBounds(752, 868, 97, 25);
+		frame.getContentPane().add(btnPopulate);
+		
+		JTable table = new JTable();
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"ISBN", "COPY", "TITLE", "GENRE", "PUBLISHER", "SIZE"
+			}
+		));
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(87, 823, 1342, -616);
+		frame.getContentPane().add(scrollPane);
+		table.setBounds(86, 189, 1342, 632);
+		frame.getContentPane().add(table);
+		btnPopulate.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+		resizeColumnWidth(table);
+		try {
+			ResultSet result = query.allBooks();
+			while(result.next()){
+				String ISBN = result.getString("ISBN");
+			int COPY = result.getInt("COPY");
+			String TITLE = result.getString("TITLE");
+			String GENRE = result.getString("GENRE");
+			String PUBLISHER = result.getString("PUBLISHER");
+			int SIZE = result.getInt("SIZE");
+			
+			tableModel.addRow(new Object[] {
+				ISBN, COPY, TITLE, GENRE, PUBLISHER, SIZE
+			});
+			}
+		}catch (SQLException ex) {
+			
+		}
+		
+	}
+		});
+		
+		frame.getContentPane().setBackground(tuYellow);
+        frame.setVisible(true);
+}
 
     /**
      * Resizes the table column
