@@ -316,27 +316,13 @@ public class Query {
         ResultSet result = null;
         PreparedStatement ps = null;
         try{
-            ps = connection.prepareStatement("SELECT NREF_ISBN, NREF_COPY, CO_DATE + 20 AS 'WAS DUE', CO_TUID AS 'CHECK OUT TUID' From NREF_BOOK WHERE CO_DATE + 20 < (SELECT CURDATE()) ;");
+            ps = connection.prepareStatement("SELECT NREF_ISBN, NREF_COPY, adddate(curdate(),-20) AS 'was due', CO_TUID AS 'Checked Out to' From NREF_BOOK WHERE CO_DATE > adddate(curdate(),-20) ;");
             result = ps.executeQuery();
         } catch(Exception ex){
             ex.printStackTrace();
         }
         return result;
     }
-     public ResultSet studyRoomAvailable() {
-    	 ResultSet result = null;
-    	 PreparedStatement ps = null;
-    	 try {
-    		 ps = connection.prepareStatement("SELECT R_NUM FROM NON_BOOK_RESOURCE WHERE R_TYPE LIKE 'Study Room' AND R_DATE IS NULL and R_TIME IS NULL; ");
-    		 result = ps.executeQuery();
-    		 
-    	 }
-    	 catch (Exception ex) {
-    		 ex.printStackTrace();
-    	 }
-    	 return result;
-     }
-     
     
     //request a book
      public void requestBook(String ISBN, String COPY){
