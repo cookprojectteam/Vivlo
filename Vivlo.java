@@ -27,7 +27,7 @@ public class Vivlo {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    createResults();
+                    createLoginFrame();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -683,35 +683,17 @@ public class Vivlo {
      */
     public void createBookResultsFrameManagement() {
         JFrame frame = new JFrame("Vivlo - Books");
-        frame.setBounds(100, 100, 970, 620);
+        frame.setBounds(100, 100, 500, 500);
         frame.getContentPane().setBackground(tuYellow);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(null);
 
         JLabel lblBookResults = new JLabel("Book Results");
         lblBookResults.setFont(new Font("Tahoma", Font.PLAIN, 36));
-        lblBookResults.setBounds(30, 10, 250, 50);
+        lblBookResults.setBounds(200, 10, 250, 50);
         frame.getContentPane().add(lblBookResults);
-
-        String[] columnNames = {"ISBN#", "CopyNo","Title", "Author First", "Author Last", "Checked Out", "On Hold"};
-        String [][] bookData = {columnNames, {"112222333", "1","The Alchemist", "Bart", "Allen", "yes", "No"},
-                {"7865435354", "2","The Alchemist", "Maggie", "Zuelsdorf", "yes", "No"},
-                {"354354616", "1","CODE", "Joey", "Case", "yes", "No"},
-                {"453132354", "1","Boku No Hero Academia", "Emily", "Vogel", "yes", "No"}};
-
-
-        TableModel model;
-        model = new DefaultTableModel(bookData, columnNames);
-
-        JScrollPane sp = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        frame.setSize(1490, 640);
-        JTable table = new JTable(model);
-        resizeColumnWidth(table);
-        table.setFont(new Font("Tahoma", Font.PLAIN, 18));
-        table.setRowHeight(30);
-        frame.getContentPane().add(table);
-        table.setBounds(33, 63, 1403, 493);
-        frame.getContentPane().add(sp);
+        
+       
 
         JButton btnNewSearchQuery = new JButton("Back to Search");
         btnNewSearchQuery.setBackground(Color.BLACK);
