@@ -7,11 +7,13 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import java.awt.event.ActionListener;
+import java.awt.print.Book;
 import java.awt.event.ActionEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Vector;
 
 public class Vivlo {
 	public static final int joey=9;
@@ -429,7 +431,7 @@ public class Vivlo {
         backBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                createBookResultsFrame();
+                createResults();
                 frame.dispose();
             }
         });
@@ -983,37 +985,37 @@ public class Vivlo {
 public void createResults() {
 
 		JFrame frame = new JFrame();
-		frame.setBounds(100, 100, 1901, 967);
+		frame.setBounds(100, 100, 1426, 986);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		JLabel lblDataResults = new JLabel("Data Results");
-		lblDataResults.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		JLabel lblDataResults = new JLabel("All Books");
+		lblDataResults.setFont(new Font("Tahoma", Font.BOLD, 35));
 		lblDataResults.setBounds(661, 25, 197, 50);
 		frame.getContentPane().add(lblDataResults);
-		
-		JButton btnPopulate = new JButton("Populate");
-		btnPopulate.setBounds(752, 868, 97, 25);
-		frame.getContentPane().add(btnPopulate);
-		
+
 		JTable table = new JTable();
+		String[] columnNames = {"ISBN", "COPY", "TITLE", "GENRE", "PUBLISHER", "SIZE"};
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
 			new String[] {
 				"ISBN", "COPY", "TITLE", "GENRE", "PUBLISHER", "SIZE"
 			}
-		));
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(87, 823, 1342, -616);
-		frame.getContentPane().add(scrollPane);
-		table.setBounds(86, 189, 1342, 632);
+		)); 
+		
+		table.setBounds(40, 189, 1342, 632);
+	    table.setFont(new Font("Tahoma", Font.PLAIN, 18));
+	    table.setRowHeight(30);
 		frame.getContentPane().add(table);
-		btnPopulate.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+		frame.getContentPane().setBackground(tuYellow);
+        frame.setVisible(true);
+        
 		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
-		resizeColumnWidth(table);
 		try {
+			
+				tableModel.addRow(columnNames);
+				resizeColumnWidth(table);
 			ResultSet result = query.allBooks();
 			while(result.next()){
 				String ISBN = result.getString("ISBN");
@@ -1023,20 +1025,17 @@ public void createResults() {
 			String PUBLISHER = result.getString("PUBLISHER");
 			int SIZE = result.getInt("SIZE");
 			
-			tableModel.addRow(new Object[] {
-				ISBN, COPY, TITLE, GENRE, PUBLISHER, SIZE
-			});
+			
+			tableModel.addRow(new Object[] {ISBN, COPY, TITLE, GENRE, PUBLISHER, SIZE});
 			}
 		}catch (SQLException ex) {
 			
 		}
 		
 	}
-		});
 		
-		frame.getContentPane().setBackground(tuYellow);
-        frame.setVisible(true);
-}
+		
+
 
     /**
      * Resizes the table column
