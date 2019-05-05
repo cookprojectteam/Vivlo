@@ -311,19 +311,6 @@ public class Query {
         }       
     }
     
-    //View over due books
-     public ResultSet viewOverDue(){
-        ResultSet result = null;
-        PreparedStatement ps = null;
-        try{
-            ps = connection.prepareStatement("SELECT NREF_ISBN, NREF_COPY, adddate(curdate(),-20) AS 'was due', CO_TUID AS 'Checked Out to' From NREF_BOOK WHERE CO_DATE > adddate(curdate(),-20) ;");
-            result = ps.executeQuery();
-        } catch(Exception ex){
-            ex.printStackTrace();
-        }
-        return result;
-    }
-    
     //request a book
      public void requestBook(String ISBN, String COPY){
         PreparedStatement ps = null;
@@ -350,16 +337,126 @@ public class Query {
         }
         return result;
     }
+     public ResultSet studyRoomAvailable() {
+    	 ResultSet result = null;
+    	 PreparedStatement ps = null;
+    	 try {
+    		 ps=connection.prepareStatement("SELECT R_NUM FROM NON_BOOK_RESOURCE WHERE R_TYPE LIKE 'Study Room' AND R_DATE IS NULL AND R_TIME IS NULL;");
+    		 result=ps.executeQuery();
+    	 }
+    	 catch (SQLException e) {
+    		 e.printStackTrace();
+    	 }
+    	 return result;
+     }
      
-     public ResultSet allBooks() { 
+     public ResultSet show(String isbn,String af,String al,String title) { 
     	 ResultSet result = null;
     	 PreparedStatement ps = null;
     	 try { 
-    		 ps = connection.prepareStatement("SELECT ISBN, COPY, TITLE, GENRE, PUBLISHER, SIZE FROM BOOK;");
+    		 ps = connection.prepareStatement("SELECT DISTINCT JOEY.ISBN,JOEY.COPY,JOEY.AF,JOEY.AL,JOEY.TITLE,JOEY.SIZE FROM ( (SELECT BOOK.ISBN,BOOK.COPY,BOOK.TITLE,BOOK.SIZE,AUTHOR.AF,AUTHOR.AL FROM BOOK,AUTHOR WHERE BOOK.ISBN = AUTHOR.isbn) AS JOEY) WHERE JOEY.ISBN LIKE ? OR JOEY.AF LIKE ? OR JOEY.AL LIKE ? OR JOEY.TITLE LIKE ? ;");
+    		 ps.setString(1,isbn);
+    		 ps.setString(2, af);
+    		 ps.setString(3, al);
+    		 ps.setString(4, title);
     		 result = ps.executeQuery();
     	 } catch(Exception ex) {
+    		 System.out.println("Failed here");
     		 ex.printStackTrace();
     	 }
     	 return result;
+     }
+     public ResultSet listRef() {
+    	 ResultSet result = null;
+		 PreparedStatement ps = null;
+    	 try {    		 
+    		 ps = connection.prepareStatement("SELECT ISBN, COPY, TITLE, GENRE, PUBLISHER, SIZE FROM BOOK, REF_BOOK WHERE ISBN=REF_ISBN AND COPY=REF_COPY;");
+    		 result = ps.executeQuery();
+    		 
+    	 }
+    	 catch (SQLException e) {
+    		 e.printStackTrace();
+    	 }
+    	 return result;
+     }
+     public ResultSet listNref() {
+    	 ResultSet result = null;
+		 PreparedStatement ps = null;
+    	 try {    		 
+    		 ps = connection.prepareStatement("SELECT ISBN, COPY, TITLE, GENRE, PUBLISHER, SIZE FROM NREF_BOOK, BOOK WHERE NREF_ISBN=ISBN AND NREF_COPY=COPY AND CO_TUID IS NULL;");
+    		 result=ps.executeQuery();
+    	 }
+    	 catch (SQLException e) {
+    		 e.printStackTrace();
+    	 }
+    	 return result;
+     }
+     public ResultSet isLibStaff() {
+    	 ResultSet result = null;
+    	 PreparedStatement ps = null;
+    	 try {
+    		 ps = connection.prepareStatement("SELECT * FROM LIB_STAFF WHERE LS_TUID = ?;");
+    		 ps.setString(1, current_tuid);
+    		 result=ps.executeQuery();
+    		 
+    	 }
+    	 catch (SQLException e) {
+    		 e.printStackTrace();
+    		 
+    	 }
+    	 return result;
+     }
+     public ResultSet departInformation() {
+    	 ResultSet result = null;
+    	 PreparedStatement ps = null;
+    	 try {
+    		 ps = connection.prepareStatement("");
+    		 result = ps.executeQuery();
+    		 
+    	 }
+    	 catch (SQLException e) {
+    		 e.printStackTrace();
+    	 }
+    	 return result;
+     }
+     public ResultSet overDueBooks() {
+    	 ResultSet result = null;
+    	 PreparedStatement ps = null;
+    	 try {
+    		 ps = connection.prepareStatement("SELECT NREF_ISBN, NREF_COPY, CO_TUID FROM NREF_BOOK WHERE CO_DATE + 20 < CURDATE();");
+    		 result = ps.executeQuery();
+    		 
+    	 }
+    	 catch (SQLException e) {
+    		 e.printStackTrace();
+    	 }
+    	 return result;
+     }
+     public ResultSet booksHold() {
+    	 ResultSet result = null;
+    	 PreparedStatement ps = null;
+    	 try {
+    		 ps = connection.prepareStatement("SELECT NREF_ISBN, NREF_COPY, HOLD FROM NREF_BOOK WHERE HOLD IS NOT NULL;");
+    		 result = ps.executeQuery();
+    		 
+    	 }
+    	 catch (SQLException e) {
+    		 e.printStackTrace();
+    	 }
+    	 return result;
+     }
+     public ResultSet booksCheckedOut() {
+    	 ResultSet result = null;
+    	 PreparedStatement ps = null;
+    	 try {
+    		 ps = connection.prepareStatement("SELECT NREF_ISBN, NREF_COPY, CO_TUID FROM NREF_BOOK WHERE CO_TUID IS NOT NULL;");
+    		 result = ps.executeQuery();
+    		 
+    	 }
+    	 catch (SQLException e) {
+    		 e.printStackTrace();
+    	 }
+    	 return result;
+     
      }
 }

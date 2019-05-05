@@ -36,573 +36,7 @@ public class Vivlo {
             }
         });
     }
-
-    /**
-     * Initialize the contents of the create choice frame.
-     */
-    private void createChoiceFrame() {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                JFrame choice = new JFrame("Vivlo - Choice");
-                choice.setTitle("Vivlo - Choice");
-                choice.setBounds(100, 100, 600, 200);
-                choice.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-                GridBagConstraints gbc = new GridBagConstraints();
-                JPanel panel = new JPanel();
-                panel.setLayout(new GridBagLayout());
-                panel.setBackground(tuYellow);
-
-                JButton btnBooks = new JButton("Search Book");
-                btnBooks.setPreferredSize(new Dimension(170, 40));
-                btnBooks.setMargin(new Insets(10, 10, 10, 10));
-                btnBooks.setBackground(Color.BLACK);
-                btnBooks.setForeground(Color.WHITE);
-                btnBooks.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        createSearchFrameManagement();
-                        choice.dispose();
-                    }
-                });
-
-                JButton btnBookAdd = new JButton("Add Book");
-                btnBookAdd.setPreferredSize(new Dimension(170, 40));
-                btnBookAdd.setMargin(new Insets(10, 10, 10, 10));
-                btnBookAdd.setBackground(Color.BLACK);
-                btnBookAdd.setForeground(Color.WHITE);
-                btnBookAdd.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        createInsertBookFrame();
-                        choice.dispose();
-                    }
-                });
-
-                JButton btnManagement = new JButton("Management");
-                btnManagement.setPreferredSize(new Dimension(170, 40));
-                btnManagement.setMargin(new Insets(10, 10, 10, 10));
-                btnManagement.setBackground(Color.BLACK);
-                btnManagement.setForeground(Color.WHITE);
-                btnManagement.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        createManagementFrame();
-                        choice.dispose();
-                    }
-                });
-
-                panel.add(btnBooks, gbc);
-                panel.add(btnManagement, gbc);
-                panel.add(btnBookAdd, gbc);
-                choice.add(panel);
-                choice.setVisible(true);
-            }
-        });
-    }
-
-    /**
-     * Initialize the contents of the create management frame.
-     */
-    private void createManagementFrame() {
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                Font normal = new Font("Tahoma", Font.PLAIN, 18);
-                JFrame management = new JFrame();
-                management.getContentPane().setBackground(Color.YELLOW);
-                management.setTitle("Vivlo - Management");
-                management.setBounds(100, 100, 930, 540);
-                management.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-                JPanel panel = new JPanel();
-                panel.setLayout(null);
-                panel.setBackground(tuYellow);
-
-                // Sets frame title
-                JLabel managementLbl = new JLabel("Management");
-                managementLbl.setBounds(360, 0, 250, 50);
-                managementLbl.setFont(new Font("Tahoma", Font.PLAIN, 36));
-                panel.add(managementLbl);
-
-             // Sets number of available computers
-                try {
-                    ResultSet result = query.getAvailableComps();
-                    
-                    while (result.next()) {
-                    	  JLabel compLbl = new JLabel("Computers Available: " + result.getString(1));
-                          compLbl.setBounds(10, 50, 250, 50);
-                          compLbl.setFont(normal);
-                          panel.add(compLbl);
-                    }
-                } catch (SQLException error) {
-                    error.printStackTrace();
-                }
-              
-
-                // Sets number of books on hold
-               
-                try {
-                    ResultSet result1 = query.countBooksOnHold();
-                    
-                    while (result1.next()) {
-                    	 JLabel booksLbl = new JLabel("Books on Hold: " + result1.getString(1));
-                         booksLbl.setBounds(380, 50, 250, 50);
-                         booksLbl.setFont(normal);
-                         panel.add(booksLbl);
-                    }
-                } catch (SQLException error) {
-                    error.printStackTrace();
-                }
-
-                // Sets number of student workers
-                try {
-                	ResultSet result = query.countStudentWorkers();
-                	while(result.next()) {
-                		JLabel studw = new JLabel("Student Workers: "+ result.getString(1));
-                		studw.setBounds(610,50,250,50);
-                		studw.setFont(normal);
-                		panel.add(studw);
-                	}
-                	
-                }
-                catch (SQLException e) {
-                	e.printStackTrace();
-                }
-                
-
-                // Sets number of quiet floors
-                JLabel quietLbl = new JLabel("Quiet Floors");               
-                quietLbl.setBounds(10, 120, 250, 50);
-                quietLbl.setFont(new Font("Tahoma", Font.PLAIN, 20));
-                panel.add(quietLbl);
-
-                JPanel quietPanel = new JPanel();
-                try {                	
-                    ResultSet result = query.findQuietFloors();
-                    ResultSet resultsize = query.findQuietFloors();
-                    int size=0;
-                    while(resultsize.next()) {
-                    	size++;
-                    }
-                    GridLayout layout = new GridLayout(size,1);
-                    quietPanel.setLayout(layout);                    
-                    while(result.next()) {                        	
-                    	JLabel count = new JLabel("Floor Num: " + result.getString("F_NUM") );
-                    	count.setFont(new Font("Tahoma", Font.PLAIN, 20));                    	
-                    	quietPanel.add(count);
-                    }
-                } catch (SQLException error) {
-                    error.printStackTrace();
-                }
-                JScrollPane quietScroll = new JScrollPane(quietPanel);
-                quietScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-                quietScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-                quietScroll.setBounds(40, 170, 400, 100);
-                panel.add(quietScroll);
-
-                JLabel roomLbl = new JLabel("Study Rooms Available");
-                roomLbl.setBounds(10, 270, 250, 50);
-                roomLbl.setFont(new Font("Tahoma", Font.PLAIN, 20));
-                panel.add(roomLbl);
-
-                JPanel roomPanel = new JPanel();
-                try {
-                	ResultSet resultsize = query.studyRoomAvailable();
-                	ResultSet result = query.studyRoomAvailable();
-                	int size=0;
-                	while(resultsize.next()) {
-                		size++;
-                		
-                	}                	
-                	GridLayout layout = new GridLayout(size,1);
-                	roomPanel.setLayout(layout);                	
-                	while(result.next()) {
-                		JLabel count = new JLabel("Study Room Number: " + result.getString("R_NUM") );
-                    	count.setFont(new Font("Tahoma", Font.PLAIN, 20));                    	
-                    	roomPanel.add(count);
-                	}
-                }
-                catch (SQLException e) {
-                	e.printStackTrace();
-                }      
-                JScrollPane roomScroll = new JScrollPane(roomPanel);
-                roomScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-                roomScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-                roomScroll.setBounds(40, 320, 400, 100);
-                panel.add(roomScroll);
-
-                JLabel overLbl = new JLabel("Overdue Books");
-                overLbl.setBounds(460, 120, 250, 50);
-                overLbl.setFont(new Font("Tahoma", Font.PLAIN, 20));
-                panel.add(overLbl);
-
-                JPanel overPanel = new JPanel();
-                try {   
-                	
-                	ResultSet result = query.viewOverDue();
-                	ResultSet resultsize = query.viewOverDue();
-                	int size=0;
-                	while(resultsize.next()) {
-                		size++;
-                	}
-                	GridLayout layout = new GridLayout(size,1);
-                	overPanel.setLayout(layout);             	
-                	
-                	while(result.next()) {
-                	 JLabel count = new JLabel("Book ISBN: " + result.getString("NREF_ISBN") + " ");
-                   	 count.setFont(new Font("Tahoma", Font.PLAIN, 20));
-                   	 overPanel.add(count);
-                	}
-                }
-                catch (SQLException e) {
-                	e.printStackTrace();
-                }
-                JScrollPane overScroll = new JScrollPane(overPanel);
-                overScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-                overScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-                overScroll.setBounds(490, 170, 400, 100);
-                panel.add(overScroll);
-                
-
-                JLabel deptLbl = new JLabel("Departments");
-                deptLbl.setBounds(460, 270, 250, 50);
-                deptLbl.setFont(new Font("Tahoma", Font.PLAIN, 20));
-                panel.add(deptLbl);
-
-                JPanel deptPanel = new JPanel();
-                JScrollPane deptScroll = new JScrollPane(deptPanel);
-                deptScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-                deptScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-                deptScroll.setBounds(490, 320, 400, 100);
-                panel.add(deptScroll);
-
-                JButton btnBack = new JButton("Back");
-                btnBack.setBounds(10, 440, 70, 40);
-                btnBack.setBackground(Color.BLACK);
-                btnBack.setForeground(Color.WHITE);
-                btnBack.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        createChoiceFrame();
-                        management.dispose();
-                    }
-                });
-                panel.add(btnBack);
-
-                management.add(panel);
-                management.setVisible(true);
-            }
-        });
-    }
-
-    /**
-     * Creates the login frame
-     */
-    private void createLoginFrame() {
-        JFrame frame = new JFrame("Vivlo - Login");
-        frame.getContentPane().setBackground(tuYellow);
-        frame.getContentPane().setLayout(null);
-
-        JLabel TU_logo = new JLabel("");
-        TU_logo.setBounds(0, 0, 545, 492);
-        Image img = new ImageIcon(this.getClass().getResource("towsonu-logo.png")).getImage();
-        TU_logo.setIcon(new ImageIcon(img));
-        frame.getContentPane().add(TU_logo);
-
-        JTextField tuID = new JTextField();
-        tuID.setFont(new Font("Tahoma", Font.PLAIN, 16));
-        tuID.setBounds(599, 265, 252, 38);
-        frame.getContentPane().add(tuID);
-        tuID.setColumns(10);
-
-        JButton btnSignIn = new JButton("Sign In");
-        btnSignIn.setBackground(Color.BLACK);
-        btnSignIn.setForeground(Color.WHITE);
-        btnSignIn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String idNum = tuID.getText();
-                try {
-                    ResultSet result = query.login(idNum);
-                    if(result.next()) {
-                    	ResultSet resultFilter = query.loginFilter(idNum);
-                    	if(resultFilter.next()) {
-                    		Query.current_tuid = idNum;
-                        	JOptionPane.showMessageDialog(null, "Successfull Login For Library Staff!",
-                                "Login Successful!", JOptionPane.INFORMATION_MESSAGE);
-                        	createChoiceFrame();
-                        	frame.dispose();
-                    	}
-                    	else {
-                    		Query.current_tuid = idNum;
-                    		JOptionPane.showMessageDialog(null, "Successfull Login For Non Library Staff!",
-                    				"Login Successful!", JOptionPane.INFORMATION_MESSAGE);
-                    		createSearchFrame();
-                    		frame.dispose();
-                    	}
-                    }
-                    else {
-                        JOptionPane.showMessageDialog(null, "Not a valid TU ID#",
-                                "Login Error", JOptionPane.ERROR_MESSAGE);
-                        tuID.setText(null);
-                    }
-                } catch (SQLException e1) {
-                    e1.printStackTrace();
-                }
-//				String towsonID = tuID.getText();
-            }
-        });
-        btnSignIn.setBounds(670, 343, 97, 25);
-        frame.getContentPane().add(btnSignIn);
-
-        JLabel lblWelcomeToVivlo = new JLabel("Welcome To Vivlo!");
-        lblWelcomeToVivlo.setFont(new Font("Tahoma", Font.BOLD, 18));
-        lblWelcomeToVivlo.setBounds(636, 48, 190, 25);
-        frame.getContentPane().add(lblWelcomeToVivlo);
-
-        JLabel lblLoginWithTu = new JLabel("Login with TU ID#");
-        lblLoginWithTu.setFont(new Font("Tahoma", Font.BOLD, 17));
-        lblLoginWithTu.setBounds(636, 222, 179, 25);
-        frame.getContentPane().add(lblLoginWithTu);
-        frame.setBounds(100, 100, 915, 534);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
-    }
-
-    /**
-     * Creates the search frame
-     */
-    public void createSearchFrame() {
-        JFrame frame = new JFrame("Vivlo - Search");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(null);
-        frame.setBounds(100, 100, 390, 300);
-
-        JLabel JL_fname,JL_lname,JL_title,JL_isbn;
-        JTextField JT_fname,JT_lname,JT_title,JT_isbn;
-        JButton btn_search;
-
-        JL_isbn = new JLabel("Enter ISBN:");
-        JL_isbn.setBounds(20, 20, 220, 20);
-        JT_isbn = new JTextField(20);
-        JT_isbn.setBounds(170, 20, 190, 20);
-
-        JL_fname = new JLabel("Author First Name: ");
-        JL_fname.setBounds(20, 50, 220, 20);
-        JT_fname = new JTextField(20);
-        JT_fname.setBounds(170, 50, 190, 20);
-        JL_lname = new JLabel("Author Last Name: ");
-        JL_lname.setBounds(20, 80, 220, 20);
-        JT_lname = new JTextField(20);
-        JT_lname.setBounds(170, 80, 190, 20);
-        
-        JL_title = new JLabel("Title: ");
-        JL_title.setBounds(20, 110, 220, 20);
-        JT_title = new JTextField(20);
-        JT_title.setBounds(170, 110, 190, 20);
-
-        btn_search = new JButton("Search");
-        btn_search.setBounds(260, 215, 100, 30);
-        btn_search.setBackground(Color.BLACK);
-        btn_search.setForeground(Color.WHITE);
-        btn_search.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String isbnNum = JT_isbn.getText();
-                String Fname = JT_fname.getText();
-                String Lname =  JT_lname.getText();
-                String title = JT_title.getText();
-                try {
-                    ResultSet result = query.findBookByISBN(isbnNum);
-                    ResultSet author = query.listByAuthor(Fname, Lname);
-                    ResultSet bookTitle = query.findBookByTitle(title);
-                    if(result.next()) {
-                    	result.getString(1);
-                        JOptionPane.showMessageDialog(null, "ISBN found",
-                                "ISBN found", JOptionPane.INFORMATION_MESSAGE);
-                    }else if(author.next()){ 
-                    	author.getString(1);
-                        JOptionPane.showMessageDialog(null, "Book Author Name found",
-                                "Author Name Found", JOptionPane.INFORMATION_MESSAGE);
-                    }else if(bookTitle.next()){
-                    	bookTitle.getString(1);
-                        JOptionPane.showMessageDialog(null, "Book title found",
-                                "Book Title Found", JOptionPane.INFORMATION_MESSAGE);
-                    }
-                    else {
-                        JOptionPane.showMessageDialog(null, "Not a valid ISBN#, book title or Author name",
-                                "ISBN error", JOptionPane.ERROR_MESSAGE);
-                        JT_isbn.setText(null);
-                    }
-                } catch (SQLException e1) {
-                    e1.printStackTrace();
-                }
-//				String towsonID = tuID.getText();
-            }
-        });
-
-        JCheckBox Reference = new JCheckBox("Reference Book");
-        Reference.setBackground(tuYellow);
-        Reference.setBounds(30, 130, 120, 40);
-        frame.add(Reference);
-
-        JCheckBox Non_reference = new JCheckBox("Non-Reference Book");
-        Non_reference.setBackground(tuYellow);
-        Non_reference.setBounds(170, 130, 145, 40);
-        frame.add(Non_reference);
-
-        JCheckBox Holds = new JCheckBox("Not Held");
-        Holds.setBackground(tuYellow);
-        Holds.setBounds(30, 170, 100, 40);
-        frame.add(Holds);
-
-        JButton backBtn = new JButton("Results");
-        backBtn.setBackground(Color.BLACK);
-        backBtn.setForeground(Color.WHITE);
-        backBtn.setBounds(10, 215, 100, 30);
-        backBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                createResults();
-                frame.dispose();
-            }
-        });
-        frame.add(backBtn);
-
-        frame.add(btn_search);
-        frame.add(JL_fname);
-        frame.add(JT_fname);
-        frame.add(JL_lname);
-        frame.add(JT_lname);
-        frame.add(JL_title);
-        frame.add(JT_title);
-        frame.add(JL_isbn);
-        frame.add(JT_isbn);
-        frame.getContentPane().setBackground(tuYellow);
-        frame.setVisible(true);
-    }
-    /*
-     * Create the search frame for management
-     */
-    public void createSearchFrameManagement() {
-        JFrame frame = new JFrame("Vivlo - Search");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(null);
-        frame.setBounds(100, 100, 390, 300);
-
-        JLabel JL_fname,JL_lname,JL_title,JL_isbn;
-        JTextField JT_fname,JT_lname,JT_title,JT_isbn;
-        JButton btn_search;
-
-        JL_isbn = new JLabel("Enter ISBN:");
-        JL_isbn.setBounds(20, 20, 220, 20);
-        JT_isbn = new JTextField(20);
-        JT_isbn.setBounds(170, 20, 190, 20);
-
-        JL_fname = new JLabel("Author First Name: ");
-        JL_fname.setBounds(20, 50, 220, 20);
-        JT_fname = new JTextField(20);
-        JT_fname.setBounds(170, 50, 190, 20);
-        JL_lname = new JLabel("Author Last Name: ");
-        JL_lname.setBounds(20, 80, 220, 20);
-        JT_lname = new JTextField(20);
-        JT_lname.setBounds(170, 80, 190, 20);
-        
-        JL_title = new JLabel("Title: ");
-        JL_title.setBounds(20, 110, 220, 20);
-        JT_title = new JTextField(20);
-        JT_title.setBounds(170, 110, 190, 20);
-
-        btn_search = new JButton("Search");
-        btn_search.setBounds(260, 215, 100, 30);
-        btn_search.setBackground(Color.BLACK);
-        btn_search.setForeground(Color.WHITE);
-        btn_search.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String isbnNum = JT_isbn.getText();
-                String Fname = JT_fname.getText();
-                String Lname =  JT_lname.getText();
-                String title = JT_title.getText();
-                try {
-                    ResultSet result = query.findBookByISBN(isbnNum);
-                    ResultSet author = query.listByAuthor(Fname, Lname);
-                    ResultSet bookTitle = query.findBookByTitle(title);
-                    if(result.next()) {
-                    	result.getString(1);
-                        JOptionPane.showMessageDialog(null, "ISBN found",
-                                "ISBN found", JOptionPane.INFORMATION_MESSAGE);
-                    }else if(author.next()){ 
-                    	author.getString(1);
-                        JOptionPane.showMessageDialog(null, "Book Author Name found",
-                                "Author Name Found", JOptionPane.INFORMATION_MESSAGE);
-                    }else if(bookTitle.next()){
-                    	bookTitle.getString(1);
-                        JOptionPane.showMessageDialog(null, "Book title found",
-                                "Book Title Found", JOptionPane.INFORMATION_MESSAGE);
-                    }
-                    else {
-                        JOptionPane.showMessageDialog(null, "Not a valid ISBN#, book title or Author name",
-                                "ISBN error", JOptionPane.ERROR_MESSAGE);
-                        JT_isbn.setText(null);
-                    }
-                } catch (SQLException e1) {
-                    e1.printStackTrace();
-                }
-//				String towsonID = tuID.getText();
-            }
-        });
-
-        JCheckBox Reference = new JCheckBox("Reference Book");
-        Reference.setBackground(tuYellow);
-        Reference.setBounds(30, 130, 120, 40);
-        frame.add(Reference);
-
-        JCheckBox Non_reference = new JCheckBox("Non-Reference Book");
-        Non_reference.setBackground(tuYellow);
-        Non_reference.setBounds(170, 130, 145, 40);
-        frame.add(Non_reference);
-
-        JCheckBox Holds = new JCheckBox("Not Held");
-        Holds.setBackground(tuYellow);
-        Holds.setBounds(30, 170, 100, 40);
-        frame.add(Holds);
-
-        JButton ResultBtn = new JButton("Results");
-        ResultBtn.setBackground(Color.BLACK);
-        ResultBtn.setForeground(Color.WHITE);
-        ResultBtn.setBounds(10, 215, 100, 30);
-        ResultBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                createBookResultsFrameManagement();
-                frame.dispose();
-            }
-        });
-        
-        JButton backBtn = new JButton("Back");
-        backBtn.setBackground(Color.BLACK);
-        backBtn.setForeground(Color.WHITE);
-        backBtn.setBounds(135, 215, 100, 30);
-        backBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                createChoiceFrame();
-                frame.dispose();
-            }
-        });
-        frame.add(backBtn);
-        frame.add(ResultBtn);
-        frame.add(btn_search);
-        frame.add(JL_fname);
-        frame.add(JT_fname);
-        frame.add(JL_lname);
-        frame.add(JT_lname);
-        frame.add(JL_title);
-        frame.add(JT_title);
-        frame.add(JL_isbn);
-        frame.add(JT_isbn);
-        frame.getContentPane().setBackground(tuYellow);
-        frame.setVisible(true);
-    }
-
-    
+   
 
     /**
      * Creates the query book results frame
@@ -738,143 +172,6 @@ public class Vivlo {
         frame.getContentPane().add(btnCheckout);
         frame.setVisible(true);
     }
-    /**
-     * Create the book checkout frame
-     */
-    public void createCheckoutFrame() {
-        JFrame frame = new JFrame("Vivlo - Checkout");
-        frame.setBounds(100, 100, 400, 260);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(null);
-
-        JLabel lblCheckOutPage = new JLabel("Check Out Page");
-        lblCheckOutPage.setFont(new Font("Tahoma", Font.PLAIN, 36));
-        lblCheckOutPage.setBounds(60, 15, 300, 45);
-        frame.add(lblCheckOutPage);
-
-        JLabel isbnLbl = new JLabel("ISBN Number");
-        isbnLbl.setBounds(30, 80, 150, 30);
-        frame.add(isbnLbl);
-
-        JTextField isbnText = new JTextField();
-        isbnText.setBounds(30, 110, 150, 30);
-        frame.add(isbnText);
-
-        JLabel copyLbl = new JLabel("Copy Number");
-        copyLbl.setBounds(200, 80, 150, 30);
-        frame.add(copyLbl);
-
-        JTextField copyText = new JTextField();
-        copyText.setBounds(200, 110, 150, 30);
-        frame.add(copyText);
-
-        JButton checkoutBtn = new JButton("Checkout");
-        checkoutBtn.setBackground(Color.BLACK);
-        checkoutBtn.setForeground(Color.WHITE);
-        checkoutBtn.setBounds(250, 160, 100, 40);
-
-        JButton backBtn = new JButton("Back");
-        backBtn.setForeground(Color.WHITE);
-        backBtn.setBackground(Color.BLACK);
-        backBtn.setBounds(30, 160, 100, 40);
-        backBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                createBookResultsFrame();
-                frame.dispose();
-            }
-        });
-        frame.add(backBtn);
-
-        checkoutBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            	String isbn = isbnText.getText();
-            	String copy = copyText.getText();
-            	try {
-            		query.checkout(isbn,copy);           		
-            		
-            	}
-            	catch (Exception er) {
-            		er.printStackTrace();
-            	}
-
-            }
-        });
-        frame.add(checkoutBtn);
-
-        frame.getContentPane().setBackground(tuYellow);
-        frame.setVisible(true);
-    }
-
-
-    /**
-     * Create the book return frame
-     */
-    public void createReturnFrame() {
-        JFrame frame = new JFrame("Vivlo - Return");
-        frame.setBounds(100, 100, 400, 260);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(null);
-
-        JLabel titleLbl = new JLabel("Return Page");
-        titleLbl.setFont(new Font("Tahoma", Font.PLAIN, 36));
-        titleLbl.setBounds(90, 15, 300, 45);
-        frame.add(titleLbl);
-
-        JLabel isbnLbl = new JLabel("ISBN Number");
-        isbnLbl.setBounds(30, 80, 150, 30);
-        frame.add(isbnLbl);
-
-        JTextField isbnText = new JTextField();
-        isbnText.setBounds(30, 110, 150, 30);
-        frame.add(isbnText);
-
-        JLabel copyLbl = new JLabel("Copy Number");
-        copyLbl.setBounds(200, 80, 150, 30);
-        frame.add(copyLbl);
-
-        JTextField copyText = new JTextField();
-        copyText.setBounds(200, 110, 150, 30);
-        frame.add(copyText);
-
-        JButton returnBtn = new JButton("Return");
-        returnBtn.setBackground(Color.BLACK);
-        returnBtn.setForeground(Color.WHITE);
-        returnBtn.setBounds(250, 160, 100, 40);
-
-        JButton backBtn = new JButton("Back");
-        backBtn.setForeground(Color.WHITE);
-        backBtn.setBackground(Color.BLACK);
-        backBtn.setBounds(30, 160, 100, 40);
-        backBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                createBookResultsFrame();
-                frame.dispose();
-            }
-        });
-        frame.add(backBtn);
-
-        returnBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            	String isbn = isbnText.getText();
-            	String copy = copyText.getText();
-            	try {
-            		query.checkin(isbn, copy);
-            	}
-            	catch (Exception er) {
-            		er.printStackTrace();
-            	}
-
-            }
-        });
-        frame.add(returnBtn);
-
-        frame.getContentPane().setBackground(tuYellow);
-        frame.setVisible(true);
-    }
 
     /**
      * Creates the book insert frame
@@ -971,7 +268,7 @@ public class Vivlo {
         backBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                createChoiceFrame();
+                createManageHomeFrame();
                 frame.dispose();
             }
         });
@@ -991,63 +288,6 @@ public class Vivlo {
 
         frame.setVisible(true);
     }
-    
-    
-    public void createResults() {
-
-		JFrame frame = new JFrame();
-		frame.setBounds(100, 100, 1426, 986);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		
-		JLabel lblDataResults = new JLabel("All Books");
-		lblDataResults.setFont(new Font("Tahoma", Font.BOLD, 35));
-		lblDataResults.setBounds(661, 25, 197, 50);
-		frame.getContentPane().add(lblDataResults);
-
-		JTable table = new JTable();
-		String[] columnNames = {"ISBN", "COPY", "TITLE", "GENRE", "PUBLISHER", "SIZE"};
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"ISBN", "COPY", "TITLE", "GENRE", "PUBLISHER", "SIZE"
-			}
-		)); 
-		
-		table.setBounds(40, 189, 1342, 632);
-	    table.setFont(new Font("Tahoma", Font.PLAIN, 18));
-	    table.setRowHeight(30);
-		frame.getContentPane().add(table);
-		frame.getContentPane().setBackground(tuYellow);
-        frame.setVisible(true);
-        
-		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
-		try {
-			
-				tableModel.addRow(columnNames);
-				resizeColumnWidth(table);
-			ResultSet result = query.allBooks();
-			while(result.next()){
-				String ISBN = result.getString("ISBN");
-			int COPY = result.getInt("COPY");
-			String TITLE = result.getString("TITLE");
-			String GENRE = result.getString("GENRE");
-			String PUBLISHER = result.getString("PUBLISHER");
-			int SIZE = result.getInt("SIZE");
-			
-			
-			tableModel.addRow(new Object[] {ISBN, COPY, TITLE, GENRE, PUBLISHER, SIZE});
-			}
-		}catch (SQLException ex) {
-			
-		}
-		
-	}
-		
-		
-		
-
 
     /**
      * Resizes the table column
@@ -1067,4 +307,1454 @@ public class Vivlo {
             columnModel.getColumn(column).setPreferredWidth(width);
         }
     }
+    
+    
+    /*
+     * 
+     * Restructuring everything from scratch to make the project uniform in UI.
+     * Joey's Log:
+     * Update: 4:28 A.M. start
+     * Update: 6:24 A.M. completed login, navigation, return, checkout
+     *
+     */
+    /**
+     * 
+     * 
+     * 
+     * 
+     * 
+     * NON MANAGEMENT SIDE OF THE CODE
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * Creates the login frame called createLoginFrame. Sends the user to a navigation page when the user is 
+     * not library staff. Sends the user to a choice page when the user is library staff. 
+     */
+    private void createLoginFrame() {
+        JFrame frame = new JFrame("Vivlo - Login");
+        frame.getContentPane().setBackground(tuYellow);
+        frame.getContentPane().setLayout(null);
+
+        JLabel TU_logo = new JLabel("");
+        TU_logo.setBounds(0, 0, 545, 492);
+        Image img = new ImageIcon(this.getClass().getResource("towsonu-logo.png")).getImage();
+        TU_logo.setIcon(new ImageIcon(img));
+        frame.getContentPane().add(TU_logo);
+
+        JTextField tuID = new JTextField();
+        tuID.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        tuID.setBounds(599, 265, 252, 38);
+        frame.getContentPane().add(tuID);
+        tuID.setColumns(10);
+
+        JButton btnSignIn = new JButton("Sign In");
+        btnSignIn.setBackground(Color.BLACK);
+        btnSignIn.setForeground(Color.WHITE);
+        btnSignIn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String idNum = tuID.getText();
+                try {
+                    ResultSet result = query.login(idNum);
+                    if(result.next()) {
+                    	ResultSet resultFilter = query.loginFilter(idNum);
+                    	if(resultFilter.next()) {
+                    		Query.current_tuid = idNum;
+                        	JOptionPane.showMessageDialog(null, "Successfull Login For Library Staff!",
+                                "Login Successful!", JOptionPane.INFORMATION_MESSAGE);
+                        	createManageHomeFrame();
+                        	frame.dispose();
+                    	}
+                    	else {
+                    		Query.current_tuid = idNum;
+                    		JOptionPane.showMessageDialog(null, "Successfull Login For Non Library Staff!",
+                    				"Login Successful!", JOptionPane.INFORMATION_MESSAGE);
+                    		createSearchFrame();
+                    		frame.dispose();
+                    	}
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(null, "Not a valid TU ID#",
+                                "Login Error", JOptionPane.ERROR_MESSAGE);
+                        tuID.setText(null);
+                    }
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+//				String towsonID = tuID.getText();
+            }
+        });
+        btnSignIn.setBounds(670, 343, 97, 25);
+        frame.getContentPane().add(btnSignIn);
+
+        JLabel lblWelcomeToVivlo = new JLabel("Welcome To Vivlo!");
+        lblWelcomeToVivlo.setFont(new Font("Tahoma", Font.BOLD, 18));
+        lblWelcomeToVivlo.setBounds(636, 48, 190, 25);
+        frame.getContentPane().add(lblWelcomeToVivlo);
+
+        JLabel lblLoginWithTu = new JLabel("Login with TU ID#");
+        lblLoginWithTu.setFont(new Font("Tahoma", Font.BOLD, 17));
+        lblLoginWithTu.setBounds(636, 222, 179, 25);
+        frame.getContentPane().add(lblLoginWithTu);
+        frame.setBounds(100, 100, 915, 534);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+    }
+    /**
+     * 
+     * 
+     * 
+     * Creates the navigation frame called createSearchFrame for non library staff users. The features on 
+     * the page include test search, show search, return book, list available non reference books, and list reference books 
+     * 
+     */
+    public void createSearchFrame() {
+        JFrame frame = new JFrame("Vivlo - Navigation");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(null);
+        frame.setBounds(100, 100, 915, 534);
+
+        JLabel JL_fname,JL_lname,JL_title,JL_isbn;
+        JTextField JT_fname,JT_lname,JT_title,JT_isbn;
+        JButton btn_search;
+
+        JL_isbn = new JLabel("Enter ISBN:");
+        JL_isbn.setBounds(20, 20, 220, 20);
+        JL_isbn.setFont(new Font("Tahoma", Font.BOLD, 18));
+        JT_isbn = new JTextField(20);
+        JT_isbn.setBounds(200, 22, 190, 20);
+
+        JL_fname = new JLabel("Author First Name: ");
+        JL_fname.setBounds(20, 80, 220, 20);
+        JL_fname.setFont(new Font("Tahoma",Font.BOLD,18));
+        JT_fname = new JTextField(20);
+        JT_fname.setBounds(200, 82, 190, 20);
+        
+        JL_lname = new JLabel("Author Last Name: ");
+        JL_lname.setBounds(20, 140, 220, 20);
+        JL_lname.setFont(new Font("Tahoma",Font.BOLD,18));
+        JT_lname = new JTextField(20);
+        JT_lname.setBounds(200, 142, 190, 20);
+        
+        JL_title = new JLabel("Title: ");
+        JL_title.setBounds(20, 200, 220, 20);
+        JL_title.setFont(new Font("Tahoma",Font.BOLD,18));
+        JT_title = new JTextField(20);
+        JT_title.setBounds(200, 202, 190, 20);
+
+        btn_search = new JButton("Test Search");
+        btn_search.setBounds(100, 300, 300, 40);
+        btn_search.setBackground(Color.BLACK);
+        btn_search.setForeground(Color.WHITE);
+        btn_search.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String isbnNum = JT_isbn.getText();
+                String Fname = JT_fname.getText();
+                String Lname =  JT_lname.getText();
+                String title = JT_title.getText();
+                try {
+                    ResultSet result = query.findBookByISBN(isbnNum);
+                    ResultSet author = query.listByAuthor(Fname, Lname);
+                    ResultSet bookTitle = query.findBookByTitle(title);
+                    if(result.next()) {
+                    	result.getString(1);
+                        JOptionPane.showMessageDialog(null, "ISBN found",
+                                "ISBN found", JOptionPane.INFORMATION_MESSAGE);
+                    }else if(author.next()){ 
+                    	author.getString(1);
+                        JOptionPane.showMessageDialog(null, "Book Author Name found",
+                                "Author Name Found", JOptionPane.INFORMATION_MESSAGE);
+                    }else if(bookTitle.next()){
+                    	bookTitle.getString(1);
+                        JOptionPane.showMessageDialog(null, "Book title found",
+                                "Book Title Found", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(null, "Not a valid ISBN#, book title or Author name",
+                                "ISBN error", JOptionPane.ERROR_MESSAGE);
+                        JT_isbn.setText(null);
+                    }
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+//				String towsonID = tuID.getText();
+            }
+        });
+        
+        /*
+        JCheckBox Reference = new JCheckBox("Reference Book");
+        Reference.setBackground(tuYellow);
+        Reference.setBounds(30, 130, 120, 40);
+        frame.add(Reference);
+
+        JCheckBox Non_reference = new JCheckBox("Non-Reference Book");
+        Non_reference.setBackground(tuYellow);
+        Non_reference.setBounds(170, 130, 145, 40);
+        frame.add(Non_reference);
+
+        JCheckBox Holds = new JCheckBox("Not Held");
+        Holds.setBackground(tuYellow);
+        Holds.setBounds(30, 170, 100, 40);
+        frame.add(Holds);
+        */
+
+        JButton backBtn = new JButton("Show Search");
+        backBtn.setBackground(Color.BLACK);
+        backBtn.setForeground(Color.WHITE);
+        backBtn.setBounds(100, 400, 300, 40);
+        backBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	String isbnNum = JT_isbn.getText();
+                String Fname = JT_fname.getText();
+                String Lname =  JT_lname.getText();
+                String title = JT_title.getText();
+                showSearch(isbnNum,Fname,Lname,title);
+                frame.dispose();
+            }
+        });
+        
+        JButton checkoutBook = new JButton("CheckOut Book");
+        checkoutBook.setBackground(Color.BLACK);
+        checkoutBook.setForeground(Color.WHITE);
+        checkoutBook.setBounds(550, 100, 300, 40);
+        checkoutBook.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createCheckoutFrame();
+                frame.dispose();
+            }
+        });
+        
+        JButton returnBook = new JButton("Return Book");
+        returnBook.setBackground(Color.BLACK);
+        returnBook.setForeground(Color.WHITE);
+        returnBook.setBounds(550, 200, 300, 40);
+        returnBook.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createReturnFrame();
+                frame.dispose();
+            }
+        });
+        JButton availableNonReference = new JButton("Available Non Reference Books");
+        availableNonReference.setBackground(Color.BLACK);
+        availableNonReference.setForeground(Color.WHITE);
+        availableNonReference.setBounds(550, 300, 300, 40);
+        availableNonReference.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                listNRefFrame();
+                frame.dispose();
+            }
+        });
+        JButton reference = new JButton("Reference Books");
+        reference.setBackground(Color.BLACK);
+        reference.setForeground(Color.WHITE);
+        reference.setBounds(550, 400, 300, 40);
+        reference.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                listRefFrame();
+                frame.dispose();
+            }
+        });
+        frame.add(checkoutBook);
+        frame.add(availableNonReference);
+        frame.add(reference);
+        frame.add(returnBook);
+        frame.add(backBtn);
+        frame.add(btn_search);
+        frame.add(JL_fname);
+        frame.add(JT_fname);
+        frame.add(JL_lname);
+        frame.add(JT_lname);
+        frame.add(JL_title);
+        frame.add(JT_title);
+        frame.add(JL_isbn);
+        frame.add(JT_isbn);
+        frame.getContentPane().setBackground(tuYellow);
+        frame.setVisible(true);
+    }
+    /**
+     * 
+     * 
+     * 
+     * Creates the return book frame called createReturnFrame. Allows user to enter in ISBN 
+     * and COPY number of book, return the book, and navigate back to the navigation frame
+     */
+    public void createReturnFrame() {
+        JFrame frame = new JFrame("Vivlo - Return Book");
+        frame.setBounds(100, 100, 915, 534);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(null);
+
+        JLabel titleLbl = new JLabel("Return Book");
+        titleLbl.setFont(new Font("Tahoma", Font.BOLD, 36));
+        titleLbl.setBounds(350, 15, 300, 40);
+        frame.add(titleLbl);
+        
+        JLabel isbnLbl,copyLbl;
+        JTextField isbnText,copyText;
+        
+        isbnLbl = new JLabel("ISBN Number: ");
+        isbnLbl.setBounds(20, 140, 220, 20);
+        isbnLbl.setFont(new Font("Tahoma",Font.BOLD,18));
+        isbnText = new JTextField(20);
+        isbnText.setBounds(200, 142, 190, 20);
+        
+        copyLbl = new JLabel("Copy Number: ");
+        copyLbl.setBounds(20, 200, 220, 20);
+        copyLbl.setFont(new Font("Tahoma",Font.BOLD,18));
+        copyText = new JTextField(20);
+        copyText.setBounds(200, 202, 190, 20);        
+        frame.add(isbnLbl);      
+        frame.add(isbnText);       
+        frame.add(copyLbl);        
+        frame.add(copyText);
+        
+        
+        
+        JButton returnBtn = new JButton("Return Book");
+        returnBtn.setBackground(Color.BLACK);
+        returnBtn.setForeground(Color.WHITE);
+        returnBtn.setBounds(550, 400, 300, 40);
+
+        JButton backBtn = new JButton("Back to Navigation");
+        backBtn.setForeground(Color.WHITE);
+        backBtn.setBackground(Color.BLACK);
+        backBtn.setBounds(100, 400, 300, 40);
+        backBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	ResultSet result = query.isLibStaff();
+            	try {
+            		if(result.next()) {
+            			createSearchFrameManagement();
+            		}
+            		else {
+            			createSearchFrame();
+            		}
+            	}
+            	catch (SQLException er) {
+            		er.printStackTrace();
+            	}
+                frame.dispose();
+            }
+        });
+        frame.add(backBtn);
+
+        returnBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	String isbn = isbnText.getText();
+            	String copy = copyText.getText();
+            	try {
+            		query.checkin(isbn, copy);
+            	}
+            	catch (Exception er) {
+            		er.printStackTrace();
+            	}
+
+            }
+        });
+        frame.add(returnBtn);
+
+        frame.getContentPane().setBackground(tuYellow);
+        frame.setVisible(true);
+    }
+    /**
+     * 
+     * 
+     * 
+     * Create the check out book frame called createCheckoutFrame. Allows user to enter ISBN
+     * and Copy number of book, checkout book, and return back to the navigation frame
+     */
+    public void createCheckoutFrame() {
+        JFrame frame = new JFrame("Vivlo - Checkout Book");
+        frame.setBounds(100, 100, 915, 534);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(null);
+
+        JLabel lblCheckOutPage = new JLabel("CheckOut Book");
+        lblCheckOutPage.setFont(new Font("Tahoma", Font.BOLD, 36));
+        lblCheckOutPage.setBounds(350, 15, 300, 40);
+        frame.add(lblCheckOutPage);
+
+        JLabel isbnLbl,copyLbl;
+        JTextField isbnText,copyText;
+        
+        isbnLbl = new JLabel("ISBN Number: ");
+        isbnLbl.setBounds(20, 140, 220, 20);
+        isbnLbl.setFont(new Font("Tahoma",Font.BOLD,18));
+        isbnText = new JTextField(20);
+        isbnText.setBounds(200, 142, 190, 20);
+        
+        copyLbl = new JLabel("Copy Number: ");
+        copyLbl.setBounds(20, 200, 220, 20);
+        copyLbl.setFont(new Font("Tahoma",Font.BOLD,18));
+        copyText = new JTextField(20);
+        copyText.setBounds(200, 202, 190, 20);        
+        frame.add(isbnLbl);      
+        frame.add(isbnText);       
+        frame.add(copyLbl);        
+        frame.add(copyText);
+
+        JButton checkoutBtn = new JButton("Checkout Book");
+        checkoutBtn.setBackground(Color.BLACK);
+        checkoutBtn.setForeground(Color.WHITE);
+        checkoutBtn.setBounds(550, 400, 300, 40);
+
+        JButton backBtn = new JButton("Back to Navigation");
+        backBtn.setForeground(Color.WHITE);
+        backBtn.setBackground(Color.BLACK);
+        backBtn.setBounds(100, 400, 300, 40);
+        backBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	ResultSet result = query.isLibStaff();
+            	try {
+            		if(result.next()) {
+            			createSearchFrameManagement();
+            		}
+            		else {
+            			createSearchFrame();
+            		}
+            	}
+            	catch (SQLException er) {
+            		er.printStackTrace();
+            	}
+                frame.dispose();
+            }
+        });
+        frame.add(backBtn);
+
+        checkoutBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	String isbn = isbnText.getText();
+            	String copy = copyText.getText();
+            	try {
+            		query.checkout(isbn,copy);           		
+            		
+            	}
+            	catch (Exception er) {
+            		er.printStackTrace();
+            	}
+
+            }
+        });
+        frame.add(checkoutBtn);
+
+        frame.getContentPane().setBackground(tuYellow);
+        frame.setVisible(true);
+    }
+    
+    /**
+     * Create the result table for show search in navigation frame called showSearch. The table will 
+     * process input from the navigation frame by returning any tuples that contain the information.
+     * 
+     * 
+     */
+    
+    public void showSearch(String isbn,String af,String al,String title) {    	
+    	JFrame frame = new JFrame("Vivlo - Show Search");
+		frame.setBounds(100, 100, 912, 534);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(new BorderLayout());
+		
+		JLabel lblDataResults = new JLabel("Show Search");
+		lblDataResults.setFont(new Font("Tahoma", Font.BOLD, 36));
+		lblDataResults.setHorizontalAlignment(JLabel.CENTER);
+		frame.add(lblDataResults,BorderLayout.NORTH);
+
+		JTable table = new JTable();
+		table.setModel(new DefaultTableModel(
+				new Object[][] {
+				},
+				new String[] {
+						"ISBN","COPY","AF","AL","TITLE","SIZE"
+				}
+			)); 
+		table.setBounds(40, 700, 200, 200);
+	    table.setFont(new Font("Tahoma", Font.PLAIN, 11));
+	    table.setRowHeight(30);
+		frame.getContentPane().setBackground(tuYellow);
+        frame.setVisible(true);
+        
+		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+		try {
+			resizeColumnWidth(table);
+			ResultSet result = query.show(isbn,af,al,title);
+			while(result.next()){
+				String ISBN = result.getString("ISBN");
+				int COPY = result.getInt("COPY");
+				String AF = result.getString("AF");
+				String AL = result.getString("AL");
+				String TITLE = result.getString("TITLE");
+				int SIZE = result.getInt("SIZE");
+			
+			
+			tableModel.addRow(new Object[] {ISBN,COPY,AF,AL,TITLE,SIZE});
+			}
+		}catch (SQLException ex) {
+			ex.printStackTrace();
+			System.out.println("Failed here also");
+		}
+		JScrollPane scrollablearea = new JScrollPane(table);
+		frame.add(scrollablearea,BorderLayout.SOUTH);
+		
+		JButton backBtn = new JButton("Back to Navigation");
+        backBtn.setForeground(Color.WHITE);
+        backBtn.setBackground(Color.BLACK);
+        backBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	ResultSet result = query.isLibStaff();
+            	try {
+            		if(result.next()) {
+            			createSearchFrameManagement();
+            		}
+            		else {
+            			createSearchFrame();
+            		}
+            	}
+            	catch (SQLException er) {
+            		er.printStackTrace();
+            	}
+                frame.dispose();
+            }
+        });
+        frame.add(backBtn,BorderLayout.CENTER);
+		
+		
+	}
+    
+    /**
+     * Create the result table for a list of reference books that the library owns. Contains a button
+     * to return to the navigation frame
+     * 
+     * 
+     */
+    
+    public void listRefFrame() {    	
+    	JFrame frame = new JFrame("Vivlo - Reference Books");
+		frame.setBounds(100, 100, 912, 534);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(new BorderLayout());
+		
+		JLabel lblDataResults = new JLabel("Reference Books");
+		lblDataResults.setFont(new Font("Tahoma", Font.BOLD, 36));
+		lblDataResults.setHorizontalAlignment(JLabel.CENTER);
+		frame.add(lblDataResults,BorderLayout.NORTH);
+
+		JTable table = new JTable();
+		table.setModel(new DefaultTableModel(
+				new Object[][] {
+				},
+				new String[] {
+						"ISBN","COPY","TITLE","GENRE","PUBLISHER","SIZE"
+				}
+			)); 
+		table.setBounds(40, 700, 200, 200);
+	    table.setFont(new Font("Tahoma", Font.PLAIN, 11));
+	    table.setRowHeight(30);
+		frame.getContentPane().setBackground(tuYellow);
+        frame.setVisible(true);
+        
+		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+		try {
+			resizeColumnWidth(table);
+			ResultSet result = query.listRef();
+			while(result.next()){
+				String ISBN = result.getString("ISBN");
+				int COPY = result.getInt("COPY");
+				String TITLE = result.getString("TITLE");
+				String GENRE = result.getString("GENRE");
+				String PUBLISHER = result.getString("PUBLISHER");
+				String SIZE = result.getString("SIZE");
+			
+			
+			tableModel.addRow(new Object[] {ISBN,COPY,TITLE,GENRE,PUBLISHER,SIZE});
+			}
+		}catch (SQLException ex) {
+			ex.printStackTrace();
+			System.out.println("Failed here also");
+		}
+		JScrollPane scrollablearea = new JScrollPane(table);
+		frame.add(scrollablearea,BorderLayout.SOUTH);
+		
+		JButton backBtn = new JButton("Back to Navigation");
+        backBtn.setForeground(Color.WHITE);
+        backBtn.setBackground(Color.BLACK);
+        backBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	ResultSet result = query.isLibStaff();
+            	try {
+            		if(result.next()) {
+            			createSearchFrameManagement();
+            		}
+            		else {
+            			createSearchFrame();
+            		}
+            	}
+            	catch (SQLException er) {
+            		er.printStackTrace();
+            	}
+                frame.dispose();
+            }
+        });
+        frame.add(backBtn,BorderLayout.CENTER);
+		
+		
+	}
+    /**
+     * Create the result table for a list of available non reference books. Contains a button that
+     * sends the user to the navigation frame
+     * 
+     * 
+     */
+    
+    public void listNRefFrame() {    	
+    	JFrame frame = new JFrame("Vivlo - Available Non Reference Books");
+		frame.setBounds(100, 100, 912, 534);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(new BorderLayout());
+		
+		JLabel lblDataResults = new JLabel("Available Non Reference Books");
+		lblDataResults.setFont(new Font("Tahoma", Font.BOLD, 36));
+		lblDataResults.setHorizontalAlignment(JLabel.CENTER);
+		frame.add(lblDataResults,BorderLayout.NORTH);
+
+		JTable table = new JTable();
+		table.setModel(new DefaultTableModel(
+				new Object[][] {
+				},
+				new String[] {
+						"ISBN","COPY","TITLE","GENRE","PUBLISHER","SIZE"
+				}
+			)); 
+		table.setBounds(40, 700, 200, 200);
+	    table.setFont(new Font("Tahoma", Font.PLAIN, 11));
+	    table.setRowHeight(30);
+		frame.getContentPane().setBackground(tuYellow);
+        frame.setVisible(true);
+        
+		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+		try {
+			resizeColumnWidth(table);
+			ResultSet result = query.listNref();
+			while(result.next()){
+				String ISBN = result.getString("ISBN");
+				int COPY = result.getInt("COPY");
+				String TITLE = result.getString("TITLE");
+				String GENRE = result.getString("GENRE");
+				String PUBLISHER = result.getString("PUBLISHER");
+				String SIZE = result.getString("SIZE");
+			
+			
+			tableModel.addRow(new Object[] {ISBN,COPY,TITLE,GENRE,PUBLISHER,SIZE});
+			}
+		}catch (SQLException ex) {
+			ex.printStackTrace();
+			System.out.println("Failed here also");
+		}
+		JScrollPane scrollablearea = new JScrollPane(table);
+		frame.add(scrollablearea,BorderLayout.SOUTH);
+		
+		JButton backBtn = new JButton("Back to Navigation");
+        backBtn.setForeground(Color.WHITE);
+        backBtn.setBackground(Color.BLACK);
+        backBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	ResultSet result = query.isLibStaff();
+            	try {
+            		if(result.next()) {
+            			createSearchFrameManagement();
+            		}
+            		else {
+            			createSearchFrame();
+            		}
+            	}
+            	catch (SQLException er) {
+            		er.printStackTrace();
+            	}
+                frame.dispose();
+            }
+        });
+        frame.add(backBtn,BorderLayout.CENTER);
+		
+		
+	}
+    /**
+     * MANAGEMENT SIDE OF THE CODE
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     */
+    /**
+     * Initialize the contents of the create choice frame.
+     */
+    private void createManageHomeFrame() {
+    	JFrame frame = new JFrame("Vivlo - Management Home");
+        frame.setBounds(100, 100, 915, 534);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(null);
+
+        JLabel lblChoice = new JLabel("Management Home");
+        lblChoice.setFont(new Font("Tahoma", Font.BOLD, 36));
+        lblChoice.setBounds(280, 15, 500, 40);
+        frame.add(lblChoice);
+
+        
+        JButton BookSearch = new JButton("Book Search");
+        BookSearch.setBackground(Color.BLACK);
+        BookSearch.setForeground(Color.WHITE);
+        BookSearch.setBounds(300, 150, 300, 40);
+        
+        JButton ManageInfo = new JButton("Management Information");
+        ManageInfo.setBackground(Color.BLACK);
+        ManageInfo.setForeground(Color.WHITE);
+        ManageInfo.setBounds(300, 250, 300, 40);
+
+        JButton BookInsert = new JButton("Book Insert");
+        BookInsert.setForeground(Color.WHITE);
+        BookInsert.setBackground(Color.BLACK);
+        BookInsert.setBounds(300, 350, 300, 40);
+        
+        BookSearch.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	createSearchFrameManagement();
+                frame.dispose();
+            }
+        });       
+        
+        
+        ManageInfo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	createManagementInfoFrame();
+                frame.dispose();
+            }
+        });       
+
+        BookInsert.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	frame.dispose();          		
+            		
+
+            }
+        });        
+        frame.add(BookInsert);
+        frame.add(BookSearch);
+        frame.add(ManageInfo);
+        frame.getContentPane().setBackground(tuYellow);
+        frame.setVisible(true);
+    }
+    /**
+     * create the search functionality for library management. Almost entirely the same code 
+     * . The only part that is different is the extra button. Library management 
+     * staff can check management information and insert new books into the database while 
+     * non library management users can not
+     * 
+     */
+    
+    public void createSearchFrameManagement() {
+        JFrame frame = new JFrame("Vivlo - Navigation");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(null);
+        frame.setBounds(100, 100, 915, 534);
+
+        JLabel JL_fname,JL_lname,JL_title,JL_isbn;
+        JTextField JT_fname,JT_lname,JT_title,JT_isbn;
+        JButton btn_search;
+
+        JL_isbn = new JLabel("Enter ISBN:");
+        JL_isbn.setBounds(20, 20, 220, 20);
+        JL_isbn.setFont(new Font("Tahoma", Font.BOLD, 18));
+        JT_isbn = new JTextField(20);
+        JT_isbn.setBounds(200, 22, 190, 20);
+
+        JL_fname = new JLabel("Author First Name: ");
+        JL_fname.setBounds(20, 80, 220, 20);
+        JL_fname.setFont(new Font("Tahoma",Font.BOLD,18));
+        JT_fname = new JTextField(20);
+        JT_fname.setBounds(200, 82, 190, 20);
+        
+        JL_lname = new JLabel("Author Last Name: ");
+        JL_lname.setBounds(20, 140, 220, 20);
+        JL_lname.setFont(new Font("Tahoma",Font.BOLD,18));
+        JT_lname = new JTextField(20);
+        JT_lname.setBounds(200, 142, 190, 20);
+        
+        JL_title = new JLabel("Title: ");
+        JL_title.setBounds(20, 200, 220, 20);
+        JL_title.setFont(new Font("Tahoma",Font.BOLD,18));
+        JT_title = new JTextField(20);
+        JT_title.setBounds(200, 202, 190, 20);
+
+        btn_search = new JButton("Test Search");
+        btn_search.setBounds(100, 300, 300, 40);
+        btn_search.setBackground(Color.BLACK);
+        btn_search.setForeground(Color.WHITE);
+        btn_search.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String isbnNum = JT_isbn.getText();
+                String Fname = JT_fname.getText();
+                String Lname =  JT_lname.getText();
+                String title = JT_title.getText();
+                try {
+                    ResultSet result = query.findBookByISBN(isbnNum);
+                    ResultSet author = query.listByAuthor(Fname, Lname);
+                    ResultSet bookTitle = query.findBookByTitle(title);
+                    if(result.next()) {
+                    	result.getString(1);
+                        JOptionPane.showMessageDialog(null, "ISBN found",
+                                "ISBN found", JOptionPane.INFORMATION_MESSAGE);
+                    }else if(author.next()){ 
+                    	author.getString(1);
+                        JOptionPane.showMessageDialog(null, "Book Author Name found",
+                                "Author Name Found", JOptionPane.INFORMATION_MESSAGE);
+                    }else if(bookTitle.next()){
+                    	bookTitle.getString(1);
+                        JOptionPane.showMessageDialog(null, "Book title found",
+                                "Book Title Found", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(null, "Not a valid ISBN#, book title or Author name",
+                                "ISBN error", JOptionPane.ERROR_MESSAGE);
+                        JT_isbn.setText(null);
+                    }
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+//				String towsonID = tuID.getText();
+            }
+        });
+
+        JButton backBtn = new JButton("Show Search");
+        backBtn.setBackground(Color.BLACK);
+        backBtn.setForeground(Color.WHITE);
+        backBtn.setBounds(100, 400, 300, 40);
+        backBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	String isbnNum = JT_isbn.getText();
+                String Fname = JT_fname.getText();
+                String Lname =  JT_lname.getText();
+                String title = JT_title.getText();
+                showSearch(isbnNum,Fname,Lname,title);
+                frame.dispose();
+            }
+        });
+        
+        JButton checkoutBook = new JButton("CheckOut Book");
+        checkoutBook.setBackground(Color.BLACK);
+        checkoutBook.setForeground(Color.WHITE);
+        checkoutBook.setBounds(550, 100, 300, 40);
+        checkoutBook.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createCheckoutFrame();
+                frame.dispose();
+            }
+        });
+        
+        JButton returnBook = new JButton("Return Book");
+        returnBook.setBackground(Color.BLACK);
+        returnBook.setForeground(Color.WHITE);
+        returnBook.setBounds(550, 200, 300, 40);
+        returnBook.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createReturnFrame();
+                frame.dispose();
+            }
+        });
+        JButton availableNonReference = new JButton("Available Non Reference Books");
+        availableNonReference.setBackground(Color.BLACK);
+        availableNonReference.setForeground(Color.WHITE);
+        availableNonReference.setBounds(550, 300, 300, 40);
+        availableNonReference.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                listNRefFrame();
+                frame.dispose();
+            }
+        });
+        JButton reference = new JButton("Reference Books");
+        reference.setBackground(Color.BLACK);
+        reference.setForeground(Color.WHITE);
+        reference.setBounds(550, 400, 300, 40);
+        reference.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                listRefFrame();
+                frame.dispose();
+            }
+        });
+        JButton BackButton = new JButton("Back to Management Home");
+        BackButton.setBackground(Color.BLACK);
+        BackButton.setForeground(Color.WHITE);
+        BackButton.setBounds(550, 10, 300, 40);
+        BackButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createManageHomeFrame();
+                frame.dispose();
+            }
+        });
+        
+        frame.add(BackButton);
+        frame.add(checkoutBook);
+        frame.add(availableNonReference);
+        frame.add(reference);
+        frame.add(returnBook);
+        frame.add(backBtn);
+        frame.add(btn_search);
+        frame.add(JL_fname);
+        frame.add(JT_fname);
+        frame.add(JL_lname);
+        frame.add(JT_lname);
+        frame.add(JL_title);
+        frame.add(JT_title);
+        frame.add(JL_isbn);
+        frame.add(JT_isbn);
+        frame.getContentPane().setBackground(tuYellow);
+        frame.setVisible(true);
+    }
+    /**
+     * Management information frame. Contains buttons that allow management execute queries that non 
+     * management users can not execute
+     */
+    private void createManagementInfoFrame() {
+    	JFrame frame = new JFrame("Vivlo - Management Information");
+        frame.setBounds(100, 100, 915, 534);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(null);
+
+        JLabel lblChoice = new JLabel("Management Information");
+        lblChoice.setFont(new Font("Tahoma", Font.BOLD, 36));
+        lblChoice.setBounds(200, 15, 500, 40);
+        frame.add(lblChoice);
+        
+        JButton Back = new JButton("Back to Management Home");
+        Back.setBackground(Color.BLACK);
+        Back.setForeground(Color.WHITE);
+        Back.setBounds(270, 85, 300, 40);
+        frame.add(Back);
+
+        
+        JButton ODBook = new JButton("List of Overdue Books");
+        ODBook.setBackground(Color.BLACK);
+        ODBook.setForeground(Color.WHITE);
+        ODBook.setBounds(100, 150, 300, 40);
+        JButton HBook = new JButton("List of Bookds on Hold");
+        HBook.setBackground(Color.BLACK);
+        HBook.setForeground(Color.WHITE);
+        HBook.setBounds(100, 200, 300, 40);
+        JButton COBook = new JButton("List of Checked Out Books");
+        COBook.setBackground(Color.BLACK);
+        COBook.setForeground(Color.WHITE);
+        COBook.setBounds(100, 250, 300, 40);
+        frame.add(ODBook);
+        frame.add(HBook);
+        frame.add(COBook);
+        
+        
+        
+        JButton Department = new JButton("Department Information");
+        Department.setBackground(Color.BLACK);
+        Department.setForeground(Color.WHITE);
+        Department.setBounds(450, 150, 300, 40);
+        JButton Floor = new JButton("Floor Information");
+        Floor.setBackground(Color.BLACK);
+        Floor.setForeground(Color.WHITE);
+        Floor.setBounds(450, 200, 300, 40);
+        JButton Staff = new JButton("Staff Information");
+        Staff.setBackground(Color.BLACK);
+        Staff.setForeground(Color.WHITE);
+        Staff.setBounds(450, 250, 300, 40);
+        frame.add(Department);
+        frame.add(Floor);
+        frame.add(Staff);
+        
+        
+        Back.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	createManageHomeFrame();
+                frame.dispose();
+            }
+        });       
+        
+        
+        Department.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	DepartmentFrame();
+                frame.dispose();
+            }
+        });       
+
+        Floor.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	FloorFrame();
+            	frame.dispose();          		
+            		
+
+            }
+        });        
+        Staff.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	StaffFrame();
+            	frame.dispose();          		
+            		
+
+            }
+        });    
+        ODBook.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	ODBookFrame();
+            	frame.dispose();          		
+            		
+
+            }
+        });    
+        HBook.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	HBookFrame();
+            	frame.dispose();          		
+            		
+
+            }
+        });    
+        COBook.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	COBookFrame();
+            	frame.dispose();          		
+            		
+
+            }
+        });    
+        frame.getContentPane().setBackground(tuYellow);
+        frame.setVisible(true);
+    }    
+    /**
+     * Department Frame to create a result table with information about each department. Retrieves the
+     * name, number, and head of each department. Also, retrieves the number of student workers and 
+     * librarians in each department
+     * 
+     */
+    public void DepartmentFrame() {    	
+    	JFrame frame = new JFrame("Vivlo - Department Information");
+		frame.setBounds(100, 100, 912, 534);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(new BorderLayout());
+		
+		JLabel lblDataResults = new JLabel("Department Inofrmation");
+		lblDataResults.setFont(new Font("Tahoma", Font.BOLD, 36));
+		lblDataResults.setHorizontalAlignment(JLabel.CENTER);
+		frame.add(lblDataResults,BorderLayout.NORTH);
+
+		JTable table = new JTable();
+		table.setModel(new DefaultTableModel(
+				new Object[][] {
+				},
+				new String[] {
+						"ISBN","COPY","TITLE","GENRE","PUBLISHER","SIZE"
+				}
+			)); 
+		table.setBounds(40, 700, 200, 200);
+	    table.setFont(new Font("Tahoma", Font.PLAIN, 11));
+	    table.setRowHeight(30);
+		frame.getContentPane().setBackground(tuYellow);
+        frame.setVisible(true);
+        
+		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+		try {
+			resizeColumnWidth(table);
+			ResultSet result = query.listNref();
+			while(result.next()){
+				String ISBN = result.getString("ISBN");
+				int COPY = result.getInt("COPY");
+				String TITLE = result.getString("TITLE");
+				String GENRE = result.getString("GENRE");
+				String PUBLISHER = result.getString("PUBLISHER");
+				String SIZE = result.getString("SIZE");
+			
+			
+			tableModel.addRow(new Object[] {ISBN,COPY,TITLE,GENRE,PUBLISHER,SIZE});
+			}
+		}catch (SQLException ex) {
+			ex.printStackTrace();
+			System.out.println("Failed here also");
+		}
+		JScrollPane scrollablearea = new JScrollPane(table);
+		frame.add(scrollablearea,BorderLayout.SOUTH);
+		
+		JButton backBtn = new JButton("Back to Management Information");
+        backBtn.setForeground(Color.WHITE);
+        backBtn.setBackground(Color.BLACK);
+        backBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	createManagementInfoFrame();
+                frame.dispose();
+            }
+        });
+        frame.add(backBtn,BorderLayout.CENTER);
+		
+		
+	}
+    /**
+     * 
+     * 
+     */
+    public void ODBookFrame() {    	
+    	JFrame frame = new JFrame("Vivlo - Over Due Books");
+		frame.setBounds(100, 100, 912, 534);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(new BorderLayout());
+		
+		JLabel lblDataResults = new JLabel("Over Due Books");
+		lblDataResults.setFont(new Font("Tahoma", Font.BOLD, 36));
+		lblDataResults.setHorizontalAlignment(JLabel.CENTER);
+		frame.add(lblDataResults,BorderLayout.NORTH);
+
+		JTable table = new JTable();
+		table.setModel(new DefaultTableModel(
+				new Object[][] {
+				},
+				new String[] {
+						"NREF_ISBN","NREF_COPY","CO_TUID"
+				}
+			)); 
+		table.setBounds(40, 700, 200, 200);
+	    table.setFont(new Font("Tahoma", Font.PLAIN, 11));
+	    table.setRowHeight(30);
+		frame.getContentPane().setBackground(tuYellow);
+        frame.setVisible(true);
+        
+		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+		try {
+			resizeColumnWidth(table);
+			ResultSet result = query.overDueBooks();
+			while(result.next()){
+				String NREF_ISBN = result.getString("NREF_ISBN");
+				String NREF_COPY = result.getString("NREF_COPY");
+				String CO_TUID = result.getString("CO_TUID");
+				
+			
+			tableModel.addRow(new Object[] {NREF_ISBN,NREF_COPY,CO_TUID});
+			}
+		}catch (SQLException ex) {
+			ex.printStackTrace();
+			System.out.println("Failed here also");
+		}
+		JScrollPane scrollablearea = new JScrollPane(table);
+		frame.add(scrollablearea,BorderLayout.SOUTH);
+		
+		JButton backBtn = new JButton("Back to Manage Information");
+        backBtn.setForeground(Color.WHITE);
+        backBtn.setBackground(Color.BLACK);
+        backBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	createManagementInfoFrame();
+                frame.dispose();
+            }
+        });
+        frame.add(backBtn,BorderLayout.CENTER);
+		
+		
+	}
+    /**
+     * 
+     * 
+     */
+    public void COBookFrame() {    	
+    	JFrame frame = new JFrame("Vivlo - Checked Out Books");
+		frame.setBounds(100, 100, 912, 534);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(new BorderLayout());
+		
+		JLabel lblDataResults = new JLabel("Checked Out Books");
+		lblDataResults.setFont(new Font("Tahoma", Font.BOLD, 36));
+		lblDataResults.setHorizontalAlignment(JLabel.CENTER);
+		frame.add(lblDataResults,BorderLayout.NORTH);
+
+		JTable table = new JTable();
+		table.setModel(new DefaultTableModel(
+				new Object[][] {
+				},
+				new String[] {
+						"NREF_ISBN","NREF_COPY","CO_TUID"
+				}
+			)); 
+		table.setBounds(40, 700, 200, 200);
+	    table.setFont(new Font("Tahoma", Font.PLAIN, 11));
+	    table.setRowHeight(30);
+		frame.getContentPane().setBackground(tuYellow);
+        frame.setVisible(true);
+        
+		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+		try {
+			resizeColumnWidth(table);
+			ResultSet result = query.booksCheckedOut();
+			while(result.next()){
+				String NREF_ISBN = result.getString("NREF_ISBN");
+				String NREF_COPY = result.getString("NREF_COPY");
+				String CO_TUID = result.getString("CO_TUID");
+			
+			
+			tableModel.addRow(new Object[] {NREF_ISBN,NREF_COPY,CO_TUID});
+			}
+		}catch (SQLException ex) {
+			ex.printStackTrace();
+			System.out.println("Failed here also");
+		}
+		JScrollPane scrollablearea = new JScrollPane(table);
+		frame.add(scrollablearea,BorderLayout.SOUTH);
+		
+		JButton backBtn = new JButton("Back to Manage Information");
+        backBtn.setForeground(Color.WHITE);
+        backBtn.setBackground(Color.BLACK);
+        backBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	createManagementInfoFrame();
+                frame.dispose();
+            }
+        });
+        frame.add(backBtn,BorderLayout.CENTER);
+		
+		
+	}
+    /**
+     * 
+     * 
+     */
+    public void HBookFrame() {    	
+    	JFrame frame = new JFrame("Vivlo - Books on Hold");
+		frame.setBounds(100, 100, 912, 534);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(new BorderLayout());
+		
+		JLabel lblDataResults = new JLabel("Books on Hold");
+		lblDataResults.setFont(new Font("Tahoma", Font.BOLD, 36));
+		lblDataResults.setHorizontalAlignment(JLabel.CENTER);
+		frame.add(lblDataResults,BorderLayout.NORTH);
+
+		JTable table = new JTable();
+		table.setModel(new DefaultTableModel(
+				new Object[][] {
+				},
+				new String[] {
+						"NREF_ISBN","NREF_COPY","HOLD"
+				}
+			)); 
+		table.setBounds(40, 700, 200, 200);
+	    table.setFont(new Font("Tahoma", Font.PLAIN, 11));
+	    table.setRowHeight(30);
+		frame.getContentPane().setBackground(tuYellow);
+        frame.setVisible(true);
+        
+		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+		try {
+			resizeColumnWidth(table);
+			ResultSet result = query.booksHold();
+			while(result.next()){
+				String NREF_ISBN = result.getString("NREF_ISBN");
+				String NREF_COPY = result.getString("NREF_COPY");
+				String HOLD = result.getString("HOLD");
+			
+			
+			tableModel.addRow(new Object[] {NREF_ISBN,NREF_COPY,HOLD});
+			}
+		}catch (SQLException ex) {
+			ex.printStackTrace();
+			System.out.println("Failed here also");
+		}
+		JScrollPane scrollablearea = new JScrollPane(table);
+		frame.add(scrollablearea,BorderLayout.SOUTH);
+		
+		JButton backBtn = new JButton("Back to Manage Information");
+        backBtn.setForeground(Color.WHITE);
+        backBtn.setBackground(Color.BLACK);
+        backBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	createManagementInfoFrame();            	
+                frame.dispose();
+            }
+        });
+        frame.add(backBtn,BorderLayout.CENTER);
+		
+		
+	}
+    /**
+     * 
+     * 
+     */
+    public void StaffFrame() {    	
+    	JFrame frame = new JFrame("Vivlo - Staff Information");
+		frame.setBounds(100, 100, 912, 534);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(new BorderLayout());
+		
+		JLabel lblDataResults = new JLabel("Staff Information");
+		lblDataResults.setFont(new Font("Tahoma", Font.BOLD, 36));
+		lblDataResults.setHorizontalAlignment(JLabel.CENTER);
+		frame.add(lblDataResults,BorderLayout.NORTH);
+
+		JTable table = new JTable();
+		table.setModel(new DefaultTableModel(
+				new Object[][] {
+				},
+				new String[] {
+						"ISBN","COPY","TITLE","GENRE","PUBLISHER","SIZE"
+				}
+			)); 
+		table.setBounds(40, 700, 200, 200);
+	    table.setFont(new Font("Tahoma", Font.PLAIN, 11));
+	    table.setRowHeight(30);
+		frame.getContentPane().setBackground(tuYellow);
+        frame.setVisible(true);
+        
+		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+		try {
+			resizeColumnWidth(table);
+			ResultSet result = query.listNref();
+			while(result.next()){
+				String ISBN = result.getString("ISBN");
+				int COPY = result.getInt("COPY");
+				String TITLE = result.getString("TITLE");
+				String GENRE = result.getString("GENRE");
+				String PUBLISHER = result.getString("PUBLISHER");
+				String SIZE = result.getString("SIZE");
+			
+			
+			tableModel.addRow(new Object[] {ISBN,COPY,TITLE,GENRE,PUBLISHER,SIZE});
+			}
+		}catch (SQLException ex) {
+			ex.printStackTrace();
+			System.out.println("Failed here also");
+		}
+		JScrollPane scrollablearea = new JScrollPane(table);
+		frame.add(scrollablearea,BorderLayout.SOUTH);
+		
+		JButton backBtn = new JButton("Back to Manage Information");
+        backBtn.setForeground(Color.WHITE);
+        backBtn.setBackground(Color.BLACK);
+        backBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	createManagementInfoFrame();
+                frame.dispose();
+            }
+        });
+        frame.add(backBtn,BorderLayout.CENTER);
+		
+		
+	}
+    /**
+     * 
+     * 
+     */
+    public void FloorFrame() {    	
+    	JFrame frame = new JFrame("Vivlo - Floor Information");
+		frame.setBounds(100, 100, 912, 534);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(new BorderLayout());
+		
+		JLabel lblDataResults = new JLabel("Floor Information");
+		lblDataResults.setFont(new Font("Tahoma", Font.BOLD, 36));
+		lblDataResults.setHorizontalAlignment(JLabel.CENTER);
+		frame.add(lblDataResults,BorderLayout.NORTH);
+
+		JTable table = new JTable();
+		table.setModel(new DefaultTableModel(
+				new Object[][] {
+				},
+				new String[] {
+						"ISBN","COPY","TITLE","GENRE","PUBLISHER","SIZE"
+				}
+			)); 
+		table.setBounds(40, 700, 200, 200);
+	    table.setFont(new Font("Tahoma", Font.PLAIN, 11));
+	    table.setRowHeight(30);
+		frame.getContentPane().setBackground(tuYellow);
+        frame.setVisible(true);
+        
+		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+		try {
+			resizeColumnWidth(table);
+			ResultSet result = query.listNref();
+			while(result.next()){
+				String ISBN = result.getString("ISBN");
+				int COPY = result.getInt("COPY");
+				String TITLE = result.getString("TITLE");
+				String GENRE = result.getString("GENRE");
+				String PUBLISHER = result.getString("PUBLISHER");
+				String SIZE = result.getString("SIZE");
+			
+			
+			tableModel.addRow(new Object[] {ISBN,COPY,TITLE,GENRE,PUBLISHER,SIZE});
+			}
+		}catch (SQLException ex) {
+			ex.printStackTrace();
+			System.out.println("Failed here also");
+		}
+		JScrollPane scrollablearea = new JScrollPane(table);
+		frame.add(scrollablearea,BorderLayout.SOUTH);
+		
+		JButton backBtn = new JButton("Back to Manage Information");
+        backBtn.setForeground(Color.WHITE);
+        backBtn.setBackground(Color.BLACK);
+        backBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	createManagementInfoFrame();
+                frame.dispose();
+            }
+        });
+        frame.add(backBtn,BorderLayout.CENTER);
+		
+		
+	}
+    
+    
 }
