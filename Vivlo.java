@@ -1012,17 +1012,17 @@ public class Vivlo {
 public void createResults() {
 
 		JFrame frame = new JFrame();
-		frame.setBounds(100, 100, 1901, 967);
+		frame.setBounds(500, 100, 500, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		JLabel lblDataResults = new JLabel("Data Results");
 		lblDataResults.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		lblDataResults.setBounds(661, 25, 197, 50);
+		lblDataResults.setBounds(200, 0, 150, 50);
 		frame.getContentPane().add(lblDataResults);
 		
 		JButton btnPopulate = new JButton("Populate");
-		btnPopulate.setBounds(752, 868, 97, 25);
+		btnPopulate.setBounds(200, 50, 150, 50);
 		frame.getContentPane().add(btnPopulate);
 		
 		JTable table = new JTable();
@@ -1033,28 +1033,27 @@ public void createResults() {
 				"ISBN", "COPY", "TITLE", "GENRE", "PUBLISHER", "SIZE"
 			}
 		));
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(87, 823, 1342, -616);
+		JScrollPane scrollPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrollPane.setBounds(50, 100, 450, 300);
 		frame.getContentPane().add(scrollPane);
-		table.setBounds(86, 189, 1342, 632);
+		table.setBounds(50, 100, 450, 300);
 		frame.getContentPane().add(table);
 		btnPopulate.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
 		resizeColumnWidth(table);
 		try {
+			tableModel.addRow(new Object[] {"ISBN","COPY","TITLE","GENRE","PUBLISHER","SIZE"});
 			ResultSet result = query.allBooks();
 			while(result.next()){
 				String ISBN = result.getString("ISBN");
-			int COPY = result.getInt("COPY");
-			String TITLE = result.getString("TITLE");
-			String GENRE = result.getString("GENRE");
-			String PUBLISHER = result.getString("PUBLISHER");
-			int SIZE = result.getInt("SIZE");
+				int COPY = result.getInt("COPY");
+				String TITLE = result.getString("TITLE");
+				String GENRE = result.getString("GENRE");
+				String PUBLISHER = result.getString("PUBLISHER");
+				int SIZE = result.getInt("SIZE");
 			
-			tableModel.addRow(new Object[] {
-				ISBN, COPY, TITLE, GENRE, PUBLISHER, SIZE
-			});
+				tableModel.addRow(new Object[] {ISBN, COPY, TITLE, GENRE, PUBLISHER, SIZE});
 			}
 		}catch (SQLException ex) {
 			
