@@ -204,6 +204,25 @@ public class Vivlo {
                 panel.add(roomLbl);
 
                 JPanel roomPanel = new JPanel();
+                try {
+                	ResultSet resultsize = query.studyRoomAvailable();
+                	ResultSet result = query.studyRoomAvailable();
+                	int size=0;
+                	while(resultsize.next()) {
+                		size++;
+                		
+                	}                	
+                	GridLayout layout = new GridLayout(size,1);
+                	roomPanel.setLayout(layout);                	
+                	while(result.next()) {
+                		JLabel count = new JLabel("Study Room Number: " + result.getString("R_NUM") );
+                    	count.setFont(new Font("Tahoma", Font.PLAIN, 20));                    	
+                    	roomPanel.add(count);
+                	}
+                }
+                catch (SQLException e) {
+                	e.printStackTrace();
+                }      
                 JScrollPane roomScroll = new JScrollPane(roomPanel);
                 roomScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
                 roomScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
@@ -216,8 +235,17 @@ public class Vivlo {
                 panel.add(overLbl);
 
                 JPanel overPanel = new JPanel();
-                try {
+                try {   
+                	
                 	ResultSet result = query.viewOverDue();
+                	ResultSet resultsize = query.viewOverDue();
+                	int size=0;
+                	while(resultsize.next()) {
+                		size++;
+                	}
+                	GridLayout layout = new GridLayout(size,1);
+                	overPanel.setLayout(layout);             	
+                	
                 	while(result.next()) {
                 	 JLabel count = new JLabel("Book ISBN: " + result.getString("NREF_ISBN") + " ");
                    	 count.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -232,6 +260,7 @@ public class Vivlo {
                 overScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
                 overScroll.setBounds(490, 170, 400, 100);
                 panel.add(overScroll);
+                
 
                 JLabel deptLbl = new JLabel("Departments");
                 deptLbl.setBounds(460, 270, 250, 50);

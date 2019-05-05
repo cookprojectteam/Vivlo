@@ -323,6 +323,20 @@ public class Query {
         }
         return result;
     }
+     public ResultSet studyRoomAvailable() {
+    	 ResultSet result = null;
+    	 PreparedStatement ps = null;
+    	 try {
+    		 ps = connection.prepareStatement("SELECT R_NUM FROM NON_BOOK_RESOURCE WHERE R_TYPE LIKE 'Study Room' AND R_DATE IS NULL and R_TIME IS NULL; ");
+    		 result = ps.executeQuery();
+    		 
+    	 }
+    	 catch (Exception ex) {
+    		 ex.printStackTrace();
+    	 }
+    	 return result;
+     }
+     
     
     //request a book
      public void requestBook(String ISBN, String COPY){
