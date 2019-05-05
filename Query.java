@@ -316,7 +316,7 @@ public class Query {
         ResultSet result = null;
         PreparedStatement ps = null;
         try{
-            ps = connection.prepareStatement("SELECT NREF_ISBN, NREF_COPY, adddate(curdate(),-20) AS 'was due', CO_TUID AS 'Checked Out to' From NREF_BOOK WHERE CO_DATE > adddate(curdate(),-20) ;");
+            ps = connection.prepareStatement("SELECT NREF_ISBN, NREF_COPY, CO_DATE + 20 AS 'WAS DUE', CO_TUID AS 'CHECK OUT TUID' From NREF_BOOK WHERE CO_DATE + 20 < (SELECT CURDATE()) ;");
             result = ps.executeQuery();
         } catch(Exception ex){
             ex.printStackTrace();
