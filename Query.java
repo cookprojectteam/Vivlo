@@ -485,12 +485,13 @@ public class Query {
     	 return result;
      
      }
-     public void newBook(String ISBN, int COPY, String TITLE, String GENRE, int PDATE, String PUBLISHER, int SIZE) { 
+     public void newBook(String ISBN, int COPY, String TITLE, String GENRE, int PDATE, String PUBLISHER, int SIZE,String af,String am, String al) { 
     	 
     	 PreparedStatement ps = null;
+    	 PreparedStatement ps1 = null;
     	 try { 
     		 ps = connection.prepareStatement("INSERT INTO BOOK VALUES (?,?,?,?,DATE(?),?,?);");
-    		 
+    		 ps1 = connection.prepareStatement("INSERT INTO AUTHOR VALUES (?,?,?,?,?);");
     		  ps.setString(1, ISBN);
               ps.setInt(2, COPY);
               ps.setString(3, TITLE);
@@ -498,9 +499,14 @@ public class Query {
               ps.setInt(5, PDATE);
               ps.setString(6, PUBLISHER);
               ps.setInt(7,SIZE);
-
               
+              ps1.setString(1, ISBN);
+              ps1.setInt(2, COPY);
+              ps1.setString(3, af);
+              ps1.setString(4, am);
+              ps1.setString(5,  al);
     		 ps.executeUpdate();
+    		 ps1.executeUpdate();
     	 } catch(Exception ex) {
     		 ex.printStackTrace();
     	 }

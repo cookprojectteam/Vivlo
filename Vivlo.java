@@ -377,7 +377,7 @@ public class Vivlo {
             	String am = authorMTxt.getText();
             	String al = authorLTxt.getText();
            	try { 
-            		query.newBook(ISBN, Integer.parseInt(COPY), TITLE, GENRE, Integer.parseInt(PDATE), PUBLISHER, Integer.parseInt(SIZE));
+            		query.newBook(ISBN, Integer.parseInt(COPY), TITLE, GENRE, Integer.parseInt(PDATE), PUBLISHER, Integer.parseInt(SIZE),af,am,al);
                     JOptionPane.showMessageDialog(null, "Book Successfully Inserted!");
             		
             		
