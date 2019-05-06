@@ -296,6 +296,20 @@ public class Query {
             ex.printStackTrace();
         }
     }
+
+    public ResultSet notCheckedOut(String ISBN,String COPY){
+        ResultSet result = null;
+        PreparedStatement ps = null;
+        try{
+            ps = connection.prepareStatement("SELECT NREF_ISBN FROM NREF_BOOK WHERE NREF_ISBN=? AND NREF_COPY=? AND CO_TUID IS NULL");
+            ps.setString(1, ISBN);
+            ps.setString(2, COPY);
+            result = ps.executeQuery();
+        } catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return result;
+    }
     
     //check in book
     public void checkin(String ISBN, String COPY){        
@@ -309,6 +323,19 @@ public class Query {
         } catch(Exception ex){
             ex.printStackTrace();
         }       
+    }
+    public ResultSet notCheckedIn(String ISBN,String COPY){
+        ResultSet result = null;
+        PreparedStatement ps = null;
+        try{
+            ps = connection.prepareStatement("SELECT NREF_ISBN FROM NREF_BOOK WHERE NREF_ISBN=? AND NREF_COPY=? AND CI_TUID IS NULL");
+            ps.setString(1, ISBN);
+            ps.setString(2, COPY);
+            result = ps.executeQuery();
+        } catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return result;
     }
     
     //request a book
@@ -485,13 +512,17 @@ public class Query {
     	 return result;
      
      }
-     public void newBook(String ISBN, int COPY, String TITLE, String GENRE, int PDATE, String PUBLISHER, int SIZE,String af,String am, String al) { 
+
+     public void newNrefBook(String ISBN, int COPY, String TITLE, String GENRE, int PDATE, String PUBLISHER, int SIZE,String af,String am, String al,String VNAME,String VTYPE,String VPHONE) { 
     	 
     	 PreparedStatement ps = null;
     	 PreparedStatement ps1 = null;
+    	 PreparedStatement ps2 = null;
     	 try { 
     		 ps = connection.prepareStatement("INSERT INTO BOOK VALUES (?,?,?,?,DATE(?),?,?);");
     		 ps1 = connection.prepareStatement("INSERT INTO AUTHOR VALUES (?,?,?,?,?);");
+    		 ps2 = connection.prepareStatement("INSERT INTO NREF_BOOK VALUES (?,?,NULL,NULL,NULL,NULL,NULL,NULL,?,?,?,?,NULL);");
+
     		  ps.setString(1, ISBN);
               ps.setInt(2, COPY);
               ps.setString(3, TITLE);
@@ -505,8 +536,52 @@ public class Query {
               ps1.setString(3, af);
               ps1.setString(4, am);
               ps1.setString(5,  al);
+              
+              ps2.setString(1, ISBN);
+              ps2.setInt(2, COPY);
+              ps2.setString(3, current_tuid.toString());
+              ps2.setString(4, VNAME );
+              ps2.setString(5, VTYPE);
+              ps2.setString(6, VPHONE);
+              
     		 ps.executeUpdate();
     		 ps1.executeUpdate();
+    		 ps2.executeUpdate();
+    	 } catch(Exception ex) {
+    		 ex.printStackTrace();
+    	 }
+    	 
+     }
+public void newRefBook(String ISBN, int COPY, String TITLE, String GENRE, int PDATE, String PUBLISHER, int SIZE,String af,String am, String al) { 
+    	 
+    	 PreparedStatement ps = null;
+    	 PreparedStatement ps1 = null;
+    	 PreparedStatement ps2 = null;
+    	 try { 
+    		 ps = connection.prepareStatement("INSERT INTO BOOK VALUES (?,?,?,?,DATE(?),?,?);");
+    		 ps1 = connection.prepareStatement("INSERT INTO AUTHOR VALUES (?,?,?,?,?);");
+    		 ps2 = connection.prepareStatement("INSERT INTO REF_BOOK VALUES (?,?);");
+    		  ps.setString(1, ISBN);
+              ps.setInt(2, COPY);
+              ps.setString(3, TITLE);
+              ps.setString(4, GENRE);
+              ps.setInt(5, PDATE);
+              ps.setString(6, PUBLISHER);
+              ps.setInt(7,SIZE);
+              
+              ps1.setString(1, ISBN);
+              ps1.setInt(2, COPY);
+              ps1.setString(3, af);
+              ps1.setString(4, am);
+              ps1.setString(5,  al);
+              
+              ps2.setString(1, ISBN);
+              ps2.setInt(2, COPY);
+              
+    		 ps.executeUpdate();
+    		 ps1.executeUpdate();
+    		 ps2.executeUpdate();
+
     	 } catch(Exception ex) {
     		 ex.printStackTrace();
     	 }
