@@ -1394,7 +1394,7 @@ public class Vivlo {
 				new Object[][] {
 				},
 				new String[] {
-						"ISBN","COPY","TITLE","GENRE","PUBLISHER","SIZE"
+						"DEPART_NUM","DEPART_NAME","DEPART_HEAD","NUMBER OF WORKERS"
 				}
 			)); 
 		table.setBounds(40, 700, 200, 200);
@@ -1406,17 +1406,16 @@ public class Vivlo {
 		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
 		try {
 			resizeColumnWidth(table);
-			ResultSet result = query.listNref();
+			ResultSet result = query.departInformation();
 			while(result.next()){
-				String ISBN = result.getString("ISBN");
-				int COPY = result.getInt("COPY");
-				String TITLE = result.getString("TITLE");
-				String GENRE = result.getString("GENRE");
-				String PUBLISHER = result.getString("PUBLISHER");
-				String SIZE = result.getString("SIZE");
+				int D_NUM = result.getInt("D_NUM");
+				String D_NAME = result.getString("D_NAME");
+				String D_HEAD = result.getString("D_HEAD");
+				int EMPLOYEES = result.getInt("EMPLOYEES");
+				
 			
 			
-			tableModel.addRow(new Object[] {ISBN,COPY,TITLE,GENRE,PUBLISHER,SIZE});
+			tableModel.addRow(new Object[] {D_NUM,D_NAME,D_HEAD,EMPLOYEES});
 			}
 		}catch (SQLException ex) {
 			ex.printStackTrace();
@@ -1645,7 +1644,7 @@ public class Vivlo {
 				new Object[][] {
 				},
 				new String[] {
-						"ISBN","COPY","TITLE","GENRE","PUBLISHER","SIZE"
+						"AFF","AFL","AFPhone","TUID","LS_FLOOR","D_NAME"
 				}
 			)); 
 		table.setBounds(40, 700, 200, 200);
@@ -1657,17 +1656,17 @@ public class Vivlo {
 		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
 		try {
 			resizeColumnWidth(table);
-			ResultSet result = query.listNref();
+			ResultSet result = query.StaffInformation();
 			while(result.next()){
-				String ISBN = result.getString("ISBN");
-				int COPY = result.getInt("COPY");
-				String TITLE = result.getString("TITLE");
-				String GENRE = result.getString("GENRE");
-				String PUBLISHER = result.getString("PUBLISHER");
-				String SIZE = result.getString("SIZE");
+				String AFF = result.getString("AFF");
+				String AFL = result.getString("AFL");
+				String AFPhone = result.getString("AFPhone");
+				String TUID = result.getString("TUID");
+				int LS_FLOOR = result.getInt("LS_FLOOR");
+				String D_Name = result.getString("D_Name");
 			
 			
-			tableModel.addRow(new Object[] {ISBN,COPY,TITLE,GENRE,PUBLISHER,SIZE});
+			tableModel.addRow(new Object[] {AFF,AFL,AFPhone,TUID,LS_FLOOR,D_Name});
 			}
 		}catch (SQLException ex) {
 			ex.printStackTrace();
@@ -1710,7 +1709,7 @@ public class Vivlo {
 				new Object[][] {
 				},
 				new String[] {
-						"ISBN","COPY","TITLE","GENRE","PUBLISHER","SIZE"
+						"F_NUM","F_RULE","RESOURCES"
 				}
 			)); 
 		table.setBounds(40, 700, 200, 200);
@@ -1722,17 +1721,14 @@ public class Vivlo {
 		DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
 		try {
 			resizeColumnWidth(table);
-			ResultSet result = query.listNref();
+			ResultSet result = query.FloorInformation();
 			while(result.next()){
-				String ISBN = result.getString("ISBN");
-				int COPY = result.getInt("COPY");
-				String TITLE = result.getString("TITLE");
-				String GENRE = result.getString("GENRE");
-				String PUBLISHER = result.getString("PUBLISHER");
-				String SIZE = result.getString("SIZE");
+				int F_NUM = result.getInt("F_NUM");
+				String F_RULE = result.getString("F_RULE");
+				int RESOURCES = result.getInt("RESOURCES");
 			
 			
-			tableModel.addRow(new Object[] {ISBN,COPY,TITLE,GENRE,PUBLISHER,SIZE});
+			tableModel.addRow(new Object[] {F_NUM,F_RULE,RESOURCES});
 			}
 		}catch (SQLException ex) {
 			ex.printStackTrace();

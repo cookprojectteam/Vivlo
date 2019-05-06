@@ -410,7 +410,33 @@ public class Query {
     	 ResultSet result = null;
     	 PreparedStatement ps = null;
     	 try {
-    		 ps = connection.prepareStatement("");
+    		 ps = connection.prepareStatement("SELECT COUNT(*) AS EMPLOYEES, D_NUM, D_NAME, D_HEAD FROM DEPART,LIB_STAFF WHERE LS_DEPART=D_NUM GROUP BY D_NUM;");
+    		 result = ps.executeQuery();
+    		 
+    	 }
+    	 catch (SQLException e) {
+    		 e.printStackTrace();
+    	 }
+    	 return result;
+     }
+     public ResultSet FloorInformation() {
+    	 ResultSet result = null;
+    	 PreparedStatement ps = null;
+    	 try {
+    		 ps = connection.prepareStatement("SELECT F_NUM, F_RULE, COUNT(*) AS RESOURCES FROM FLOOR, NON_BOOK_RESOURCE WHERE F_NUM=R_FLOOR GROUP BY F_NUM ;");
+    		 result = ps.executeQuery();
+    		 
+    	 }
+    	 catch (SQLException e) {
+    		 e.printStackTrace();
+    	 }
+    	 return result;
+     }
+     public ResultSet StaffInformation() {
+    	 ResultSet result = null;
+    	 PreparedStatement ps = null;
+    	 try {
+    		 ps = connection.prepareStatement("SELECT AFF, AFL, AFPhone, TUID, LS_FLOOR, D_NAME FROM LIB_STAFF,TU_AFFILIATE,DEPART WHERE LS_TUID=TUID AND LS_DEPART=D_NUM;");
     		 result = ps.executeQuery();
     		 
     	 }
