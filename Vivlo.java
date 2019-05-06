@@ -29,7 +29,7 @@ public class Vivlo {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    createLoginFrame();
+                	createInsertNREFBookFrame();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -289,6 +289,114 @@ public class Vivlo {
         frame.setVisible(true);
     }
 
+
+    /**
+     * Creates Non-Reference book frmae 
+     */
+    public void createInsertNREFBookFrame() {
+        Font normal = new Font("Tahoma", Font.PLAIN, 20);
+        JFrame frame = new JFrame("Vivlo - Insert");
+        frame.setBounds(100, 100, 440, 500);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(null);
+        frame.getContentPane().setBackground(tuYellow);
+
+        JLabel title = new JLabel("Insert NonRef-Book");
+        title.setBounds(100, 30, 300, 30);
+        title.setFont(new Font("Tahoma", Font.PLAIN, 30));
+        frame.add(title);
+
+        JLabel isbnLbl = new JLabel("NREF_ISBN");
+        isbnLbl.setBounds(10, 80, 200, 30);
+        isbnLbl.setFont(normal);
+        frame.add(isbnLbl);
+
+        JTextField isbnTxt = new JTextField();
+        isbnTxt.setBounds(210, 80, 200, 30);
+        frame.add(isbnTxt);
+
+        JLabel copyLbl = new JLabel("NREF_COPY");
+        copyLbl.setBounds(10, 120, 200, 30);
+        copyLbl.setFont(normal);
+        frame.add(copyLbl);
+
+        JTextField copyTxt = new JTextField();
+        copyTxt.setBounds(210, 120, 200, 30);
+        frame.add(copyTxt);
+
+        JLabel acquireTUID = new JLabel("ACQUIRE_TUID");
+        acquireTUID.setBounds(10, 160, 200, 30);
+        acquireTUID.setFont(normal);
+        frame.add(acquireTUID);
+
+        JTextField titleTxt = new JTextField();
+        titleTxt.setBounds(210, 160, 200, 30);
+        frame.add(titleTxt);
+
+        JLabel vname = new JLabel("Vendor Name");
+        vname.setBounds(10, 200, 200, 30);
+        vname.setFont(normal);
+        frame.add(vname);
+
+        JTextField genreTxt = new JTextField();
+        genreTxt.setBounds(210, 200, 200, 30);
+        frame.add(genreTxt);
+
+        JLabel vtype = new JLabel("Vendor Type");
+        vtype.setBounds(10, 240, 200, 30);
+        vtype.setFont(normal);
+        frame.add(vtype);
+
+        JTextField pubDateTxt = new JTextField();
+        pubDateTxt.setBounds(210, 240, 200, 30);
+        frame.add(pubDateTxt);
+
+        JLabel vphone = new JLabel("Vendor Phone#");
+        vphone.setBounds(10, 280, 200, 30);
+        vphone.setFont(normal);
+        frame.add(vphone);
+
+        JTextField pubTxt = new JTextField();
+        pubTxt.setBounds(210, 280, 200, 30);
+        frame.add(pubTxt);
+
+        JLabel sTUID = new JLabel("Student TUID");
+        sTUID.setBounds(10, 320, 200, 30);
+        sTUID.setFont(normal);
+        frame.add(sTUID);
+
+        JTextField sizeTxt = new JTextField();
+        sizeTxt.setBounds(210, 320, 200, 30);
+        frame.add(sizeTxt);
+
+
+        JButton backBtn = new JButton("Back");
+        backBtn.setBackground(Color.BLACK);
+        backBtn.setForeground(Color.WHITE);
+        backBtn.setBounds(10, 400, 160, 45);
+        backBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createManageHomeFrame();
+                frame.dispose();
+            }
+        });
+        frame.add(backBtn);
+
+        JButton insertBtn = new JButton("Insert NREF-Book");
+        insertBtn.setBackground(Color.BLACK);
+        insertBtn.setForeground(Color.WHITE);
+        insertBtn.setBounds(250, 400, 160, 45);
+        insertBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        frame.add(insertBtn);
+
+        frame.setVisible(true);
+    }
     /**
      * Resizes the table column
      * @param table JTable to resize
