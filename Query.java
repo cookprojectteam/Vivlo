@@ -485,16 +485,13 @@ public class Query {
     	 return result;
      
      }
-     
-     
-     public ResultSet newBook(String ISBN, int COPY, String TITLE, String GENRE, int PDATE, String PUBLISHER, int SIZE, String AF, String AM, String AL) { 
+     public ResultSet newBook(String ISBN, int COPY, String TITLE, String GENRE, int PDATE, String PUBLISHER, int SIZE) { 
     	 ResultSet result = null;
     	 PreparedStatement ps = null;
     	 PreparedStatement ps2 = null;
     	 try { 
     		 ps = connection.prepareStatement("INSERT INTO BOOK VALUES (?,?,?,?,?,?,?);");
     		 
-    		
     		  ps.setString(1, ISBN);
               ps.setInt(2, COPY);
               ps.setString(3, TITLE);

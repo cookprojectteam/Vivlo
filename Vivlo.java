@@ -20,6 +20,7 @@ public class Vivlo {
 
     static final Color tuYellow = new Color(255, 187, 0);
     private Query query;
+    Connection conn;
 
     /**
      * Create the choice.
@@ -29,7 +30,7 @@ public class Vivlo {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                	createInsertREFBookFrame();
+                	createLoginFrame();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -379,7 +380,7 @@ public class Vivlo {
             	String am = authorMTxt.getText();
             	String al = authorLTxt.getText();
            	try { 
-            		ResultSet results = query.newBook(ISBN, copyNO, TITLE, GENRE, pdate, PUBLISHER, size, af, am ,al);
+            		ResultSet results = query.newBook(ISBN, copyNO, TITLE, GENRE, pdate, PUBLISHER, size);
             		if(results.next()){
             			JOptionPane.showMessageDialog(null, "Book Successfully Inserted!");
             		}else { 
@@ -1023,7 +1024,8 @@ public class Vivlo {
             	String copy = copyText.getText();
             	try {
             		query.checkout(isbn,copy);           		
-            		
+            		JOptionPane.showMessageDialog(null, "Book Successfully checked out!",
+                            "Checkout Successful!", JOptionPane.INFORMATION_MESSAGE);
             	}
             	catch (Exception er) {
             		er.printStackTrace();
