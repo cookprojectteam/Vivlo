@@ -240,13 +240,13 @@ public class Vivlo {
     public void createInsertBookFrame() {
         Font normal = new Font("Tahoma", Font.PLAIN, 20);
         JFrame frame = new JFrame("Vivlo - Insert");
-        frame.setBounds(100, 100, 440, 600);
+        frame.setBounds(100, 100, 912, 536);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
         frame.getContentPane().setBackground(tuYellow);
 
         JLabel title = new JLabel("Insert Book");
-        title.setBounds(120, 30, 300, 30);
+        title.setBounds(350, 30, 300, 30);
         title.setFont(new Font("Tahoma", Font.PLAIN, 36));
         frame.add(title);
 
@@ -343,11 +343,11 @@ public class Vivlo {
         JButton backBtn = new JButton("Back");
         backBtn.setBackground(Color.BLACK);
         backBtn.setForeground(Color.WHITE);
-        backBtn.setBounds(10, 480, 160, 45);
+        backBtn.setBounds(450, 200, 300, 40);
         backBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	createBookTypeFrame();
+            	createManageHomeFrame();
                 frame.dispose();
             }
         });
@@ -357,35 +357,29 @@ public class Vivlo {
         JButton insertBtn = new JButton("Insert");
         insertBtn.setBackground(Color.BLACK);
         insertBtn.setForeground(Color.WHITE);
-        insertBtn.setBounds(250, 480, 160, 45);
+        insertBtn.setBounds(450, 270, 300, 40);
         insertBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	String ISBN = isbnTxt.getText();
-            	
-            	String COPY =  copyTxt.getText();
-            	int copyNO = Integer.parseInt(COPY);
+            	String ISBN = isbnTxt.getText();            	
+            	String COPY = (copyTxt.getText());           	
             	
             	String TITLE = titleTxt.getText();
             	String GENRE = genreTxt.getText();
             	
             	String PDATE =  pubDateTxt.getText();
-            	int pdate = Integer.parseInt(PDATE);
+            	
             	
             	String PUBLISHER =  pubTxt.getText();
             	
-            	String SIZE =  sizeTxt.getText();
-            	int size = Integer.parseInt(SIZE);
+            	String SIZE =  sizeTxt.getText();            	
             	String af = authorTxt.getText();
             	String am = authorMTxt.getText();
             	String al = authorLTxt.getText();
            	try { 
-            		ResultSet results = query.newBook(ISBN, copyNO, TITLE, GENRE, pdate, PUBLISHER, size);
-            		if(results.next()){
-            			JOptionPane.showMessageDialog(null, "Book Successfully Inserted!");
-            		}else { 
-            			JOptionPane.showMessageDialog(null, "Erro could not insert Book");
-            		}
+            		query.newBook(ISBN, Integer.parseInt(COPY), TITLE, GENRE, Integer.parseInt(PDATE), PUBLISHER, Integer.parseInt(SIZE));
+                    JOptionPane.showMessageDialog(null, "Book Successfully Inserted!");
+            		
             		
             	}catch(Exception e1) {
             		e1.printStackTrace();
@@ -399,7 +393,7 @@ public class Vivlo {
 
 
     /**
-     * Creates Non-Reference book frmae 
+     * Creates Non-Reference book frame 
      */
     public void createInsertNREFBookFrame() {
         Font normal = new Font("Tahoma", Font.PLAIN, 20);
@@ -1348,7 +1342,7 @@ public class Vivlo {
         BookInsert.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	createBookTypeFrame();
+            	createInsertBookFrame();
             	frame.dispose();          		
             		
 

@@ -485,12 +485,11 @@ public class Query {
     	 return result;
      
      }
-     public ResultSet newBook(String ISBN, int COPY, String TITLE, String GENRE, int PDATE, String PUBLISHER, int SIZE) { 
-    	 ResultSet result = null;
+     public void newBook(String ISBN, int COPY, String TITLE, String GENRE, int PDATE, String PUBLISHER, int SIZE) { 
+    	 
     	 PreparedStatement ps = null;
-    	 PreparedStatement ps2 = null;
     	 try { 
-    		 ps = connection.prepareStatement("INSERT INTO BOOK VALUES (?,?,?,?,?,?,?);");
+    		 ps = connection.prepareStatement("INSERT INTO BOOK VALUES (?,?,?,?,DATE(?),?,?);");
     		 
     		  ps.setString(1, ISBN);
               ps.setInt(2, COPY);
@@ -505,6 +504,6 @@ public class Query {
     	 } catch(Exception ex) {
     		 ex.printStackTrace();
     	 }
-    	 return result;
+    	 
      }
 }
