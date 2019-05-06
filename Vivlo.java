@@ -29,7 +29,7 @@ public class Vivlo {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                	createInsertNREFBookFrame();
+                	createInsertREFBookFrame();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -174,12 +174,72 @@ public class Vivlo {
     }
 
     /**
+     * Initialize the contents of the Book type.
+     */
+    private void createBookTypeFrame() {
+    	JFrame frame = new JFrame("Vivlo - Book Type");
+        frame.setBounds(100, 100, 915, 534);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(null);
+
+        JLabel lblChoice = new JLabel("Book Type");
+        lblChoice.setFont(new Font("Tahoma", Font.BOLD, 36));
+        lblChoice.setBounds(360, 15, 500, 40);
+        frame.add(lblChoice);
+
+        
+        JButton nrefbook = new JButton("Non-Reference Book");
+        nrefbook.setBackground(Color.BLACK);
+        nrefbook.setForeground(Color.WHITE);
+        nrefbook.setBounds(300, 150, 300, 40);
+        
+        JButton refbook = new JButton("Reference Book");
+        refbook.setBackground(Color.BLACK);
+        refbook.setForeground(Color.WHITE);
+        refbook.setBounds(300, 250, 300, 40);
+        
+        JButton backBtn = new JButton("Back");
+        backBtn.setBackground(Color.BLACK);
+        backBtn.setForeground(Color.WHITE);
+        backBtn.setBounds(300, 350, 300, 40);
+        backBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createManageHomeFrame();
+                frame.dispose();
+            }
+        });
+        frame.add(backBtn);
+        
+        nrefbook.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	createInsertNREFBookFrame();
+                frame.dispose();
+            }
+        });       
+        
+        
+        refbook.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	createInsertREFBookFrame();
+                frame.dispose();
+            }
+        });       
+       
+        frame.add(nrefbook);
+        frame.add(refbook);
+        frame.getContentPane().setBackground(tuYellow);
+        frame.setVisible(true);
+    }
+    /**
      * Creates the book insert frame
      */
     public void createInsertBookFrame() {
         Font normal = new Font("Tahoma", Font.PLAIN, 20);
         JFrame frame = new JFrame("Vivlo - Insert");
-        frame.setBounds(100, 100, 440, 500);
+        frame.setBounds(100, 100, 440, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
         frame.getContentPane().setBackground(tuYellow);
@@ -252,7 +312,7 @@ public class Vivlo {
         sizeTxt.setBounds(210, 320, 200, 30);
         frame.add(sizeTxt);
 
-        JLabel authorLbl = new JLabel("Author");
+        JLabel authorLbl = new JLabel("Author First Name");
         authorLbl.setBounds(10, 360, 200, 30);
         authorLbl.setFont(normal);
         frame.add(authorLbl);
@@ -260,28 +320,75 @@ public class Vivlo {
         JTextField authorTxt = new JTextField();
         authorTxt.setBounds(210, 360, 200, 30);
         frame.add(authorTxt);
+        
+        JLabel authMName = new JLabel("Author Middle Intial");
+        authMName.setBounds(10, 400, 200, 30);
+        authMName.setFont(normal);
+        frame.add(authMName);
+
+        JTextField authorMTxt = new JTextField();
+        authorMTxt.setBounds(210, 400, 200, 30);
+        frame.add(authorMTxt);
+        
+        JLabel authorLName = new JLabel("Author Last Name");
+        authorLName.setBounds(10, 440, 200, 30);
+        authorLName.setFont(normal);
+        frame.add(authorLName);
+
+        JTextField authorLTxt = new JTextField();
+        authorLTxt .setBounds(210, 440, 200, 30);
+        frame.add(authorLTxt );
 
         JButton backBtn = new JButton("Back");
         backBtn.setBackground(Color.BLACK);
         backBtn.setForeground(Color.WHITE);
-        backBtn.setBounds(10, 400, 160, 45);
+        backBtn.setBounds(10, 480, 160, 45);
         backBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                createManageHomeFrame();
+            	createBookTypeFrame();
                 frame.dispose();
             }
         });
         frame.add(backBtn);
+       
 
         JButton insertBtn = new JButton("Insert");
         insertBtn.setBackground(Color.BLACK);
         insertBtn.setForeground(Color.WHITE);
-        insertBtn.setBounds(250, 400, 160, 45);
+        insertBtn.setBounds(250, 480, 160, 45);
         insertBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+            	String ISBN = isbnTxt.getText();
+            	
+            	String COPY =  copyTxt.getText();
+            	int copyNO = Integer.parseInt(COPY);
+            	
+            	String TITLE = titleTxt.getText();
+            	String GENRE = genreTxt.getText();
+            	
+            	String PDATE =  pubDateTxt.getText();
+            	int pdate = Integer.parseInt(PDATE);
+            	
+            	String PUBLISHER =  pubTxt.getText();
+            	
+            	String SIZE =  sizeTxt.getText();
+            	int size = Integer.parseInt(SIZE);
+            	String af = authorTxt.getText();
+            	String am = authorMTxt.getText();
+            	String al = authorLTxt.getText();
+           	try { 
+            		ResultSet results = query.newBook(ISBN, copyNO, TITLE, GENRE, pdate, PUBLISHER, size, af, am ,al);
+            		if(results.next()){
+            			JOptionPane.showMessageDialog(null, "Book Successfully Inserted!");
+            		}else { 
+            			JOptionPane.showMessageDialog(null, "Erro could not insert Book");
+            		}
+            		
+            	}catch(Exception e1) {
+            		e1.printStackTrace();
+            		}
             }
         });
         frame.add(insertBtn);
@@ -383,14 +490,78 @@ public class Vivlo {
         });
         frame.add(backBtn);
 
-        JButton insertBtn = new JButton("Insert NREF-Book");
+        JButton insertBtn = new JButton("Next BookInfo");
         insertBtn.setBackground(Color.BLACK);
         insertBtn.setForeground(Color.WHITE);
         insertBtn.setBounds(250, 400, 160, 45);
         insertBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	createInsertBookFrame();
+                frame.dispose();
+            }
+        });
+        frame.add(insertBtn);
 
+        frame.setVisible(true);
+    }
+    
+    /**
+     * Creates Reference book frmae 
+     */
+    public void createInsertREFBookFrame() {
+        Font normal = new Font("Tahoma", Font.PLAIN, 20);
+        JFrame frame = new JFrame("Vivlo - Insert");
+        frame.setBounds(100, 100, 440, 500);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(null);
+        frame.getContentPane().setBackground(tuYellow);
+
+        JLabel title = new JLabel("Insert Ref-Book");
+        title.setBounds(100, 30, 300, 30);
+        title.setFont(new Font("Tahoma", Font.PLAIN, 30));
+        frame.add(title);
+
+        JLabel isbnLbl = new JLabel("REF_ISBN");
+        isbnLbl.setBounds(10, 80, 200, 30);
+        isbnLbl.setFont(normal);
+        frame.add(isbnLbl);
+
+        JTextField isbnTxt = new JTextField();
+        isbnTxt.setBounds(210, 80, 200, 30);
+        frame.add(isbnTxt);
+
+        JLabel copyLbl = new JLabel("REF_COPY");
+        copyLbl.setBounds(10, 120, 200, 30);
+        copyLbl.setFont(normal);
+        frame.add(copyLbl);
+
+        JTextField copyTxt = new JTextField();
+        copyTxt.setBounds(210, 120, 200, 30);
+        frame.add(copyTxt);
+
+        JButton backBtn = new JButton("Back");
+        backBtn.setBackground(Color.BLACK);
+        backBtn.setForeground(Color.WHITE);
+        backBtn.setBounds(10, 400, 160, 45);
+        backBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createManageHomeFrame();
+                frame.dispose();
+            }
+        });
+        frame.add(backBtn);
+
+        JButton insertBtn = new JButton("Next BookInfo");
+        insertBtn.setBackground(Color.BLACK);
+        insertBtn.setForeground(Color.WHITE);
+        insertBtn.setBounds(250, 400, 160, 45);
+        insertBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	createInsertBookFrame();
+                frame.dispose();
             }
         });
         frame.add(insertBtn);
@@ -1175,6 +1346,7 @@ public class Vivlo {
         BookInsert.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	createBookTypeFrame();
             	frame.dispose();          		
             		
 
